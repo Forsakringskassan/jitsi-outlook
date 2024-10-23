@@ -3,6 +3,7 @@
 [![Unit Tests](https://github.com/diggsweden/jitsi-outlook/actions/workflows/webpack.yml/badge.svg)](https://github.com/diggsweden/jitsi-outlook/actions/workflows/webpack.yml)
 [![Standard commitment](https://github.com/publiccodenet/standard/blob/develop/assets/standard-for-public-code-commitment.svg)](https://github.com/diggsweden/jitsi-outlook/blob/main/CONTRIBUTING.adoc#standard-for-public-code)
 [![REUSE status](https://api.reuse.software/badge/github.com/diggsweden/jitsi-outlook)](https://api.reuse.software/info/github.com/diggsweden/jitsi-outlook)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Forsakringskassan/jitsi-outlook/badge)](https://scorecard.dev/viewer/?uri=github.com/Forsakringskassan/jitsi-outlook)
 
 The purpose of this plug-in is to simplify the process of adding video conference links to meeting bookings. It is designed for users who value and require simplicity to complete their tasks quickly and intuitively. Therefore, it is important to preserve this simplicity as new features are added. Any additional contributions to the software must be designed in a way that does not interfere with or complicate the core functionality of booking a regular meeting with just one click.
 
