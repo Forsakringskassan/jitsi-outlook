@@ -58,7 +58,7 @@
     "html-webpack-plugin": "^5.6.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.4.3",
-    "less": "^3.9.0",
+    "less": "^4.2.1",
     "less-loader": "^12.2.0",
     "office-addin-cli": "^1.4.0",
     "office-addin-debugging": "^4.4.0",
