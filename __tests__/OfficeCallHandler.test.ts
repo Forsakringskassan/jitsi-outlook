@@ -101,28 +101,28 @@ describe("Connection test to server", () => {
     await setLocation(config);
     await setLocation(config);
     Office.context.mailbox.item?.location.getAsync((r) => { location = r.value });
-    
+
     expect(setLocationMock.context.mailbox.item.location.location).toBe("Jitsi meeting");
     expect(location).toBe("Jitsi meeting");
 
     setLocationMock.context.mailbox.item.location.location = "RoomA; RoomB;";
     await setLocation(config);
     Office.context.mailbox.item?.location.getAsync((r) => { location = r.value });
-    
+
     expect(setLocationMock.context.mailbox.item.location.location).toBe("RoomA; RoomB; Jitsi meeting");
     expect(location).toBe("RoomA; RoomB; Jitsi meeting");
 
     setLocationMock.context.mailbox.item.location.location = "RoomA; RoomB";
     await setLocation(config);
     Office.context.mailbox.item?.location.getAsync((r) => { location = r.value });
-    
+
     expect(setLocationMock.context.mailbox.item.location.location).toBe("RoomA; RoomB; Jitsi meeting");
     expect(location).toBe("RoomA; RoomB; Jitsi meeting");
 
     setLocationMock.context.mailbox.item.location.location = "RoomA; RoomB;                          ";
     await setLocation(config);
     Office.context.mailbox.item?.location.getAsync((r) => { location = r.value });
-    
+
     expect(setLocationMock.context.mailbox.item.location.location).toBe("RoomA; RoomB; Jitsi meeting");
     expect(location).toBe("RoomA; RoomB; Jitsi meeting");
   });
@@ -130,9 +130,9 @@ describe("Connection test to server", () => {
   it("Set html body information", async () => {
     const setDataMock = new OfficeMockObject(mockDataServer) as any;
     global.Office = setDataMock;
-    
+
     await setData("Hello");
-    
+
     expect(setDataMock.context.mailbox.item.body.data).toBe("Hello");
     expect(setDataMock.context.mailbox.item.body.opt.coercionType).toBe(CoercionType.Html);
   });
