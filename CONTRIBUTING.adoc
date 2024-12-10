@@ -14,7 +14,7 @@ As a new contributor, you are in an excellent position to give us feedback to ou
 * Fix or report a bug.
 * Suggest enhancements to code, tests and documentation.
 * Report/fix problems found during installing or developer environments.
-* Add suggestions for something else that is missing. 
+* Add suggestions for something else that is missing.
 
 [[community-guidelines]]
 == Community Guildeline
@@ -44,7 +44,7 @@ Set the Issue label to "feature" or "enhancement".
 [[contribute-code]]
 == Contribute Code, Documentation and more
 
-You want to contribute code, documentation or 'your fantastic thing x'. 
+You want to contribute code, documentation or 'your fantastic thing x'.
 Great, however, there are some practical points to check to make sure that everything runs as smoothly as possible.
 
 * It is always best to discuss your plans beforehand, to ensure that your contribution is in line with our goals.
@@ -67,7 +67,7 @@ This project aims to comply to the principles outlined in the Standard for Publi
 == Pull Request Lifecycle
 
 Generally speaking, you should fork this repository, make changes in your
-own fork, and then submit a pull-request. 
+own fork, and then submit a pull-request.
 This workflow is common, maybe even expected if nothing else mentioned, and is called the https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models#fork-and-pull-model[Fork-and-Pull model]
 
 A practical example of such a workflow could be:
@@ -88,13 +88,13 @@ A practical example of such a workflow could be:
 
 === DCO - Signoff and Signing a Commit
 
-NOTE: Signoff and signing: Two similar terms for two different things + 
-**_A Signoff assures to the project that you have the right to contribute your content_** + 
+NOTE: Signoff and signing: Two similar terms for two different things +
+**_A Signoff assures to the project that you have the right to contribute your content_** +
 **_A Sign assures that the commit came from you_**
 
 ==== Signoff (DCO agree)
 
-A standard practice in the Open Source communities is the https://developercertificate.org/[DCO - Developer Certificate of Origin]. 
+A standard practice in the Open Source communities is the https://developercertificate.org/[DCO - Developer Certificate of Origin].
 It is a lightweight way for a project for extra assurance that the contributor wrote and/or have the right to submit the contribution.
 
 It is supersimple!
@@ -110,7 +110,7 @@ $ git commit --signoff -m 'fix: add fix for superbug x'
 
 ==== Sign
 
-Optionally, you can also sign the commit with `-S`/`--gpg-sign`. 
+Optionally, you can also sign the commit with `-S`/`--gpg-sign`.
 Besides extra trust, it also gives your commit a nice verified button in the UI on most Git platforms and further assures trust.
 It requires that you have a GPG keypair set up, see https://docs.github.com/en/github/authenticating-to-github/signing-commits[Sign commit on GitHub with GPG key]
 
@@ -123,7 +123,7 @@ It requires that you have a GPG keypair set up, see https://docs.github.com/en/g
 
 Aim for a clear human readable commit history:
 
-* **_Does the project have a defined commit message practice, please follow that_**. 
+* **_Does the project have a defined commit message practice, please follow that_**.
 * When making a commit related to an issue, it's recommended to include the issue number in the commit message for easy traceability. The format of the commit message can be `{issue number}: Commit message`, such as `10: Added test for string concatenation`. By following this convention, it will be easier to track the changes made to a specific issue, especially when the branch is merged.
 
 * Make sure you link:#dco-signoff-and-signing-a-commitsign-off[Sign-Off] your commits.
@@ -161,7 +161,7 @@ In order to ensure that anyone can use the add-in, it is important that all gene
 == License Guidelines
 * The repository uses the MIT license. This means that anyone can use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software without restriction, provided that the original copyright notice and license are included.
 * Any imported libraries should also have licenses that are compatible with the MIT license.
-* The project follows the https://reuse.software/[REUSE]  specification. When done with additions in your Pull Request, a simple way to lint the project is by running a REUSE-lint: 
+* The project follows the https://reuse.software/[REUSE]  specification. When done with additions in your Pull Request, a simple way to lint the project is by running a REUSE-lint:
 
 [source,shell]
 ----
@@ -182,7 +182,7 @@ If you discover a security issue, please bring it to our attention.
 If the vulnerability is a widely known issue, such as one publically known from https://nvd.nist.gov/vuln/search[NIST/NVD]
 it might be okay to file an public Issue.
 
-However, if any uncertainty around this, please **DO NOT** file a public issue, see link:SECURITY.md[Security information] for how to handle this. 
+However, if any uncertainty around this, please **DO NOT** file a public issue, see link:SECURITY.md[Security information] for how to handle this.
 
 Security reports are *greatly* appreciated.
 

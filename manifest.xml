@@ -9,7 +9,7 @@
     <Override Locale="sv-SE" Value="En Jitsi Add-in som gör det enkelt att tilldela ett Jitsi-möte till din mötesinbjudan." />
     <Override Locale="de-DE" Value="Ein Jitsi-Add-In zum einfachen Hinzufügen einer Jitsi-Meeting-Instanz zu einem Termin." />
   </Description>
-  <IconUrl DefaultValue="{PROJECT_BASE_URL}/assets/icon-64.png"/> 
+  <IconUrl DefaultValue="{PROJECT_BASE_URL}/assets/icon-64.png"/>
   <HighResolutionIconUrl DefaultValue="{PROJECT_BASE_URL}/assets/logo-filled.png"/>
   <SupportUrl DefaultValue="{SUPPORT_URL}"/>
   <Hosts>

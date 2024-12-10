@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Microsoft Corporation
+// SPDX-FileCopyrightText: 2023 Havs- och vattenmyndigheten
 //
 // SPDX-License-Identifier: MIT
 
