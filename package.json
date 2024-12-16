@@ -60,7 +60,7 @@
     "jest-environment-jsdom": "^29.4.3",
     "less": "^4.2.1",
     "less-loader": "^12.2.0",
-    "office-addin-cli": "^1.4.0",
+    "office-addin-cli": "^1.6.5",
     "office-addin-debugging": "^4.4.0",
     "office-addin-dev-certs": "^1.8.0",
     "office-addin-lint": "^2.1.0",
