@@ -3,14 +3,14 @@
 // SPDX-License-Identifier: MIT
 
 import getLocalizedStrings from "../localization";
-import Config, { defaultFontFamily, defaultMeetJitsiUrl } from "../models/Config";
+import { Config, defaultFontFamily, defaultMeetJitsiUrl } from "../models/Config";
 import { videoCameraURI } from "./IconHelper";
 import { getJitsiUrl } from "./URLHelper";
 
 const DIV_ID_JITSI = "jitsi-link";
 
-export const combineBodyWithJitsiDiv = (body: string, config: Config, subject: string): string => {
-  const jitsiUrl = getJitsiUrl(config, subject);
+export const combineBodyWithJitsiDiv = (body: string, config: Config, index: number, subject: string): string => {
+  const jitsiUrl = getJitsiUrl(config, index, subject);
 
   const linkDOM = getJitsiLinkDiv(jitsiUrl, config);
   const parser = new DOMParser();
@@ -31,8 +31,8 @@ export const bodyHasJitsiLink = (body: string, config: Config): boolean => {
   return urlRegex.test(body);
 };
 
-export const overwriteJitsiLinkDiv = (body: Document, config: Config, subject?: string): string => {
-  const jitsiUrl = getJitsiUrl(config, subject);
+export const overwriteJitsiLinkDiv = (body: Document, config: Config, index: number, subject?: string): string => {
+  const jitsiUrl = getJitsiUrl(config, index, subject);
 
   const jitsiLink = body.querySelector(`[id*="${DIV_ID_JITSI}"]`);
   const newJitsiLink = getJitsiLinkDiv(jitsiUrl, config);
@@ -65,10 +65,10 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config): string => {
                 </td>
                 <td style="${tdStyles}">
                     <a
-                        aria-label="${localizedStrings.linkToMeeting}" 
-                        title="${localizedStrings.linkToMeeting}" 
-                        alt=${localizedStrings.linkToMeeting} 
-                        style="font-size: 12px;" 
+                        aria-label="${localizedStrings.linkToMeeting}"
+                        title="${localizedStrings.linkToMeeting}"
+                        alt=${localizedStrings.linkToMeeting}
+                        style="font-size: 12px;"
                         href="${jitsiUrl}">
                         ${jitsiUrl}
                     </a>
