@@ -81,6 +81,10 @@ module.exports = async (env, options) => {
               }
             },
           },
+          {
+            from: "configs/*",
+            to: "configs/[name]/config[ext]",
+          },
         ],
       }),
       new HtmlWebpackPlugin({

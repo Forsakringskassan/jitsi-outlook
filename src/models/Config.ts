@@ -3,22 +3,24 @@
 // SPDX-License-Identifier: MIT
 
 export const defaultMeetJitsiUrl = "https://meet.jit.si/";
-export const defaultConfigUrl = "./" //Url to folder containing config about meeting
 export const defaultFontFamily = "Arial";
+
+interface Meeting {
+  type?: string;
+  startWithAudioMuted?: boolean;
+  startWithVideoMuted?: boolean;
+}
 
 export interface Config {
   baseUrl?: string;
   locationString?: string;
   additionalText?: string;
-  meetings?: {
-    type?: string;
-    startWithAudioMuted?: boolean;
-    startWithVideoMuted?: boolean;
-  }[];
+  meetings?: Meeting[];
   fontFamily?: string;
 }
 
-interface AddinConfig {
+export interface AddinConfig {
+  configUrl?: string;
   meetingLinks: {
     associate: string;
     meetingName: string;

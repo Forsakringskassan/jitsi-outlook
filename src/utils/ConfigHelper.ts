@@ -4,23 +4,28 @@
 
 /* global Office, localStorage, console */
 
-import { Config, defaultConfigUrl } from "../models/Config";
+import { Config } from "../models/Config";
+import DefaultConfig from "../../config.json";
 
-export const getConfigXHR = function (callback: (config: Config) => void) {
+export const getConfigXHR = function (callback: (config: Config) => void, configUrl?: string) {
   let domain: string | null = getDomain();
   const xhr = new XMLHttpRequest();
-  if (domain) {
-    xhr.open("GET", defaultConfigUrl + domain + "/config.json", false);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        callback(JSON.parse(xhr.responseText) as Config);
-      } else {
-        callback({} as Config);
-      }
-    };
-    xhr.send();
+  if (configUrl !== undefined) {
+    if (domain) {
+      xhr.open("GET", configUrl + domain + "/config.json", false);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          callback(JSON.parse(xhr.responseText) as Config);
+        } else {
+          callback(DefaultConfig as Config);
+        }
+      };
+      xhr.send();
+    } else {
+      console.log("getConfig - No domain found.");
+    }
   } else {
-    console.log("getConfig - No domain found.");
+    callback(DefaultConfig as Config)
   }
 };
 
@@ -35,25 +40,22 @@ const getDomain = (): string | null => {
   }
 };
 
-export const loadConfig = function (callback: (config: Config) => void) {
-  getConfigXHR((config) => {
-    if (config != null) {
+export const loadConfig = function (callback: (config: Config) => void, configUrl?: string, ) {
+  console.log(configUrl);
+  getConfigXHR(config => {
       callback(config);
-    } else {
-      callback({} as Config);
-    }
-  });
+  }, configUrl);
 };
 
 export const getMeetingConfig = (config: Config, type: string): number => {
-    let value = -1;
-    if (!config.meetings) {
-      return null;
+  let value = -1;
+  if (!config.meetings) {
+    return null;
+  }
+  config.meetings.forEach((entry: any, index: number) => {
+    if (entry.type === type) {
+      value = index;
     }
-    config.meetings.forEach((entry: any, index: number) => {
-      if (entry.type === type) {
-        value = index;
-      }
-    });
-    return value;
-  };
+  });
+  return value;
+};

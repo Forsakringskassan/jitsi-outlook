@@ -9,7 +9,7 @@ import { getJitsiUrl } from "./URLHelper";
 
 const DIV_ID_JITSI = "jitsi-link";
 
-export const combineBodyWithJitsiDiv = (body: string, config: Config, index: number, subject: string): string => {
+export const combineBodyWithJitsiDiv = (body: string, config: Config, index?: number, subject?: string): string => {
   const jitsiUrl = getJitsiUrl(config, index, subject);
 
   const linkDOM = getJitsiLinkDiv(jitsiUrl, config);
@@ -31,7 +31,7 @@ export const bodyHasJitsiLink = (body: string, config: Config): boolean => {
   return urlRegex.test(body);
 };
 
-export const overwriteJitsiLinkDiv = (body: Document, config: Config, index: number, subject?: string): string => {
+export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: number, subject?: string): string => {
   const jitsiUrl = getJitsiUrl(config, index, subject);
 
   const jitsiLink = body.querySelector(`[id*="${DIV_ID_JITSI}"]`);
