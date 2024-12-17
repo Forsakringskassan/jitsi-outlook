@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import Config, { defaultMeetJitsiUrl } from "../src/models/Config";
+import { Config, defaultMeetJitsiUrl } from "../src/models/Config";
 import { getRandomRoomName, getConfigUrl, getJitsiUrl } from "../src/utils/URLHelper";
 
 describe("getRandomRoomName", () => {
@@ -21,12 +21,28 @@ describe("getConfigUrl", () => {
 
   it("should return the correct config URL if config.meetingUrl is provided", () => {
     const config: Config = {
-      meetingUrl: {
-        startWithAudioMuted: true,
-        startWithVideoMuted: true,
-      },
+      meetings: [
+        {
+          startWithAudioMuted: true,
+          startWithVideoMuted: true,
+        }
+      ],
     };
-    const configUrl = getConfigUrl(config);
+    const configUrl = getConfigUrl(config, 0);
+    expect(configUrl).toBe("#config.startWithAudioMuted=true&config.startWithVideoMuted=true&");
+  });
+
+  it("should return the correct config URL if config.meetingUrl is provided", () => {
+    const config: Config = {
+      meetings: [
+        {
+          type: "StandardMeeting",
+          startWithAudioMuted: true,
+          startWithVideoMuted: true,
+        }
+      ],
+    };
+    const configUrl = getConfigUrl(config, 0);
     expect(configUrl).toBe("#config.startWithAudioMuted=true&config.startWithVideoMuted=true&");
   });
 });
@@ -49,13 +65,16 @@ describe("getJitsiUrl", () => {
   it("should append the random room name and config URL", () => {
     const config: Config = {
       baseUrl: "https://my-custom-base-url.com/",
-      meetingUrl: {
-        startWithAudioMuted: true,
-        startWithVideoMuted: true,
-      },
+      meetings: [
+        {
+          type: "StandardMeeting",
+          startWithAudioMuted: true,
+          startWithVideoMuted: true,
+        }
+      ]
     };
-    const jitsiUrl = getJitsiUrl(config);
+    const jitsiUrl = getJitsiUrl(config, 0);
     expect(jitsiUrl).toContain(config.baseUrl);
-    expect(jitsiUrl).toContain(getConfigUrl(config));
+    expect(jitsiUrl).toContain(getConfigUrl(config, 0));
   });
 });

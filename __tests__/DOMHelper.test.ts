@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import getLocalizedStrings from "../src/localization";
-import Config, { defaultFontFamily } from "../src/models/Config";
+import { Config, defaultFontFamily } from "../src/models/Config";
 import { bodyHasJitsiLink, getJitsiLinkDiv, overwriteJitsiLinkDiv } from "../src/utils/DOMHelper";
 import * as URLHelper from "../src/utils/URLHelper";
 
@@ -66,14 +66,14 @@ describe("getJitsiLinkDOM", () => {
   it("should return a room containing subject line", () => {
     const config: Config = {}
     const testSubject: string = 'Test Meeting:;for +?"!new¤%€${€$[{]£$@£$£employee.,-.-...,,,,.-.-,.---.-,,.,._++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++';
-    const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, testSubject);
+    const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, 0, testSubject);
     expect(JitsiMeetingUrlProperties).toContain("Test-Meeting-for-new-employee-");
   });
 
   it("should return a room containing subject line", () => {
     const config: Config = {}
     const testSubject: string = 'Möte angående:;nästa +?"!sprint¤%€${€$[{]£$@£$£.,-.-...,,,,.-.-,.---.-,,.,._++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++';
-    const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, testSubject);
+    const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, 0, testSubject);
     expect(JitsiMeetingUrlProperties).toContain("Mote-angaende-nasta-sprint-");
   });
 
@@ -150,7 +150,7 @@ describe("overwriteJitsiLinkDiv", () => {
     const body = new DOMParser().parseFromString(dom, "text/html");
     expect(body.body.innerHTML).toContain(oldRoomName);
 
-    const result = overwriteJitsiLinkDiv(body, config);
+    const result = overwriteJitsiLinkDiv(body, config, 0);
     expect(result).toContain(newRoomName);
     expect(result).not.toContain(oldRoomName);
   });

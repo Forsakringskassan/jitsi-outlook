@@ -2,8 +2,9 @@
 //
 // SPDX-License-Identifier: MIT
 
-import Config from "../models/Config";
+import { Config } from "../models/Config";
 import { bodyHasJitsiLink, combineBodyWithJitsiDiv, overwriteJitsiLinkDiv } from "../utils/DOMHelper";
+import { getMeetingConfig } from "../utils/ConfigHelper";
 
 /* global Office */
 
@@ -46,7 +47,9 @@ const setLocation = async (config: Config) => {
 
 export const setLocationTest = { setLocation };
 
-export const addMeeting = async (config: Config, event?: Office.AddinCommands.Event) => {
+export const addMeeting = async (name: string, config: Config, event?: Office.AddinCommands.Event) => {
+  let index: number = getMeetingConfig(config, name);
+
   Office.context.mailbox.item.body.getAsync(Office.CoercionType.Html, (result) => {
     if (result.error) {
       event.completed();
@@ -56,7 +59,8 @@ export const addMeeting = async (config: Config, event?: Office.AddinCommands.Ev
       Office.context.mailbox.item.subject.getAsync((subject) => {
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(result.value, "text/html");
-        const bodyDOM = bodyHasJitsiLink(result.value, config) ? overwriteJitsiLinkDiv(htmlDoc, config, subject.value) : combineBodyWithJitsiDiv(result.value, config, subject.value);
+
+        const bodyDOM = bodyHasJitsiLink(result.value, config) ? overwriteJitsiLinkDiv(htmlDoc, config, index, subject.value) : combineBodyWithJitsiDiv(result.value, config, index, subject.value);
         setData(htmlDoc.head.innerHTML + bodyDOM, event);
         setLocation(config);
       });
