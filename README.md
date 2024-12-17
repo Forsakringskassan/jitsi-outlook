@@ -102,9 +102,15 @@ All of the properties listed below can also be added to enable/disable any extra
 | **Property**          | **Type** | **Description**                                                                   |
 | --------------------- | -------- | --------------------------------------------------------------------------------- |
 | `baseUrl`             | string   | Base url to your Jitsi instance.                                                  |
-| `locationString`      | string   | This text is added to the Location field of the meeting.
+| `locationString`      | string   | This text is added to the Location field of the meeting.                          |
 | `additionalText`      | string   | This text will show up at the bottom of the email signature.                      |
 | `fontFamily`          | string   | The font family used for for the signature text (defaulting to Arial)             |
+| `meetings`            | list     | A list of meetings containing different settings per type                         |
+
+Description of meeting objects
+
+| **Property**          | **Type** | **Description**                                                                   |
+| --------------------- | -------- | --------------------------------------------------------------------------------- |
 | `startWithAudioMuted` | boolean  | This forces the mic to be muted for every person entering the meeting.            |
 | `startWithVideoMuted` | boolean  | This forces the camera to be disabled for every person entering the meeting.      |
 | `disableInitialGUM`   | boolean  | Skips the initial permission check and configuration screen (GUM = getUserMedia). |
@@ -118,6 +124,16 @@ The `manifest.xml` file found in the root directory is the core of the add-in. T
 - `PROVIDER_NAME`: The name of the company providing the add-in (could be your company).
 - `PROJECT_BASE_URL`: Url pointing to where your add-in app is hosted.
 - `SUPPORT_URL`: Support url to the add-in admin.
+
+### `src/commands/config.json`
+
+The `src/commands/config.json` file contains which meeting types should be added to html file and command.js. The list added here should correspond to a list in the `manifest.xml` as well. So if more than one link is present in this file then the manifest must be updated to a action list instead of a button, see `manifest-list.xml` as an example.
+
+| **Property**               | **Type** | **Description**                                                                   |
+| -------------------------- | -------- | --------------------------------------------------------------------------------- |
+| `meetingLinks`             | list     | This contains the list with the below values                                      |
+| `meetingLinks.associate`   | string   | The associated link name from `manifest.xml` file                                 |
+| `meetingLinks.meetingName` | string   | The type meeting config related to this meeting link in `config.json`             |
 
 ## **Installation and setup**
 

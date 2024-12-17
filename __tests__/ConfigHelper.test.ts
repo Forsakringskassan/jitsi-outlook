@@ -8,7 +8,6 @@
 
 import mock from 'xhr-mock';
 import { OfficeMockObject } from 'office-addin-mock';
-import { defaultConfigUrl } from '../src/models/Config';
 import { getConfigXHR, getMeetingConfig } from '../src/utils/ConfigHelper';
 import { Config } from "../src/models/Config";
 
@@ -43,14 +42,27 @@ describe('Test ConfigHelper', () => {
   it('should get mock config', async () => {
     const userProfile = new OfficeMockObject(mockDataServer);
     global.Office = userProfile as any;
-    mock.get(defaultConfigUrl + 'controll.test/config.json', {
+    mock.get('controll.test/config.json', {
+      body: JSON.stringify(testConfig)
+    });
+    let l_config: Config = nullConfig;
+    getConfigXHR((config) => {
+      l_config = config;
+    }, "");
+    expect(l_config).toEqual(testConfig);
+  });
+
+  it('should get empty config', async () => {
+    const userProfile = new OfficeMockObject(mockDataServer);
+    global.Office = userProfile as any;
+    mock.get('controll.test/config.json', {
       body: JSON.stringify(testConfig)
     });
     let l_config: Config = nullConfig;
     getConfigXHR((config) => {
       l_config = config;
     });
-    expect(l_config).toEqual(testConfig);
+    expect(l_config).toEqual({});
   });
 
   it('fetch meeting information', async () => {
