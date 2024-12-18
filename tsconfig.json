@@ -24,11 +24,11 @@
     ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
   ],
   "compileOnSave": false,
   "buildOnSave": false,
-  "ts-node": { 
-    "files": true 
+  "ts-node": {
+    "files": true
   }
 }
