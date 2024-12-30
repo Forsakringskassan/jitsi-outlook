@@ -23,14 +23,13 @@ module.exports = async (env, options) => {
     devtool: "source-map",
     entry: {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
-      vendor: ["react", "react-dom", "core-js", "@fluentui/react"],
       commands: "./src/commands/commands.ts",
     },
     output: {
       clean: true,
     },
     resolve: {
-      extensions: [".ts", ".tsx", ".html", ".js"],
+      extensions: [".ts", ".html", ".js"],
     },
     module: {
       rules: [
@@ -43,11 +42,6 @@ module.exports = async (env, options) => {
               presets: ["@babel/preset-typescript"],
             },
           },
-        },
-        {
-          test: /\.tsx?$/,
-          use: ["react-hot-loader/webpack", "ts-loader"],
-          exclude: /node_modules/,
         },
         {
           test: /\.html$/,
@@ -86,14 +80,10 @@ module.exports = async (env, options) => {
       new HtmlWebpackPlugin({
         filename: "commands.html",
         template: "./src/commands/commands.html",
-        chunks: ["commands"],
-      }),
-      new webpack.ProvidePlugin({
-        Promise: ["es6-promise", "Promise"],
+        chunks: ["pollyfill", "commands"],
       }),
     ],
     devServer: {
-      hot: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
