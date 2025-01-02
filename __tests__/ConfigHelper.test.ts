@@ -6,13 +6,13 @@
  * @jest-environment jsdom
  */
 
-import mock from 'xhr-mock';
-import { OfficeMockObject } from 'office-addin-mock';
-import { getConfigXHR, getMeetingConfig } from '../src/utils/ConfigHelper';
+import mock from "xhr-mock";
+import { OfficeMockObject } from "office-addin-mock";
+import { getConfigXHR, getMeetingConfig } from "../src/utils/ConfigHelper";
 import { Config } from "../src/models/Config";
 
 enum CoercionType {
-  Html
+  Html,
 }
 
 const mockDataServer = {
@@ -27,7 +27,7 @@ const mockDataServer = {
   },
 };
 
-const testConfig: Config = {"baseUrl": "https://meet.sgit.se/","meetings": [{"type": "StandardMeeting","startWithAudioMuted": true,"startWithVideoMuted": true}],};
+const testConfig: Config = { baseUrl: "https://meet.sgit.se/", meetings: [{ type: "StandardMeeting", startWithAudioMuted: true, startWithVideoMuted: true }] };
 
 const nullConfig: Config = {
   baseUrl: "null",

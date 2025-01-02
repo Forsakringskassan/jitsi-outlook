@@ -6,7 +6,7 @@ import { Config } from "../models/Config";
 import { bodyHasJitsiLink, combineBodyWithJitsiDiv, overwriteJitsiLinkDiv } from "../utils/DOMHelper";
 import { getMeetingConfig } from "../utils/ConfigHelper";
 
-/* global Office */
+/* global Office, console */
 
 const setData = async (str: string, event?: Office.AddinCommands.Event) => {
   Office.context.mailbox.item.body.setAsync(
@@ -16,7 +16,7 @@ const setData = async (str: string, event?: Office.AddinCommands.Event) => {
     },
     () => {
       event.completed();
-    }
+    },
   );
 };
 
@@ -67,6 +67,7 @@ export const addMeeting = async (name: string, config: Config, event?: Office.Ad
     } catch (error) {
       // If it fails to manipulate the DOM with a new link it will fallback to its original state
       setData(result.value, event);
+      console.log(error);
     }
   });
 };

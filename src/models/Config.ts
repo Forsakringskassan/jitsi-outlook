@@ -24,5 +24,5 @@ export interface AddinConfig {
   meetingLinks: {
     associate: string;
     meetingName: string;
-  }[]
+  }[];
 }

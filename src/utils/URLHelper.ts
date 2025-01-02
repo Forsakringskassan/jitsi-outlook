@@ -23,7 +23,7 @@ export const getConfigUrl = (config: Config, index?: number): string => {
     if (currentValue != "type") {
       return acc + `config.${currentValue}=${config.meetings[index][currentValue]}&`;
     } else {
-      return acc + ""
+      return acc + "";
     }
   }, "#");
 

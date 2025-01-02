@@ -2,12 +2,12 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { loadConfig } from "../utils/ConfigHelper"
+import { loadConfig } from "../utils/ConfigHelper";
 import { Config, AddinConfig } from "../models/Config";
 import { addMeeting } from "../utils/OfficeCallHandler";
-import a_config from "./config.json"
+import a_config from "./config.json";
 
-/* global Office */
+/* global Office, console */
 
 (async () => {
   await Office.onReady();
@@ -24,6 +24,6 @@ const addJitsiLink = (event: Office.AddinCommands.Event, name: string) => {
   }
 };
 
-addinConfig.meetingLinks.forEach( (element) => {
-  Office.actions.associate(element.associate, (f: any) => addJitsiLink(f, element.meetingName))
+addinConfig.meetingLinks.forEach((element) => {
+  Office.actions.associate(element.associate, (f: any) => addJitsiLink(f, element.meetingName));
 });

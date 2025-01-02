@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: MIT
 
-/* global Office, localStorage, console */
+/* global Office, console */
 
 import { Config } from "../models/Config";
 import DefaultConfig from "../../config.json";
@@ -25,7 +25,7 @@ export const getConfigXHR = function (callback: (config: Config) => void, config
       console.log("getConfig - No domain found.");
     }
   } else {
-    callback(DefaultConfig as Config)
+    callback(DefaultConfig as Config);
   }
 };
 
@@ -40,10 +40,10 @@ const getDomain = (): string | null => {
   }
 };
 
-export const loadConfig = function (callback: (config: Config) => void, configUrl?: string, ) {
+export const loadConfig = function (callback: (config: Config) => void, configUrl?: string) {
   console.log(configUrl);
-  getConfigXHR(config => {
-      callback(config);
+  getConfigXHR((config) => {
+    callback(config);
   }, configUrl);
 };
 

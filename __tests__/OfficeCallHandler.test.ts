@@ -8,15 +8,17 @@
 
 import { Config } from "../src/models/Config";
 import { OfficeMockObject } from "office-addin-mock";
-import { setLocationTest, setDataTest, addMeeting } from '../src/utils/OfficeCallHandler';
+import { setLocationTest, setDataTest, addMeeting } from "../src/utils/OfficeCallHandler";
 const { setLocation } = setLocationTest;
 const { setData } = setDataTest;
+
+/* global Office */
 
 enum CoercionType {
   Html,
 }
 interface result {
-  value?: string
+  value?: string;
 }
 const mockDataServer = {
   host: "outlook",
@@ -26,13 +28,13 @@ const mockDataServer = {
       item: {
         location: {
           location: "",
-          setAsync: async function(location: string) {
+          setAsync: async function (location: string) {
             this.location = location;
           },
           getAsync: async function (callback: (r: result) => void) {
             let r: result = { value: this.location } as result;
             callback(r);
-          }
+          },
         },
         body: {
           data: "",
@@ -51,7 +53,7 @@ const mockDataServer = {
               let er: result = { value: "error" } as result;
               callback(er);
             }
-          }
+          },
         },
         subject: {
           subject: "",
@@ -59,7 +61,7 @@ const mockDataServer = {
             const re = { value: this.subject } as result;
             callback(re);
           },
-        }
+        },
       },
     },
   },

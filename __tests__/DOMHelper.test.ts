@@ -86,7 +86,7 @@ describe("getJitsiLinkDOM", () => {
 
   it("should return a room containing only 30 characters", () => {
     const config: Config = {}
-    const testSubject: string = 'Möte angående nästa sprint sen i fredags';
+    const testSubject: string = "Möte angående nästa sprint sen i fredags";
     const secureSubjectUrl: string = URLHelper.secureSubjectUrl(testSubject);
     expect(secureSubjectUrl).toHaveLength(31)
   });
