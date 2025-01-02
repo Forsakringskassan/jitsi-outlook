@@ -58,6 +58,7 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
+      new webpack.ProgressPlugin(),
       new CopyWebpackPlugin({
         patterns: [
           {

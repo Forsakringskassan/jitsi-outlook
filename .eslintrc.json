@@ -1,6 +1,7 @@
 {
   "plugins": [
-    "office-addins"
+    "office-addins",
+    "dom"
   ],
   "extends": [
     "plugin:office-addins/recommended"
