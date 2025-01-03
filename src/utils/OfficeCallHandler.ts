@@ -1,4 +1,5 @@
-// SPDX-FileCopyrightText: 2023 Havs- och vattenmyndigheten
+// SPDX-FileCopyrightText: Microsoft Corporation
+// SPDX-FileCopyrightText: 2025 Försäkringskassan
 //
 // SPDX-License-Identifier: MIT
 
@@ -15,7 +16,7 @@ const setData = async (str: string, event?: Office.AddinCommands.Event) => {
     },
     () => {
       event.completed();
-    }
+    },
   );
 };
 

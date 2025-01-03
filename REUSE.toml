@@ -1,0 +1,51 @@
+version = 1
+
+[[annotations]]
+path = [".gitignore", ".github/workflows/*.yml", ".github/*.md"]
+SPDX-FileCopyrightText = "2022 Havs- och vattenmyndigheten"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["*.md", "*.adoc", "CONTRIBUTING.adoc"]
+SPDX-FileCopyrightText = "2022 Havs- och vattenmyndigheten"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["screenshot.png", "assets/*.png"]
+SPDX-FileCopyrightText = "2022 Havs- och vattenmyndigheten"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["*.xml", "*.json"]
+SPDX-FileCopyrightText = "2022 Havs- och vattenmyndigheten"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ".vscode/**"
+SPDX-FileCopyrightText = "2022 Havs- och vattenmyndigheten"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = [".gitignore", ".github/workflows/*.yml", ".github/*.md"]
+SPDX-FileCopyrightText = "2025 Försäkringskassan"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["*.md", "*.adoc", "CONTRIBUTING.adoc"]
+SPDX-FileCopyrightText = "2025 Försäkringskassan"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["screenshot.png", "assets/*.png"]
+SPDX-FileCopyrightText = "2025 Försäkringskassan"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["*.xml", "*.json"]
+SPDX-FileCopyrightText = "2025 Försäkringskassan"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".vscode/**"
+SPDX-FileCopyrightText = "2025 Försäkringskassan"
+SPDX-License-Identifier = "MIT"
