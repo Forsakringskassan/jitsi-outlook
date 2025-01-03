@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2023 Havs- och vattenmyndigheten
+// SPDX-FileCopyrightText: 2025 Försäkringskassan
 //
 // SPDX-License-Identifier: MIT
 export const videoCameraURI =

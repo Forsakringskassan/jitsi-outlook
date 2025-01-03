@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: Microsoft Corporation
+// SPDX-FileCopyrightText: 2025 Försäkringskassan
 //
 // SPDX-License-Identifier: MIT
 
