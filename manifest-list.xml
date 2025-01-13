@@ -59,6 +59,7 @@
                                 <bt:Image size="80" resid="Icon.80" />
                             </Icon>
                             <Items>
+<!-- To add a second item just repeat the code below and change FunctionName, for this to work you also have to add functionName in src/commands/addinConfig.json-->
                                 <Item id="MenuItemStandard">
                                     <Label resid="Standard.Label" />
                                     <Supertip>
@@ -75,24 +76,6 @@
                                     </Action>
                                 </Item>
                             </Items>
-<!-- To add a second item just repeat the code below and change FunctionName, for this to work you also have to add functionName in src/commands/addinConfig.json-->
-<!--                            <Items> -->
-<!--                                <Item id="MenuItemStandard"> -->
-<!--                                    <Label resid="Standard.Label" /> -->
-<!--                                    <Supertip> -->
-<!--                                        <Title resid="Standard.Label" /> -->
-<!--                                        <Description resid="Standard.Description" /> -->
-<!--                                    </Supertip> -->
-<!--                                    <Icon> -->
-<!--                                        <bt:Image size="16" resid="Icon.16"/> -->
-<!--                                        <bt:Image size="32" resid="Icon.32"/> -->
-<!--                                        <bt:Image size="80" resid="Icon.80"/> -->
-<!--                                    </Icon> -->
-<!--                                    <Action xsi:type="ExecuteFunction"> -->
-<!--                                        <FunctionName>insertJitsiLink</FunctionName> -->
-<!--                                    </Action> -->
-<!--                                </Item> -->
-<!--                            </Items> -->
                         </Control>
                     </Group>
                 </OfficeTab>
