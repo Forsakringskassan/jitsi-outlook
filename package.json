@@ -27,7 +27,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "core-js": "^3.9.1",
+    "core-js": "^3.40.0",
     "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
@@ -57,8 +57,8 @@
     "os-browserify": "^0.3.0",
     "process": "^0.11.10",
     "source-map-loader": "^5.0.0",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.7.2",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
     "webpack": "^5.76.3",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "5.2.0",
