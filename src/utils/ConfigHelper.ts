@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 Försäkringskassan IT
+// SPDX-FileCopyrightText: 2025 Försäkringskassan
 
 // SPDX-License-Identifier: MIT
 
