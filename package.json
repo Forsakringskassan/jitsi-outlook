@@ -27,7 +27,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "core-js": "^3.9.1",
+    "core-js": "^3.40.0",
     "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
@@ -35,7 +35,8 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",
     "@jridgewell/source-map": "^0.3.6",
-    "@types/office-js": "^1.0.256",
+    "@types/jest": "^29.5.14",
+    "@types/office-js": "^1.0.454",
     "@types/office-runtime": "^1.0.23",
     "acorn": "^8.5.0",
     "babel-loader": "^9.2.1",
@@ -56,11 +57,12 @@
     "os-browserify": "^0.3.0",
     "process": "^0.11.10",
     "source-map-loader": "^5.0.0",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.7.2",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
     "webpack": "^5.76.3",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "5.2.0"
+    "webpack-dev-server": "5.2.0",
+    "xhr-mock": "^2.5.1"
   },
   "prettier": {
     "plugins": [

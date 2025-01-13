@@ -3,10 +3,10 @@
 //
 // SPDX-License-Identifier: MIT
 
-import Config, { defaultMeetJitsiUrl } from "../models/Config";
+import { Config, defaultMeetJitsiUrl } from "../models/Config";
 
 export const getRandomRoomName = (): string => {
-  var randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var randomChars = "abcdefghijklmnopqrstuvwxyz0123456789";
   var result = "";
   for (var i = 0; i < 16; i++) {
     result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
@@ -14,14 +14,18 @@ export const getRandomRoomName = (): string => {
   return result;
 };
 
-export const getConfigUrl = (config: Config): string => {
-  if (!config.meetingUrl) {
+export const getConfigUrl = (config: Config, index?: number): string => {
+  if (!config.meetings) {
     return "";
   }
 
-  var keys = Object.keys(config.meetingUrl);
+  var keys = Object.keys(config.meetings[index]);
   const url = keys.reduce((acc, currentValue) => {
-    return acc + `config.${currentValue}=${config.meetingUrl[currentValue]}&`;
+    if (currentValue != "type") {
+      return acc + `config.${currentValue}=${config.meetings[index][currentValue]}&`;
+    } else {
+      return acc + "";
+    }
   }, "#");
 
   return url;
@@ -48,9 +52,9 @@ export const secureSubjectUrl = (string: string, length?: number): string => {
   return subject;
 };
 
-export const getJitsiUrl = (config: Config, subject?: string): string => {
+export const getJitsiUrl = (config: Config, index?: number, subject?: string): string => {
   if (subject !== undefined) {
     subject = secureSubjectUrl(subject);
   }
-  return (config.baseUrl ?? defaultMeetJitsiUrl) + subject + getRandomRoomName() + getConfigUrl(config);
+  return (config.baseUrl ?? defaultMeetJitsiUrl) + subject + getRandomRoomName() + getConfigUrl(config, index);
 };

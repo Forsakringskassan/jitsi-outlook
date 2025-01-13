@@ -1,0 +1,8 @@
+{
+  "meetingLinks": [
+    {
+      "associate": "insertJitsiLink",
+      "meetingName": "StandardMeeting"
+    }
+  ]
+}

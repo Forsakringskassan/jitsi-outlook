@@ -1,0 +1,13 @@
+{
+  "baseUrl": "https://meest.sgit.se",
+  "locationString": "string",
+  "additionalText": "",
+  "meetings": [
+    {
+      "type": "StandardMeeting",
+      "startWithAudioMuted": true,
+      "startWithVideoMuted": true
+    }
+  ],
+  "fontFamily": "Arial"
+}

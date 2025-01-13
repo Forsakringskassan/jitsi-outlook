@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="MailApp">
+  <Id>75f34f45-fec5-435e-901d-c35fdc04bd5d</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>{PROVIDER_NAME}</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Jitsi"/>
+  <Description DefaultValue="A Jitsi Add-in to easily add a Jitsi meeting instance to an appointment.">
+    <Override Locale="sv-SE" Value="En Jitsi Add-in som gör det enkelt att tilldela ett Jitsi-möte till din mötesinbjudan." />
+    <Override Locale="de-DE" Value="Ein Jitsi-Add-In zum einfachen Hinzufügen einer Jitsi-Meeting-Instanz zu einem Termin." />
+  </Description>
+  <IconUrl DefaultValue="{PROJECT_BASE_URL}/assets/icon-64.png"/>
+  <HighResolutionIconUrl DefaultValue="{PROJECT_BASE_URL}/assets/logo-filled.png"/>
+  <SupportUrl DefaultValue="{SUPPORT_URL}"/>
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="{PROJECT_BASE_URL}/commands.html"/>
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.3">
+        <bt:Set Name="Mailbox"/>
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+            <FunctionFile resid="Commands.Url"/>
+            <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
+                <OfficeTab id="Tab.Create">
+                    <Group id="Tab.Create.Group">
+                        <Label resid="Label"/>
+                        <Control xsi:type="Menu" id="Button.Create.SAFOS">
+                            <Label resid="Menu.Label"/>
+                            <Supertip>
+                                <Title resid="Menu.Label"/>
+                                <Description resid="Menu.Description"/>
+                            </Supertip>
+                            <Icon>
+                                <bt:Image size="16" resid="Icon.16" />
+                                <bt:Image size="32" resid="Icon.32" />
+                                <bt:Image size="80" resid="Icon.80" />
+                            </Icon>
+                            <Items>
+<!-- To add a second item just repeat the code below and change FunctionName, for this to work you also have to add functionName in src/commands/addinConfig.json-->
+                                <Item id="MenuItemStandard">
+                                    <Label resid="Standard.Label" />
+                                    <Supertip>
+                                        <Title resid="Standard.Label" />
+                                        <Description resid="Standard.Description" />
+                                    </Supertip>
+                                    <Icon>
+                                        <bt:Image size="16" resid="Icon.16"/>
+                                        <bt:Image size="32" resid="Icon.32"/>
+                                        <bt:Image size="80" resid="Icon.80"/>
+                                    </Icon>
+                                    <Action xsi:type="ExecuteFunction">
+                                        <FunctionName>insertJitsiLink</FunctionName>
+                                    </Action>
+                                </Item>
+                            </Items>
+                        </Control>
+                    </Group>
+                </OfficeTab>
+            </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+    <bt:Images>
+        <bt:Image id="Icon.16" DefaultValue="{PROJECT_BASE_URL}/assets/icon-16.png"/>
+        <bt:Image id="Icon.32" DefaultValue="{PROJECT_BASE_URL}/assets/icon-32.png"/>
+        <bt:Image id="Icon.80" DefaultValue="{PROJECT_BASE_URL}/assets/icon-80.png"/>
+    </bt:Images>
+    <bt:Urls>
+        <bt:Url id="Commands.Url" DefaultValue="{PROJECT_BASE_URL}/commands.html"/>
+    </bt:Urls>
+    <bt:ShortStrings>
+        <bt:String id="Label" DefaultValue="Jitsi"/>
+        <bt:String id="FunctionButton.Label" DefaultValue="Create Jitsi link">
+            <bt:Override Locale="sv-SE" Value="Skapa Jitsi-länk" />
+            <bt:Override Locale="de-DE" Value="Jitsi-Link erstellen" />
+        </bt:String>
+        <bt:String id="FunctionButton.Title" DefaultValue="Create Jitsi link">
+            <bt:Override Locale="sv-SE" Value="Skapa Jitsi-länk" />
+            <bt:Override Locale="de-DE" Value="Jitsi-Link erstellen" />
+        </bt:String>
+    </bt:ShortStrings>
+    <bt:LongStrings>
+        <bt:String id="FunctionButton.Tooltip" DefaultValue="Creates and pastes a Jitsi link into your meeting invite.">
+            <bt:Override Locale="sv-SE" Value="Skapar och klistrar in en Jitsi-länk i din mötesinbjudan." />
+            <bt:Override Locale="de-DE" Value="Erstellt einen Jitsi-Link und fügt ihn in Ihre Besprechungseinladung ein." />
+        </bt:String>
+    </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
