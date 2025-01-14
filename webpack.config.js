@@ -1,15 +1,16 @@
 // SPDX-FileCopyrightText: 2023 Havs- och vattenmyndigheten
+// SPDX-FileCopyrightText: 2025 Försäkringskassan
 //
 // SPDX-License-Identifier: MIT
 
 /* eslint-disable no-undef */
+/* eslint-disable no-control-regex */
 
+const buildSettings = require("./buildSettings.json");
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
-const urlDev = "https://localhost:3000/";
-const urlProd = urlDev;
+const path = require("path");
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
@@ -18,14 +19,37 @@ async function getHttpsOptions() {
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
+  if (env.ver) {
+    version = env.ver;
+  } else {
+    version = buildSettings.version;
+  }
+  source = false;
+  if (dev) {
+    source = "source-map";
+    id = buildSettings.devAppId;
+    version = buildSettings.devVersion;
+    configUrl = buildSettings.devUrlRemoteConfigServer + "v" + version;
+    baseUrl = buildSettings.devBaseUrl;
+    pluginUrl = buildSettings.devUrlRemotePluginServer + "v" + version;
+    displayName = buildSettings.devDisplayName;
+  } else {
+    id = buildSettings.prodAppId;
+    configUrl = buildSettings.prodUrlConfig + "v" + version;
+    baseUrl = buildSettings.prodBaseUrl;
+    pluginUrl = buildSettings.prodUrlPlugin + "v" + version;
+    displayName = buildSettings.prodDisplayName;
+  }
+
   const config = {
-    devtool: "source-map",
+    devtool: source,
     entry: {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
       commands: "./src/commands/commands.ts",
     },
     output: {
       clean: true,
+      path: path.resolve(__dirname, "dist/v" + version),
     },
     resolve: {
       extensions: [".ts", ".html", ".js"],
@@ -64,19 +88,24 @@ module.exports = async (env, options) => {
             to: "assets/[name][ext][query]",
           },
           {
-            from: "manifest*.xml",
-            to: "[name]" + "[ext]",
+            from: "manifests/*.xml",
+            to: "manifests/[name]/manifest" + "[ext]",
             transform(content) {
-              if (dev) {
-                return content;
-              } else {
-                return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
-              }
+              return content
+                .toString()
+                .replace(new RegExp("{PROJECT_BASE_URL}", "g"), pluginUrl)
+                .replace(new RegExp("{SUPPORT_URL}", "g"), buildSettings.supportUrl)
+                .replace(new RegExp("(<Version>).*(</Version>)", "g"), "$1" + version + "$2")
+                .replace(new RegExp("(<Id>).*(</Id>)", "g"), "$1" + id + "$2")
+                .replace(new RegExp("(<ProviderName>).*(</ProviderName>)", "g"), "$1" + buildSettings.providerName + "$2")
+                .replace(new RegExp('(<DisplayName DefaultValue=").*("/>)', "g"), "$1" + displayName + "$2")
+                .replace(new RegExp("<!--.*", "gm"), "") // Remove commented lines
+                .replace(new RegExp("^\n|^\r\n|^\r", "gm"), ""); // Fix end of line
             },
           },
           {
-            from: "configs/*",
-            to: "configs/[name]/config[ext]",
+            from: "configs/*.json",
+            to: "configs/v" + version + "/[name]/config[ext]",
           },
         ],
       }),

@@ -47,35 +47,20 @@
                 <OfficeTab id="Tab.Create">
                     <Group id="Tab.Create.Group">
                         <Label resid="Label"/>
-                        <Control xsi:type="Menu" id="Button.Create.SAFOS">
-                            <Label resid="Menu.Label"/>
+                        <Control xsi:type="Button" id="Button.Create.Jitsi">
+                            <Label resid="FunctionButton.Label"/>
                             <Supertip>
-                                <Title resid="Menu.Label"/>
-                                <Description resid="Menu.Description"/>
+                                <Title resid="FunctionButton.Title"/>
+                                <Description resid="FunctionButton.Tooltip"/>
                             </Supertip>
                             <Icon>
-                                <bt:Image size="16" resid="Icon.16" />
-                                <bt:Image size="32" resid="Icon.32" />
-                                <bt:Image size="80" resid="Icon.80" />
+                                <bt:Image size="16" resid="Icon.16"/>
+                                <bt:Image size="32" resid="Icon.32"/>
+                                <bt:Image size="80" resid="Icon.80"/>
                             </Icon>
-                            <Items>
-<!-- To add a second item just repeat the code below and change FunctionName, for this to work you also have to add functionName in src/commands/addinConfig.json-->
-                                <Item id="MenuItemStandard">
-                                    <Label resid="Standard.Label" />
-                                    <Supertip>
-                                        <Title resid="Standard.Label" />
-                                        <Description resid="Standard.Description" />
-                                    </Supertip>
-                                    <Icon>
-                                        <bt:Image size="16" resid="Icon.16"/>
-                                        <bt:Image size="32" resid="Icon.32"/>
-                                        <bt:Image size="80" resid="Icon.80"/>
-                                    </Icon>
-                                    <Action xsi:type="ExecuteFunction">
-                                        <FunctionName>insertJitsiLink</FunctionName>
-                                    </Action>
-                                </Item>
-                            </Items>
+                            <Action xsi:type="ExecuteFunction">
+                                <FunctionName>insertJitsiLink</FunctionName>
+                            </Action>
                         </Control>
                     </Group>
                 </OfficeTab>

@@ -1,0 +1,16 @@
+{
+  "devUrlRemotePluginServer": "https://dev.controll.test/plugin/",
+  "devUrlRemoteConfigServer": "https://dev.controll.test/plugin-config/",
+  "devBaseUrl": "https://dev.controll.test/",
+  "devAppId": "deadbeef-e77d-7a8e-a1e3-2434ddd7e096",
+  "devVersion": "2.0.0.99",
+  "devDisplayName": "Jitsi development plugin",
+  "prodUrlPlugin": "https://controll.test/plugin/",
+  "prodUrlConfig": "https://controll.test/plugin-config/",
+  "prodBaseUrl": "https://controll.test/",
+  "prodAppId": "01917a50-e77d-7a8e-a1e3-2434ddd7e096",
+  "prodDisplayName": "Jitsi plugin",
+  "version": "2.0.1",
+  "providerName": "Controll test jitsi",
+  "supportUrl": "http://controll.test/support"
+}

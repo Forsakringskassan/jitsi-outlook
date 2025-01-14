@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 Havs- och vattenmyndigheten
+// SPDX-FileCopyrightText: 2025 Försäkringskassan
 //
 // SPDX-License-Identifier: MIT
 
@@ -10,6 +10,7 @@ import mock from "xhr-mock";
 import { OfficeMockObject } from "office-addin-mock";
 import { getConfigXHR, getMeetingConfig } from "../src/utils/ConfigHelper";
 import { Config } from "../src/models/Config";
+import testConfig from "./controll.test.json";
 
 enum CoercionType {
   Html,
@@ -26,8 +27,6 @@ const mockDataServer = {
     },
   },
 };
-
-const testConfig: Config = { baseUrl: "https://meet.sgit.se/", meetings: [{ type: "StandardMeeting", startWithAudioMuted: true, startWithVideoMuted: true }] };
 
 const nullConfig: Config = {
   baseUrl: "null",
@@ -69,5 +68,11 @@ describe('Test ConfigHelper', () => {
     const index: number = getMeetingConfig(testConfig, 'StandardMeeting');
     expect(index).toBe(0);
     expect(testConfig.meetings[index]?.type).toBe('StandardMeeting');
+  });
+
+  it('fetch meeting information', async () => {
+    const index: number = getMeetingConfig(testConfig, 'InformationMeeting');
+    expect(index).toBe(1);
+    expect(testConfig.meetings[index]?.type).toBe('InformationMeeting');
   });
 });

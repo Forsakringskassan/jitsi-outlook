@@ -9,7 +9,7 @@
     <Override Locale="sv-SE" Value="En Jitsi Add-in som gör det enkelt att tilldela ett Jitsi-möte till din mötesinbjudan." />
     <Override Locale="de-DE" Value="Ein Jitsi-Add-In zum einfachen Hinzufügen einer Jitsi-Meeting-Instanz zu einem Termin." />
   </Description>
-  <IconUrl DefaultValue="{PROJECT_BASE_URL}/assets/icon-64.png"/> 
+  <IconUrl DefaultValue="{PROJECT_BASE_URL}/assets/icon-64.png"/>
   <HighResolutionIconUrl DefaultValue="{PROJECT_BASE_URL}/assets/logo-filled.png"/>
   <SupportUrl DefaultValue="{SUPPORT_URL}"/>
   <Hosts>
@@ -47,20 +47,37 @@
                 <OfficeTab id="Tab.Create">
                     <Group id="Tab.Create.Group">
                         <Label resid="Label"/>
-                        <Control xsi:type="Button" id="Button.Create.Jitsi">
-                            <Label resid="FunctionButton.Label"/>
+                        <Control xsi:type="Menu" id="Button.Create.SAFOS">
+                            <Label resid="Menu.Label"/>
                             <Supertip>
-                                <Title resid="FunctionButton.Title"/>
-                                <Description resid="FunctionButton.Tooltip"/>
+                                <Title resid="Menu.Label"/>
+                                <Description resid="Menu.Description"/>
                             </Supertip>
                             <Icon>
-                                <bt:Image size="16" resid="Icon.16"/>
-                                <bt:Image size="32" resid="Icon.32"/>
-                                <bt:Image size="80" resid="Icon.80"/>
+                                <bt:Image size="16" resid="Icon.16" />
+                                <bt:Image size="32" resid="Icon.32" />
+                                <bt:Image size="80" resid="Icon.80" />
                             </Icon>
-                            <Action xsi:type="ExecuteFunction">
-                                <FunctionName>insertJitsiLink</FunctionName>
-                            </Action>
+                            <Items>
+<!-- To add a second item just repeat the code below and change FunctionName, for this to work you also have to add functionName in src/commands/addinConfig.json-->
+<!-- Label Title and Description below should be modified and new entries for a new meeting should be created in the ShortStrings and LongStrings sections-->
+<!-- If other icons are needed per list element then add them to assets folder and point them out below in the Images section-->
+                                <Item id="MenuItemStandard">
+                                    <Label resid="Standard.Label" />
+                                    <Supertip>
+                                        <Title resid="Standard.Title" />
+                                        <Description resid="Standard.Description" />
+                                    </Supertip>
+                                    <Icon>
+                                        <bt:Image size="16" resid="Icon.16"/>
+                                        <bt:Image size="32" resid="Icon.32"/>
+                                        <bt:Image size="80" resid="Icon.80"/>
+                                    </Icon>
+                                    <Action xsi:type="ExecuteFunction">
+                                        <FunctionName>insertJitsiLink</FunctionName>
+                                    </Action>
+                                </Item>
+                            </Items>
                         </Control>
                     </Group>
                 </OfficeTab>
@@ -79,17 +96,19 @@
     </bt:Urls>
     <bt:ShortStrings>
         <bt:String id="Label" DefaultValue="Jitsi"/>
-        <bt:String id="FunctionButton.Label" DefaultValue="Create Jitsi link">
+        <bt:String id="Menu.Label" DefaultValue="Jitsi Meeting"/>
+        <bt:String id="Standard.Label" DefaultValue="Create Jitsi link">
             <bt:Override Locale="sv-SE" Value="Skapa Jitsi-länk" />
             <bt:Override Locale="de-DE" Value="Jitsi-Link erstellen" />
         </bt:String>
-        <bt:String id="FunctionButton.Title" DefaultValue="Create Jitsi link">
+        <bt:String id="Standard.Title" DefaultValue="Create Jitsi link">
             <bt:Override Locale="sv-SE" Value="Skapa Jitsi-länk" />
             <bt:Override Locale="de-DE" Value="Jitsi-Link erstellen" />
         </bt:String>
     </bt:ShortStrings>
     <bt:LongStrings>
-        <bt:String id="FunctionButton.Tooltip" DefaultValue="Creates and pastes a Jitsi link into your meeting invite.">
+        <bt:String id="Menu.Description" DefaultValue="Create Jitsi link"/>
+        <bt:String id="Standard.Description" DefaultValue="Creates and pastes a Jitsi link into your meeting invite.">
             <bt:Override Locale="sv-SE" Value="Skapar och klistrar in en Jitsi-länk i din mötesinbjudan." />
             <bt:Override Locale="de-DE" Value="Erstellt einen Jitsi-Link und fügt ihn in Ihre Besprechungseinladung ein." />
         </bt:String>

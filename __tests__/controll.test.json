@@ -5,6 +5,11 @@
   "meetings": [
     {
       "type": "StandardMeeting",
+      "startWithAudioMuted": false,
+      "startWithVideoMuted": false
+    },
+    {
+      "type": "InformationMeeting",
       "startWithAudioMuted": true,
       "startWithVideoMuted": true
     }
