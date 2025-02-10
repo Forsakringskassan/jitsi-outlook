@@ -99,7 +99,7 @@ module.exports = async (env, options) => {
                 .replace(new RegExp("(<Id>).*(</Id>)", "g"), "$1" + id + "$2")
                 .replace(new RegExp("(<ProviderName>).*(</ProviderName>)", "g"), "$1" + buildSettings.providerName + "$2")
                 .replace(new RegExp('(<DisplayName DefaultValue=").*("/>)', "g"), "$1" + displayName + "$2")
-                .replace(new RegExp("<!--.*", "gm"), "") // Remove commented lines
+                .replace(new RegExp("<!--[\\s\\W\\w]+--!?>", "gm"), "") // Remove commented lines
                 .replace(new RegExp("^\n|^\r\n|^\r", "gm"), ""); // Fix end of line
             },
           },
