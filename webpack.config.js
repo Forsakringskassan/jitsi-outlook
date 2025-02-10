@@ -91,19 +91,19 @@ module.exports = async (env, options) => {
             from: "manifests/*.xml",
             to: "manifests/[name]/manifest" + "[ext]",
             transform(content) {
+              content = content
+                .toString()
+                .replace(new RegExp("{PROJECT_BASE_URL}", "g"), pluginUrl)
+                .replace(new RegExp("{SUPPORT_URL}", "g"), buildSettings.supportUrl)
+                .replace(new RegExp("(<Version>).*(</Version>)", "g"), "$1" + version + "$2")
+                .replace(new RegExp("(<Id>).*(</Id>)", "g"), "$1" + id + "$2")
+                .replace(new RegExp("(<ProviderName>).*(</ProviderName>)", "g"), "$1" + buildSettings.providerName + "$2")
+                .replace(new RegExp('(<DisplayName DefaultValue=").*("/>)', "g"), "$1" + displayName + "$2");
               do {
                 previous = content;
-                content = content
-                  .toString()
-                  .replace(new RegExp("{PROJECT_BASE_URL}", "g"), pluginUrl)
-                  .replace(new RegExp("{SUPPORT_URL}", "g"), buildSettings.supportUrl)
-                  .replace(new RegExp("(<Version>).*(</Version>)", "g"), "$1" + version + "$2")
-                  .replace(new RegExp("(<Id>).*(</Id>)", "g"), "$1" + id + "$2")
-                  .replace(new RegExp("(<ProviderName>).*(</ProviderName>)", "g"), "$1" + buildSettings.providerName + "$2")
-                  .replace(new RegExp('(<DisplayName DefaultValue=").*("/>)', "g"), "$1" + displayName + "$2")
-                  .replace(new RegExp("<!--[\\s\\W\\w]+--!?>", "gm"), "") // Remove commented lines
-                  .replace(new RegExp("^\n|^\r\n|^\r", "gm"), ""); // Fix end of line
+                content = content.toString().replace(new RegExp("<!--[\\s\\W\\w]+--!?>", "gm"), ""); // Remove commented lines
               } while (content !== previous);
+              content.toString().replace(new RegExp("^\n|^\r\n|^\r", "gm"), ""); // Fix end of line
               return content;
             },
           },
