@@ -36,7 +36,7 @@
     "@babel/preset-typescript": "^7.26.0",
     "@jridgewell/source-map": "^0.3.6",
     "@types/jest": "^29.5.14",
-    "@types/office-js": "^1.0.474",
+    "@types/office-js": "^1.0.475",
     "@types/office-runtime": "^1.0.23",
     "acorn": "^8.14.1",
     "babel-loader": "^10.0.0",
