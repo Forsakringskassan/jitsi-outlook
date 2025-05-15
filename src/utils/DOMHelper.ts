@@ -45,6 +45,26 @@ export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: nu
   return updatedHtmlString;
 };
 
+export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, index?: number): string => {
+  let output: string = "<br>";
+  if (index) {
+    config.meetings[index]?.additionalLinks?.forEach((entry) =>{
+      output += `<span style="font-size: ${entry.fontSize ?? defaultFontSize}; font-family: '${entry.fontFamily ?? defaultFontFamily}'; color: ${entry.fontColor ?? defaultFontColor};">`;
+      output += `
+        <a
+          aria-label="${entry.text}"
+          title="${entry.text}"
+          style="text-decoration: none;"
+          href="${jitsiUrl + entry.config}"
+        >
+          ${entry.text}
+        </a>`;
+      output += `</span>`;
+    });
+  }
+  return output;
+};
+
 export const getMeetingAdditionalTexts = (config: Config, index?: number): string => {
   let output: string = "";
   if (index) {
@@ -113,37 +133,9 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
         <br>
         </span>
       <div>`;
+  output += getMeetingAdditionalLinks(config, jitsiUrl, index);
   output += getMeetingAdditionalTexts(config, index);
   output += `<br><hr><div>`
 
   return output;
-  /*`
-    <div id="${DIV_ID_JITSI}" style="font-family: '${fontFamily}';">
-        <span style="font-size: 14px; font-weight: 700;">
-            ${localizedStrings.connectToMeeting}
-        </span>
-        <table style="border-collapse: collapse; margin-top: 6px; background-color: transparent;">
-            <tr>
-                <td style="${tdStyles}">
-                    <img
-                        style="vertical-align: middle;"
-                        width="18"
-                        height="18"
-                        src=${videoCameraURI}
-                    />
-                </td>
-                <td style="${tdStyles}">
-                    <a
-                        aria-label="${localizedStrings.linkToMeeting}"
-                        title="${localizedStrings.linkToMeeting}"
-                        alt=${localizedStrings.linkToMeeting}
-                        style="font-size: 12px;"
-                        href="${jitsiUrl}">
-                        ${jitsiUrl}
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
-  `;*/
 };

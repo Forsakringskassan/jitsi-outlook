@@ -21,12 +21,21 @@ interface AdditionalText {
   texts: Text[];
 }
 
+interface AdditionalLinks {
+  fontSize?: string;
+  fontFamily?: string;
+  fontColor?: string;
+  text: string;
+  config: string;
+}
+
 interface Meeting {
   type?: string;
   startWithAudioMuted?: boolean;
   startWithVideoMuted?: boolean;
   additionalConfig?: string;
   meetingHeader?: string;
+  additionalLinks?: AdditionalLinks[];
   additionalTexts?: AdditionalText[];
 }
 
