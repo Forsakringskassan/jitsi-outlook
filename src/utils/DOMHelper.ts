@@ -3,8 +3,10 @@
 //
 // SPDX-License-Identifier: MIT
 
+/* global DOMParser, Document */
+
 import getLocalizedStrings from "../localization";
-import { Config, defaultFontFamily, defaultMeetJitsiUrl } from "../models/Config";
+import { Config, defaultFontFamily, defaultMeetJitsiUrl, defaultFontSize, defaultFontColor } from "../models/Config";
 import { videoCameraURI } from "./IconHelper";
 import { getJitsiUrl } from "./URLHelper";
 
@@ -36,20 +38,86 @@ export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: nu
   const jitsiUrl = getJitsiUrl(config, index, subject);
 
   const jitsiLink = body.querySelector(`[id*="${DIV_ID_JITSI}"]`);
-  const newJitsiLink = getJitsiLinkDiv(jitsiUrl, config);
+  const newJitsiLink = getJitsiLinkDiv(jitsiUrl, config, index);
   jitsiLink.outerHTML = newJitsiLink;
 
   const updatedHtmlString = body.body.innerHTML;
   return updatedHtmlString;
 };
 
-export const getJitsiLinkDiv = (jitsiUrl: string, config: Config): string => {
+export const getMeetingAdditionalTexts = (config: Config, index?: number): string => {
+  let output: string = "";
+  if (index) {
+    config.meetings[index]?.additionalTexts?.forEach((entry) =>{
+      output += `<span style="font-size: ${entry.fontSize ?? defaultFontSize}; font-family: '${entry.fontFamily ?? defaultFontFamily}'; color: ${entry.fontColor ?? defaultFontColor};">`;
+      entry.texts.forEach((additional) => {
+        if (additional.url) {
+          output += `
+            <a
+              aria-label="${additional.text}"
+              title="${additional.text}"
+              style="text-decoration: none;"
+              href="${additional.url}"
+            >
+              ${additional.text}
+            </a>`;
+        } else {
+          output += additional.text
+        }
+        if (additional.addNewLine) {
+          output += `<br>`;
+        }
+      });
+      output += `</span>`;
+    });
+  }
+  return output;
+};
+
+export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number): string => {
+  let output: string = "";
   const localizedStrings = getLocalizedStrings();
 
   const tdStyles = "padding-right: 10px; vertical-align: middle; background-color: transparent;";
   const fontFamily = config.fontFamily ?? defaultFontFamily;
+  const fontSize = config.fontSize ?? defaultFontSize;
+  const fontColor = config.fontColor ?? defaultFontColor;
+  const divColor = config.divColor ?? "#ffffff";
+  output += `
+    <div id="${DIV_ID_JITSI}">
+      <br><hr style="color: ${divColor}; border-color: ${divColor}">`
+  if (index >= 0) {
+    output += `<div style="font-size: ${fontSize}; font-weight: 700; font-family: '${fontFamily}'">${config.meetings[index].meetingHeader ?? ""}</div>`;
+  }
+  output += `
+      <div style="${tdStyles}">
+        <span
+          style="font-size: ${fontSize}; font-family: '${fontFamily}';color: ${fontColor};">
+          <a
+            aria-label="${localizedStrings.linkToMeeting}"
+            title="${localizedStrings.linkToMeeting}"
+            style="text-decoration: none;"
+            href="${jitsiUrl}">
+            <img
+              style="vertical-align: middle;"
+              width="18"
+              height="18"
+              src=${videoCameraURI}
+            />
+            <span
+              style="font-size: ${fontSize}; font-family: '${fontFamily}'">
+                &rarr;
+            </span>
+              ${localizedStrings.connectToMeeting}
+          </a>
+        <br>
+        </span>
+      <div>`;
+  output += getMeetingAdditionalTexts(config, index);
+  output += `<br><hr><div>`
 
-  return `
+  return output;
+  /*`
     <div id="${DIV_ID_JITSI}" style="font-family: '${fontFamily}';">
         <span style="font-size: 14px; font-weight: 700;">
             ${localizedStrings.connectToMeeting}
@@ -76,17 +144,6 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config): string => {
                 </td>
             </tr>
         </table>
-        <br />
-        ${
-          config.additionalText
-            ? `
-            <br />
-            <span style="font-size: 0.8em; font-style: italic;">
-                ${config.additionalText}
-            </span>
-            `
-            : ""
-        }
     </div>
-  `;
+  `;*/
 };

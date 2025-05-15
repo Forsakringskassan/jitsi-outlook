@@ -7,7 +7,7 @@ import { Config } from "../models/Config";
 import { bodyHasJitsiLink, combineBodyWithJitsiDiv, overwriteJitsiLinkDiv } from "../utils/DOMHelper";
 import { getMeetingConfig } from "../utils/ConfigHelper";
 
-/* global Office, console */
+/* global Office, console, DOMParser */
 
 const setData = async (str: string, event?: Office.AddinCommands.Event) => {
   Office.context.mailbox.item.body.setAsync(

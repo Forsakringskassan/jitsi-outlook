@@ -2,10 +2,10 @@
 
 // SPDX-License-Identifier: MIT
 
-/* global Office, console */
+/* global Office, console, XMLHttpRequest */
 
 import { Config } from "../models/Config";
-import DefaultConfig from "../../config.json";
+const DefaultConfig: Config = {};
 
 export const getConfigXHR = function (callback: (config: Config) => void, configUrl?: string) {
   let domain: string | null = getDomain();

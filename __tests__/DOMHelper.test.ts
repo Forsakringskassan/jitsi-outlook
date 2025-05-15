@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { createConfigItem } from "@babel/core";
 import getLocalizedStrings from "../src/localization";
 import { Config, defaultFontFamily } from "../src/models/Config";
 import { bodyHasJitsiLink, getJitsiLinkDiv, overwriteJitsiLinkDiv } from "../src/utils/DOMHelper";
@@ -28,12 +29,26 @@ describe("getJitsiLinkDOM", () => {
 
   it("should include the additionalText if provided in config", () => {
     const config: Config = {
-      additionalText: "This is additional text",
+      meetings: [
+        {
+          type: "StandardMeeting",
+          additionalTexts: [
+            {
+              texts: [
+                {
+                  text: "This is additional text",
+                  addNewLine: false
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      //additionalText: "This is additional text",
     };
-    const jitsiUrl = URLHelper.getJitsiUrl(config);
-    const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
-
-    expect(jitsiLinkDOM).toContain(config.additionalText);
+    const jitsiUrl = URLHelper.getJitsiUrl(config, 0);
+    const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config, 0);
+    expect(jitsiLinkDOM).toContain(config.meetings[0].additionalTexts[0].texts[0].text);
   });
 
   it("should not include the additionalText if not provided in config", () => {
@@ -150,7 +165,7 @@ describe("overwriteJitsiLinkDiv", () => {
     const body = new DOMParser().parseFromString(dom, "text/html");
     expect(body.body.innerHTML).toContain(oldRoomName);
 
-    const result = overwriteJitsiLinkDiv(body, config, 0);
+    const result = overwriteJitsiLinkDiv(body, config);
     expect(result).toContain(newRoomName);
     expect(result).not.toContain(oldRoomName);
   });

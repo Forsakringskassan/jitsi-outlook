@@ -5,19 +5,39 @@
 
 export const defaultMeetJitsiUrl = "https://meet.jit.si/";
 export const defaultFontFamily = "Arial";
+export const defaultFontSize = "20px";
+export const defaultFontColor = "#ffffff"
+
+interface Text {
+  addNewLine: boolean;
+  text: string;
+  url?: string;
+}
+
+interface AdditionalText {
+  fontSize?: string;
+  fontFamily?: string;
+  fontColor?: string;
+  texts: Text[];
+}
 
 interface Meeting {
   type?: string;
   startWithAudioMuted?: boolean;
   startWithVideoMuted?: boolean;
+  additionalConfig?: string;
+  meetingHeader?: string;
+  additionalTexts?: AdditionalText[];
 }
 
 export interface Config {
   baseUrl?: string;
   locationString?: string;
-  additionalText?: string;
   meetings?: Meeting[];
   fontFamily?: string;
+  fontSize?: string;
+  fontColor?: string;
+  divColor?: string;
 }
 
 export interface AddinConfig {
