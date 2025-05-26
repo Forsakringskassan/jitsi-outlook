@@ -4,9 +4,10 @@
   "meetings": [
     {
       "type": "StandardMeeting",
-      "startWithAudioMuted": true,
-      "startWithVideoMuted": true,
-      "additionalConfig": "",
+      "additionalConfig": {
+        "startWithAudioMuted": true,
+        "startWithVideoMuted": true
+      },
       "meetingHeader": "Test Meeting",
       "additionalTexts": [
         {

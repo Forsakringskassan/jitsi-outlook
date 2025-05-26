@@ -47,18 +47,16 @@ export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: nu
 
 export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, index?: number): string => {
   let output: string = "<br>";
-  if (index) {
-    config.meetings[index]?.additionalLinks?.forEach((entry) =>{
+  let baseUrl: string = "";
+  if (index !== undefined) {
+    config.meetings[index]?.additionalLinks?.forEach((entry) => {
+      baseUrl = jitsiUrl.split("#")[0];
+      var keys: string[] = Object.keys(entry.config);
+      let url: string = keys.reduce((acc, currentValue) => {
+        return acc + `config.${currentValue}=${entry.config[currentValue]}&`;
+      }, "#");
       output += `<span style="font-size: ${entry.fontSize ?? defaultFontSize}; font-family: '${entry.fontFamily ?? defaultFontFamily}'; color: ${entry.fontColor ?? defaultFontColor};">`;
-      output += `
-        <a
-          aria-label="${entry.text}"
-          title="${entry.text}"
-          style="text-decoration: none;"
-          href="${jitsiUrl + entry.config}"
-        >
-          ${entry.text}
-        </a>`;
+      output += `<a aria-label="${entry.text}" title="${entry.text}" style="text-decoration: none;" href="${baseUrl + url.slice(0, -1)}"> ${entry.text} </a>`;
       output += `</span>`;
     });
   }
@@ -67,22 +65,14 @@ export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, inde
 
 export const getMeetingAdditionalTexts = (config: Config, index?: number): string => {
   let output: string = "";
-  if (index) {
-    config.meetings[index]?.additionalTexts?.forEach((entry) =>{
+  if (index !== undefined) {
+    config.meetings[index]?.additionalTexts?.forEach((entry) => {
       output += `<span style="font-size: ${entry.fontSize ?? defaultFontSize}; font-family: '${entry.fontFamily ?? defaultFontFamily}'; color: ${entry.fontColor ?? defaultFontColor};">`;
       entry.texts.forEach((additional) => {
         if (additional.url) {
-          output += `
-            <a
-              aria-label="${additional.text}"
-              title="${additional.text}"
-              style="text-decoration: none;"
-              href="${additional.url}"
-            >
-              ${additional.text}
-            </a>`;
+          output += `<a aria-label="${additional.text}" title="${additional.text}" style="text-decoration: none;" href="${additional.url}"> ${additional.text} </a>`;
         } else {
-          output += additional.text
+          output += additional.text;
         }
         if (additional.addNewLine) {
           output += `<br>`;
@@ -103,10 +93,8 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
   const fontSize = config.fontSize ?? defaultFontSize;
   const fontColor = config.fontColor ?? defaultFontColor;
   const divColor = config.divColor ?? "#ffffff";
-  output += `
-    <div id="${DIV_ID_JITSI}">
-      <br><hr style="color: ${divColor}; border-color: ${divColor}">`
-  if (index >= 0) {
+  output += `<div id="${DIV_ID_JITSI}"><br><hr style="color: ${divColor}; border-color: ${divColor}">`;
+  if (index !== undefined) {
     output += `<div style="font-size: ${fontSize}; font-weight: 700; font-family: '${fontFamily}'">${config.meetings[index].meetingHeader ?? ""}</div>`;
   }
   output += `
@@ -135,7 +123,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
       <div>`;
   output += getMeetingAdditionalLinks(config, jitsiUrl, index);
   output += getMeetingAdditionalTexts(config, index);
-  output += `<br><hr><div>`
+  output += `<br><hr><div>`;
 
   return output;
 };

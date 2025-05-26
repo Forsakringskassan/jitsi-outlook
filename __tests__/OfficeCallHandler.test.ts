@@ -163,7 +163,9 @@ describe("Connection test to server", () => {
       meetings: [
         {
           type: "StandardMeeting",
-          startWithAudioMuted: true,
+          additionalConfig: {
+            startWithAudioMuted: true,
+          }
         }
       ]
     } as Config;

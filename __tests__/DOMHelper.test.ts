@@ -2,13 +2,144 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { createConfigItem } from "@babel/core";
 import getLocalizedStrings from "../src/localization";
 import { Config, defaultFontFamily } from "../src/models/Config";
-import { bodyHasJitsiLink, getJitsiLinkDiv, overwriteJitsiLinkDiv } from "../src/utils/DOMHelper";
+import { bodyHasJitsiLink, getJitsiLinkDiv, overwriteJitsiLinkDiv, getMeetingAdditionalTexts, getMeetingAdditionalLinks } from "../src/utils/DOMHelper";
 import * as URLHelper from "../src/utils/URLHelper";
 
 describe("getJitsiLinkDOM", () => {
+  it("should return alternativ links", () => {
+    const config: Config = {
+      meetings: [
+        {
+          additionalConfig: {
+            toolbarButtons: "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
+            startWithAudioMuted: true,
+            startWithVideoMuted: false
+          },
+          additionalLinks: [
+            {
+              text: "link without camera",
+              config: {
+                toolbarButtons: "[%22microphone%22,%22desktop%22,%22hangup%22]"
+              }
+            },
+            {
+              text: "link with more settings",
+              config: {
+                toolbarButtons: "[%22microphone%22,%22desktop%22,%22hangup%22,%22settings%22]",
+                startWithAudioMuted: false,
+                startWithVideoMuted: true
+              }
+            }
+          ]
+        }
+      ]
+    };
+    const linksText = getMeetingAdditionalLinks(config, URLHelper.getJitsiUrl(config, 0), 0);
+    expect(linksText).toContain("title=\"link without camera\"");
+    expect(linksText).toContain("title=\"link with more settings\"");
+    expect(linksText).toContain("#config.toolbarButtons=[%22microphone%22,%22desktop%22,%22hangup%22]");
+    expect(linksText).toContain("#config.toolbarButtons=[%22microphone%22,%22desktop%22,%22hangup%22,%22settings%22]&config.startWithAudioMuted=false&config.startWithVideoMuted=true");
+  });
+
+  it("should return additional texts", () => {
+    const config: Config = {
+      meetings: [
+        {
+          additionalTexts: [
+            {
+              fontSize: "12px",
+              texts: [
+                {
+                  addNewLine: false,
+                  text: "created by Outlook Plugin"
+                },
+                {
+                  addNewLine: true,
+                  text: "Wikipedia",
+                  url: "https://wikipedia.com"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const textsText = getMeetingAdditionalTexts(config, 0);
+    expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Arial'; color: #ffffff;\">");
+    expect(textsText).toContain("created by Outlook Plugin");
+    expect(textsText).toContain("title=\"Wikipedia\"");
+    expect(textsText).toContain("href=\"https://wikipedia.com\"");
+  });
+
+  it("should return additional texts, with different fonts and color", () => {
+    const config: Config = {
+      meetings: [
+        {
+          additionalTexts: [
+            {
+              fontSize: "12px",
+              fontFamily: "Segoe UI",
+              fontColor: "#0b12f4",
+              texts: [
+                {
+                  addNewLine: false,
+                  text: "created by Outlook Plugin"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const textsText = getMeetingAdditionalTexts(config, 0);
+    expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Segoe UI'; color: #0b12f4;\">");
+    expect(textsText).toContain("created by Outlook Plugin");
+  });
+
+  it("should return additional texts, with different fonts and color, multiple", () => {
+    const config: Config = {
+      meetings: [
+        {
+          additionalTexts: [
+            {
+              fontSize: "12px",
+              fontFamily: "Segoe UI",
+              fontColor: "#0b12f4",
+              texts: [
+                {
+                  addNewLine: false,
+                  text: "created by Outlook Plugin"
+                }
+              ]
+            },
+            {
+              fontSize: "16px",
+              fontFamily: "Arial",
+              fontColor: "#13b6f7",
+              texts: [
+                {
+                  addNewLine: false,
+                  text: "Wikipedia",
+                  url: "http://wikipedia.com"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const textsText = getMeetingAdditionalTexts(config, 0);
+    expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Segoe UI'; color: #0b12f4;\">");
+    expect(textsText).toContain("<span style=\"font-size: 16px; font-family: 'Arial'; color: #13b6f7;\">");
+    expect(textsText).toContain("created by Outlook Plugin");
+    expect(textsText).toContain("Wikipedia");
+  });
+
   it("should return a string that contains the correct Jitsi URL", () => {
     const config: Config = {};
     const jitsiUrl = URLHelper.getJitsiUrl(config);
@@ -44,11 +175,11 @@ describe("getJitsiLinkDOM", () => {
           ]
         }
       ],
-      //additionalText: "This is additional text",
     };
     const jitsiUrl = URLHelper.getJitsiUrl(config, 0);
     const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config, 0);
     expect(jitsiLinkDOM).toContain(config.meetings[0].additionalTexts[0].texts[0].text);
+    expect(jitsiLinkDOM).not.toContain("undefined");
   });
 
   it("should not include the additionalText if not provided in config", () => {
@@ -57,6 +188,7 @@ describe("getJitsiLinkDOM", () => {
     const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
 
     expect(jitsiLinkDOM).not.toContain("additionalText");
+    expect(jitsiLinkDOM).not.toContain("undefined");
   });
 
   it("should include the specified font if fontFamily is provided in config", () => {
@@ -68,6 +200,7 @@ describe("getJitsiLinkDOM", () => {
 
     expect(jitsiLinkDOM).toContain(config.fontFamily);
     expect(jitsiLinkDOM).not.toContain(defaultFontFamily);
+    expect(jitsiLinkDOM).not.toContain("undefined");
   });
 
   it("should include the default font if fontFamily is not provided in config", () => {
@@ -76,6 +209,7 @@ describe("getJitsiLinkDOM", () => {
     const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
 
     expect(jitsiLinkDOM).toContain(defaultFontFamily);
+    expect(jitsiLinkDOM).not.toContain("undefined");
   });
 
   it("should return a room containing subject line", () => {
@@ -93,14 +227,12 @@ describe("getJitsiLinkDOM", () => {
   });
 
   it("should return a room containing only meeting id", () => {
-    const config: Config = {}
     const testSubject: string = '';
     const secureSubjectUrl: string = URLHelper.secureSubjectUrl(testSubject);
     expect(secureSubjectUrl).toContain("");
   });
 
   it("should return a room containing only 30 characters", () => {
-    const config: Config = {}
     const testSubject: string = "Möte angående nästa sprint sen i fredags";
     const secureSubjectUrl: string = URLHelper.secureSubjectUrl(testSubject);
     expect(secureSubjectUrl).toHaveLength(31)

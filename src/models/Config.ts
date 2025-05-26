@@ -6,7 +6,7 @@
 export const defaultMeetJitsiUrl = "https://meet.jit.si/";
 export const defaultFontFamily = "Arial";
 export const defaultFontSize = "20px";
-export const defaultFontColor = "#ffffff"
+export const defaultFontColor = "#ffffff";
 
 interface Text {
   addNewLine: boolean;
@@ -26,14 +26,12 @@ interface AdditionalLinks {
   fontFamily?: string;
   fontColor?: string;
   text: string;
-  config: string;
+  config: object;
 }
 
 interface Meeting {
   type?: string;
-  startWithAudioMuted?: boolean;
-  startWithVideoMuted?: boolean;
-  additionalConfig?: string;
+  additionalConfig?: object;
   meetingHeader?: string;
   additionalLinks?: AdditionalLinks[];
   additionalTexts?: AdditionalText[];
