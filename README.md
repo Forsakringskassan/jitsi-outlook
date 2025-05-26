@@ -5,6 +5,7 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/Forsakringskassan/jitsi-outlook)](https://api.reuse.software/info/github.com/Forsakringskassan/jitsi-outlook)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Forsakringskassan/jitsi-outlook/badge)](https://scorecard.dev/viewer/?uri=github.com/Forsakringskassan/jitsi-outlook)
 
+
 The purpose of this plug-in is to simplify the process of adding video conference links to meeting bookings. It is designed for users who value and require simplicity to complete their tasks quickly and intuitively. Therefore, it is important to preserve this simplicity as new features are added. Any additional contributions to the software must be designed in a way that does not interfere with or complicate the core functionality of booking a regular meeting with just one click.
 
 The plugin randomly generates a Jitsi link to an appointment (while in the appointment creation window). It was built based on the Yeoman generator, as described in the this [guide](https://learn.microsoft.com/en-us/office/dev/add-ins/quickstarts/outlook-quickstart?tabs=yeomangenerator).
