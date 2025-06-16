@@ -27,7 +27,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "core-js": "^3.42.0",
+    "core-js": "^3.43.0",
     "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
