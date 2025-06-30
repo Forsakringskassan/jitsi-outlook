@@ -34,7 +34,7 @@
     "@babel/core": "^7.27.4",
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-typescript": "^7.27.1",
-    "@jridgewell/source-map": "^0.3.6",
+    "@jridgewell/source-map": "^0.3.7",
     "@types/jest": "^30.0.0",
     "@types/office-js": "^1.0.513",
     "@types/office-runtime": "^1.0.23",
