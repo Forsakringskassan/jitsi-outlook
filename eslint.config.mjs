@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Försäkringskassan
+//
+// SPDX-License-Identifier: MIT
+
 import { defineConfig } from "eslint/config";
 import officeAddins from "eslint-plugin-office-addins";
 import tsParser from "@typescript-eslint/parser";
