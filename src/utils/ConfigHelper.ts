@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: MIT
 
-/* global Office, console */
+/* global Office, console, XMLHttpRequest */
 
 import { Config } from "../models/Config";
 import DefaultConfig from "../../config.json";

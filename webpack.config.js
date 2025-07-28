@@ -3,9 +3,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-/* eslint-disable no-undef */
-/* eslint-disable no-control-regex */
-
 const buildSettings = require("./buildSettings.json");
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");

@@ -3,6 +3,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+/* global DOMParser, Document */
+
 import getLocalizedStrings from "../localization";
 import { Config, defaultFontFamily, defaultMeetJitsiUrl } from "../models/Config";
 import { videoCameraURI } from "./IconHelper";
