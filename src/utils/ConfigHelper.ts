@@ -31,7 +31,7 @@ export const getConfigXHR = function (callback: (config: Config) => void, config
 
 const getDomain = (): string | null => {
   const emailAddress: string = Office.context.mailbox.userProfile.emailAddress;
-  const domain: string = emailAddress.split("@")[1];
+  const domain: string = emailAddress.split("@")[1].toLowerCase();
 
   if (domain) {
     return domain;
@@ -41,7 +41,6 @@ const getDomain = (): string | null => {
 };
 
 export const loadConfig = function (callback: (config: Config) => void, configUrl?: string) {
-  console.log(configUrl);
   getConfigXHR((config) => {
     callback(config);
   }, configUrl);
@@ -50,7 +49,7 @@ export const loadConfig = function (callback: (config: Config) => void, configUr
 export const getMeetingConfig = (config: Config, type: string): number => {
   let value = -1;
   if (!config.meetings) {
-    return null;
+    return undefined;
   }
   config.meetings.forEach((entry: any, index: number) => {
     if (entry.type === type) {

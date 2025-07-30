@@ -6,7 +6,7 @@
 export const defaultMeetJitsiUrl = "https://meet.jit.si/";
 export const defaultFontFamily = "Arial";
 export const defaultFontSize = "20px";
-export const defaultFontColor = "#ffffff";
+export const defaultFontColor = "#000000";
 
 interface Text {
   addNewLine: boolean;

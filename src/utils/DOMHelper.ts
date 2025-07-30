@@ -15,7 +15,7 @@ const DIV_ID_JITSI = "jitsi-link";
 export const combineBodyWithJitsiDiv = (body: string, config: Config, index?: number, subject?: string): string => {
   const jitsiUrl = getJitsiUrl(config, index, subject);
 
-  const linkDOM = getJitsiLinkDiv(jitsiUrl, config);
+  const linkDOM = getJitsiLinkDiv(jitsiUrl, config, index);
   const parser = new DOMParser();
 
   const bodyString = `
@@ -58,6 +58,7 @@ export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, inde
       output += `<span style="font-size: ${entry.fontSize ?? defaultFontSize}; font-family: '${entry.fontFamily ?? defaultFontFamily}'; color: ${entry.fontColor ?? defaultFontColor};">`;
       output += `<a aria-label="${entry.text}" title="${entry.text}" style="text-decoration: none;" href="${baseUrl + url.slice(0, -1)}"> ${entry.text} </a>`;
       output += `</span>`;
+      output += `<br>`;
     });
   }
   return output;

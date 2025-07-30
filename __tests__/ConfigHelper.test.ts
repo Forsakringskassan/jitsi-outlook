@@ -22,7 +22,7 @@ const mockDataServer = {
   context: {
     mailbox: {
       userProfile: {
-        emailAddress: "test@controll.test",
+        emailAddress: "test@controLL.test",
       },
     },
   },

@@ -50,17 +50,14 @@ export const setLocationTest = { setLocation };
 
 export const addMeeting = async (name: string, config: Config, event?: Office.AddinCommands.Event) => {
   let index: number = getMeetingConfig(config, name);
-
   Office.context.mailbox.item.body.getAsync(Office.CoercionType.Html, (result) => {
     if (result.error) {
       event.completed();
     }
-
     try {
       Office.context.mailbox.item.subject.getAsync((subject) => {
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(result.value, "text/html");
-
         const bodyDOM = bodyHasJitsiLink(result.value, config) ? overwriteJitsiLinkDiv(htmlDoc, config, index, subject.value) : combineBodyWithJitsiDiv(result.value, config, index, subject.value);
         setData(htmlDoc.head.innerHTML + bodyDOM, event);
         setLocation(config);

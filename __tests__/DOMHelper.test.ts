@@ -68,7 +68,7 @@ describe("getJitsiLinkDOM", () => {
     };
 
     const textsText = getMeetingAdditionalTexts(config, 0);
-    expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Arial'; color: #ffffff;\">");
+    expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Arial'; color: #000000;\">");
     expect(textsText).toContain("created by Outlook Plugin");
     expect(textsText).toContain("title=\"Wikipedia\"");
     expect(textsText).toContain("href=\"https://wikipedia.com\"");
