@@ -22,6 +22,7 @@ The plugin randomly generates a Jitsi link to an appointment (while in the appoi
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [Development](#development)
+- [Additional config](#additional-config)
 - [License](#license)
 - [Maintainers](#maintainers)
 
@@ -87,9 +88,35 @@ This will start the local development server on port 3000. If the aforementioned
 
 This section describes how the add-in should and can be configured.
 
+### `buildSettings.json`
+
+This file contains the only mandatory settings for the creation of the manifest file. All dev settings will be used when running `npm run build-dev` and produce a dist folder for that `devVersion`. The webpack will produce as many manifests there is in the `/manifests` folder.
+
+| **Property** | **Type** | **Description** |
+| --- | --- | --- |
+| TEST |
+| `devUrlRemotePluginServer` | string | Url to a test environment where the plugin is hosted |
+| `devUrlRemoteConfigServer` | string | Url to a test environment where the configuration is hosted |
+| `devBaseUrl` | string | Base url to test environment |
+| `devAppId` | string | Marketstore ID for the plugin, deadbeef id used for test |
+| `devVersion` | string | Version number used for test development |
+| `devDisplayName` | string | Displayname used on add-in page for development plugin |
+| PROD |
+| `prodUrlPlugin` | string | Url to a production environment where the plugin is hosted |
+| `prodUrlConfig` | string | Url to a production environment where the configuration is hosted |
+| `prodBaseUrl` | string | Base url to production environment |
+| `prodAppId` | string | Marketstore ID for the plugin |
+| `prodDisplayName` | string | Displayname used on add-in page for production plugin |
+| `version` | string | Version number used for test production |
+| COMMON |
+| `providerName` | string | Organization name or delivery product |
+| `supportUrl` | string | Url to a support site for the consumers |
+
+So for building and testing the plugin you need to enter at least the information above.
+
 ### `config.json`
 
-The add-in can be configured through the use of a configuration file (named `config.json`), that should be placed in the root directory. The following is an example of how the configuration file could look like:
+The `config.json` file in the root folder will determine how the default meeting should look like. The following is an example of how the configuration file could look like:
 
 ```
 {
@@ -118,13 +145,52 @@ Description of meeting objects
 
 > Note that configuration is entirely optional and that Jitsi's default configuration will be used as a default if no configuration file is found in the project. The add-in will default to https://meet.jit.si if no configuration file is found.
 
+Please see [Additional config](#additional-config) for more settings and alternatives!
+
 ### `manifest.xml`
 
-The `manifest.xml` file found in the root directory is the core of the add-in. This file contains the specification, points of entry, used methods and assets that the add-in should use. It is through this file that Outlook knows where to find the relevant assets in the project. In order to run this add-in you will need to add some urls that are specific for your use case, these places in the file are highlighted with three variables as shown below:
+The `manifest.xml` file found in the manifests directory is the core of the add-in. This file contains the specification, points of entry, used methods and assets that the add-in should use. It is through this file that Outlook knows where to find the relevant assets in the project. In order to run this add-in you will need to add some urls that are specific for your use case, these places in the file are highlighted with three variables as shown below:
 
 - `PROVIDER_NAME`: The name of the company providing the add-in (could be your company).
 - `PROJECT_BASE_URL`: Url pointing to where your add-in app is hosted.
 - `SUPPORT_URL`: Support url to the add-in admin.
+
+> Note! The above variables are now configured in the buildSettings.json file, see [buildSettings](#buildsettingsjson).
+
+The manifests folder works the same way as the configs folder does. Each manifest is created in a folder following the name except `.json`. So manifest `manifests/controll.test.xml` will be created as `dist/<version>/manifests/controll.test/manifest.xml`
+
+## **Installation and building**
+
+Thereafter, all the dependencies need to be installed:
+
+```bash
+# run installation to download all dependencies
+npm install
+
+# make sure all your configuration are done then run
+npm run build
+# or for development
+npm run build-dev
+
+# Other useful commands for testing and linting
+npm run test
+
+npm run lint
+
+npm run prettier
+
+# Make sure to run these 3 before contributing code!
+```
+
+---
+
+## **Additional config**
+
+### Sub-domain configurations
+
+The add-in can be configured through the use of a configuration file (named `<sub-domain>.json`), that should be placed in the configs directory, these are then built and used per sub-domain. E.g. if you have an email domain on controll.test the file should be stored as, `/configs/controll.test.json`, this will produce a file in the dist for that sub-domain. It expects the same json object as the default.
+
+To utilize this feature you have to specify the configuration setup in the `buildSettings.json`.
 
 ### `src/commands/config.json`
 
@@ -136,14 +202,6 @@ The `src/commands/config.json` file contains which meeting types should be added
 | `meetingLinks.associate`   | string   | The associated link name from `manifest.xml` file                                 |
 | `meetingLinks.meetingName` | string   | The type meeting config related to this meeting link in `config.json`             |
 
-## **Installation and setup**
-
-Thereafter, all the dependencies need to be installed:
-
-```
-npm install
-```
-
 ---
 
 ## License
@@ -154,4 +212,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 
 ## Maintainers
 
-asom
+SAFOS
