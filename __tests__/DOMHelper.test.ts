@@ -151,7 +151,7 @@ describe("getJitsiLinkDOM", () => {
     expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Segoe UI'; color: #0b12f4;\">");
     expect(textsText).toContain("<span style=\"font-size: 16px; font-family: 'Arial'; color: #13b6f7;\">");
     expect(textsText).toContain(config.meetings[0].additionalTexts[0].texts[0].text);
-    expect(textsText).toContain(config.meetings[0].additionalTexts[0].texts[1].text);
+    expect(textsText).toContain(config.meetings[0].additionalTexts[1].texts[0].text);
   });
 
   it("should return a string that contains the correct Jitsi URL", () => {
@@ -246,6 +246,52 @@ describe("getJitsiLinkDOM", () => {
     const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
 
     expect(jitsiLinkDOM).not.toContain("additionalText");
+    expect(jitsiLinkDOM).not.toContain("undefined");
+  });
+
+  it("check that the div is present or not when set in config", () => {
+    let config: Config = {useDiv: true};
+    let jitsiUrl = URLHelper.getJitsiUrl(config);
+    let jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
+
+    expect(jitsiLinkDOM).toContain("<hr style=\"color: #ffffff; border-color: #ffffff\">");
+    expect(jitsiLinkDOM).not.toContain("undefined");
+
+    config = {};
+    jitsiUrl = URLHelper.getJitsiUrl(config);
+    jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
+
+    expect(jitsiLinkDOM).not.toContain("<hr style=\"color: #ffffff; border-color: #ffffff\">");
+    expect(jitsiLinkDOM).not.toContain("undefined");
+
+    config = {useDiv: false};
+    jitsiUrl = URLHelper.getJitsiUrl(config);
+    jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
+
+    expect(jitsiLinkDOM).not.toContain("<hr style=\"color: #ffffff; border-color: #ffffff\">");
+    expect(jitsiLinkDOM).not.toContain("undefined");
+  });
+
+  it("check that the img is present or not when set in config", () => {
+    let config: Config = {useGraphics: true};
+    let jitsiUrl = URLHelper.getJitsiUrl(config);
+    let jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
+
+    expect(jitsiLinkDOM).toContain(`<img style="vertical-align: middle;" width="18" height="18"`);
+    expect(jitsiLinkDOM).not.toContain("undefined");
+
+    config = {};
+    jitsiUrl = URLHelper.getJitsiUrl(config);
+    jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
+
+    expect(jitsiLinkDOM).not.toContain(`<img style="vertical-align: middle;" width="18" height="18"`);
+    expect(jitsiLinkDOM).not.toContain("undefined");
+
+    config = {useGraphics: false};
+    jitsiUrl = URLHelper.getJitsiUrl(config);
+    jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
+
+    expect(jitsiLinkDOM).not.toContain(`<img style="vertical-align: middle;" width="18" height="18"`);
     expect(jitsiLinkDOM).not.toContain("undefined");
   });
 

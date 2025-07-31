@@ -48,7 +48,9 @@ export interface Config {
   fontFamily?: string;
   fontSize?: string;
   fontColor?: string;
+  useDiv?: boolean;
   divColor?: string;
+  useGraphics?: boolean;
 }
 
 export interface AddinConfig {

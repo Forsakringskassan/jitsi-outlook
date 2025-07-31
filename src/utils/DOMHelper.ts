@@ -111,7 +111,10 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
   const fontSize = config.fontSize ?? defaultFontSize;
   const fontColor = config.fontColor ?? defaultFontColor;
   const divColor = config.divColor ?? "#ffffff";
-  output += `<div id="${DIV_ID_JITSI}"><br><hr style="color: ${divColor}; border-color: ${divColor}">`;
+  output += `<div id="${DIV_ID_JITSI}"><br>`;
+  if (config.useDiv !== undefined && config.useDiv == true){
+    output += `<hr style="color: ${divColor}; border-color: ${divColor}">`;
+  }
   if (index !== undefined) {
     output += `<div style="font-size: ${fontSize}; font-weight: 700; font-family: '${fontFamily}'">${config.meetings[index].meetingHeader ?? ""}</div>`;
   }
@@ -123,13 +126,12 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
             aria-label="${localizedStrings.linkToMeeting}"
             title="${localizedStrings.linkToMeeting}"
             style="text-decoration: none;"
-            href="${jitsiUrl}">
-            <img
-              style="vertical-align: middle;"
-              width="18"
-              height="18"
-              src=${videoCameraURI}
-            />
+            href="${jitsiUrl}">`;
+  if (config.useGraphics !== undefined && config.useGraphics == true) {
+  output += `
+            <img style="vertical-align: middle;" width="18" height="18" src=${videoCameraURI}/>`
+  }
+  output += `
             <span
               style="font-size: ${fontSize}; font-family: '${fontFamily}'">
                 &rarr;
@@ -141,7 +143,11 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
       <div>`;
   output += getMeetingAdditionalLinks(config, jitsiUrl, index);
   output += getMeetingAdditionalTexts(config, index);
-  output += `<br><hr><div>`;
+  output += `<br>`
+  if (config.useDiv !== undefined && config.useDiv == true) {
+    output += `<hr>`;
+  }
+  output += `<div>`;
 
   return output;
 };
