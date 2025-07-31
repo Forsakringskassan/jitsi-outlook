@@ -29,13 +29,11 @@ module.exports = async (env, options) => {
     source = "source-map";
     id = buildSettings.devAppId;
     version = buildSettings.devVersion;
-    configUrl = buildSettings.devUrlRemoteConfigServer + "v" + version;
     baseUrl = buildSettings.devBaseUrl;
     pluginUrl = buildSettings.devUrlRemotePluginServer + "v" + version;
     displayName = buildSettings.devDisplayName;
   } else {
     id = buildSettings.prodAppId;
-    configUrl = buildSettings.prodUrlConfig + "v" + version;
     baseUrl = buildSettings.prodBaseUrl;
     pluginUrl = buildSettings.prodUrlPlugin + "v" + version;
     displayName = buildSettings.prodDisplayName;
