@@ -6,7 +6,7 @@
 /* global DOMParser, Document */
 
 import getLocalizedStrings from "../localization";
-import { Config, defaultFontFamily, defaultMeetJitsiUrl, defaultFontSize, defaultFontColor } from "../models/Config";
+import { Config, AdditionalLinks, AdditionalTexts, defaultFontFamily, defaultMeetJitsiUrl, defaultFontSize, defaultFontColor } from "../models/Config";
 import { videoCameraURI } from "./IconHelper";
 import { getJitsiUrl } from "./URLHelper";
 
@@ -45,22 +45,47 @@ export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: nu
   return updatedHtmlString;
 };
 
+const concatAdditionalLinks = (additionalLinks: AdditionalLinks, baseUrl: string): string => {
+  let output: string = "";
+  var keys: string[] = Object.keys(additionalLinks.config);
+  let url: string = keys.reduce((acc, currentValue) => {
+    return acc + `config.${currentValue}=${additionalLinks.config[currentValue]}&`;
+  }, "#");
+  output += `<span style="font-size: ${additionalLinks.fontSize ?? defaultFontSize}; font-family: '${additionalLinks.fontFamily ?? defaultFontFamily}'; color: ${additionalLinks.fontColor ?? defaultFontColor};">`;
+  output += `<a aria-label="${additionalLinks.text}" title="${additionalLinks.text}" style="text-decoration: none;" href="${baseUrl + url.slice(0, -1)}"> ${additionalLinks.text} </a>`;
+  output += `</span>`;
+  output += `<br>`;
+  return output
+};
+
 export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, index?: number): string => {
   let output: string = "<br>";
-  let baseUrl: string = "";
+  let baseUrl: string = jitsiUrl.split("#")[0];
   if (index !== undefined) {
     config.meetings[index]?.additionalLinks?.forEach((entry) => {
-      baseUrl = jitsiUrl.split("#")[0];
-      var keys: string[] = Object.keys(entry.config);
-      let url: string = keys.reduce((acc, currentValue) => {
-        return acc + `config.${currentValue}=${entry.config[currentValue]}&`;
-      }, "#");
-      output += `<span style="font-size: ${entry.fontSize ?? defaultFontSize}; font-family: '${entry.fontFamily ?? defaultFontFamily}'; color: ${entry.fontColor ?? defaultFontColor};">`;
-      output += `<a aria-label="${entry.text}" title="${entry.text}" style="text-decoration: none;" href="${baseUrl + url.slice(0, -1)}"> ${entry.text} </a>`;
-      output += `</span>`;
-      output += `<br>`;
+      output += concatAdditionalLinks(entry, baseUrl);
     });
   }
+  config.globalAdditionalLinks?.forEach((entry) => {
+    output += concatAdditionalLinks(entry, baseUrl);
+  });
+  return output;
+};
+
+const concatAdditionalTexts = (additionalTexts: AdditionalTexts): string => {
+  let output: string = "";
+  output += `<span style="font-size: ${additionalTexts.fontSize ?? defaultFontSize}; font-family: '${additionalTexts.fontFamily ?? defaultFontFamily}'; color: ${additionalTexts.fontColor ?? defaultFontColor};">`;
+  additionalTexts.texts.forEach((additional) => {
+    if (additional.url) {
+      output += `<a aria-label="${additional.text}" title="${additional.text}" style="text-decoration: none;" href="${additional.url}"> ${additional.text} </a>`;
+    } else {
+      output += additional.text;
+    }
+    if (additional.addNewLine) {
+      output += `<br>`;
+    }
+  });
+  output += `</span>`;
   return output;
 };
 
@@ -68,20 +93,12 @@ export const getMeetingAdditionalTexts = (config: Config, index?: number): strin
   let output: string = "";
   if (index !== undefined) {
     config.meetings[index]?.additionalTexts?.forEach((entry) => {
-      output += `<span style="font-size: ${entry.fontSize ?? defaultFontSize}; font-family: '${entry.fontFamily ?? defaultFontFamily}'; color: ${entry.fontColor ?? defaultFontColor};">`;
-      entry.texts.forEach((additional) => {
-        if (additional.url) {
-          output += `<a aria-label="${additional.text}" title="${additional.text}" style="text-decoration: none;" href="${additional.url}"> ${additional.text} </a>`;
-        } else {
-          output += additional.text;
-        }
-        if (additional.addNewLine) {
-          output += `<br>`;
-        }
-      });
-      output += `</span>`;
+      output += concatAdditionalTexts(entry);
     });
   }
+  config.globalAdditionalTexts?.forEach((entry) => {
+    output += concatAdditionalTexts(entry);
+  });
   return output;
 };
 
@@ -117,7 +134,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
               style="font-size: ${fontSize}; font-family: '${fontFamily}'">
                 &rarr;
             </span>
-              ${localizedStrings.connectToMeeting}
+            ${localizedStrings.connectToMeeting}
           </a>
         <br>
         </span>

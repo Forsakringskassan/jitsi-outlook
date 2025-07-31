@@ -76,6 +76,19 @@ describe("getJitsiLinkDOM", () => {
 
   it("should return additional texts, with different fonts and color", () => {
     const config: Config = {
+      globalAdditionalTexts: [
+        {
+          fontSize: "12px",
+          fontFamily: "Segoe UI",
+          fontColor: "#0b12f4",
+          texts: [
+            {
+              addNewLine: true,
+              text: "sponsored by Outlook Plugin GLOBAL"
+            }
+          ]
+        }
+      ],
       meetings: [
         {
           additionalTexts: [
@@ -97,7 +110,8 @@ describe("getJitsiLinkDOM", () => {
 
     const textsText = getMeetingAdditionalTexts(config, 0);
     expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Segoe UI'; color: #0b12f4;\">");
-    expect(textsText).toContain("created by Outlook Plugin");
+    expect(textsText).toContain(config.meetings[0].additionalTexts[0].texts[0].text);
+    expect(textsText).toContain(config.globalAdditionalTexts[0].texts[0].text);
   });
 
   it("should return additional texts, with different fonts and color, multiple", () => {
@@ -136,8 +150,8 @@ describe("getJitsiLinkDOM", () => {
     const textsText = getMeetingAdditionalTexts(config, 0);
     expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Segoe UI'; color: #0b12f4;\">");
     expect(textsText).toContain("<span style=\"font-size: 16px; font-family: 'Arial'; color: #13b6f7;\">");
-    expect(textsText).toContain("created by Outlook Plugin");
-    expect(textsText).toContain("Wikipedia");
+    expect(textsText).toContain(config.meetings[0].additionalTexts[0].texts[0].text);
+    expect(textsText).toContain(config.meetings[0].additionalTexts[0].texts[1].text);
   });
 
   it("should return a string that contains the correct Jitsi URL", () => {
@@ -160,6 +174,16 @@ describe("getJitsiLinkDOM", () => {
 
   it("should include the additionalText if provided in config", () => {
     const config: Config = {
+      globalAdditionalTexts: [
+        {
+          texts: [
+            {
+              text: "Testa",
+              addNewLine: true
+            }
+          ]
+        }
+      ],
       meetings: [
         {
           type: "StandardMeeting",
@@ -179,6 +203,40 @@ describe("getJitsiLinkDOM", () => {
     const jitsiUrl = URLHelper.getJitsiUrl(config, 0);
     const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config, 0);
     expect(jitsiLinkDOM).toContain(config.meetings[0].additionalTexts[0].texts[0].text);
+    expect(jitsiLinkDOM).not.toContain("undefined");
+  });
+
+  it("should include the additionalLink if provided in config", () => {
+    const config: Config = {
+      globalAdditionalLinks: [
+        {
+          fontSize: "12px",
+          fontFamily: "Segoe UI",
+          fontColor: "#0d85c7",
+          text: "Gå med i mötet som moderator",
+          config: {}
+        }
+      ],
+      meetings: [
+        {
+          type: "StandardMeeting",
+          additionalTexts: [
+            {
+              texts: [
+                {
+                  text: "This is additional text",
+                  addNewLine: false
+                }
+              ]
+            }
+          ]
+        }
+      ],
+    };
+    const jitsiUrl = URLHelper.getJitsiUrl(config, 0);
+    const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config, 0);
+    expect(jitsiLinkDOM).toContain(config.meetings[0].additionalTexts[0].texts[0].text);
+    expect(jitsiLinkDOM).toContain(config.globalAdditionalLinks[0].text);
     expect(jitsiLinkDOM).not.toContain("undefined");
   });
 
@@ -215,14 +273,14 @@ describe("getJitsiLinkDOM", () => {
   it("should return a room containing subject line", () => {
     const config: Config = {}
     const testSubject: string = 'Test Meeting:;for +?"!new¤%€${€$[{]£$@£$£employee.,-.-...,,,,.-.-,.---.-,,.,._++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++';
-    const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, 0, testSubject);
+    const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, undefined, testSubject);
     expect(JitsiMeetingUrlProperties).toContain("Test-Meeting-for-new-employee-");
   });
 
   it("should return a room containing subject line", () => {
     const config: Config = {}
     const testSubject: string = 'Möte angående:;nästa +?"!sprint¤%€${€$[{]£$@£$£.,-.-...,,,,.-.-,.---.-,,.,._++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++';
-    const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, 0, testSubject);
+    const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, undefined, testSubject);
     expect(JitsiMeetingUrlProperties).toContain("Mote-angaende-nasta-sprint-");
   });
 

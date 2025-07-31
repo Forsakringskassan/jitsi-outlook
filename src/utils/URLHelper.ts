@@ -53,5 +53,13 @@ export const getJitsiUrl = (config: Config, index?: number, subject?: string): s
   if (subject) {
     subjectText = secureSubjectUrl(subject);
   }
-  return (config.baseUrl ?? defaultMeetJitsiUrl) + subjectText + getRandomRoomName() + getConfigUrl(config, index);
+  let prefix: string = "";
+  let suffix: string = "";
+  if (index !== undefined) {
+    if (config.meetings[index] !== undefined) {
+      prefix = (config.meetings[index].meetingPrefix ?? "");
+      suffix = (config.meetings[index].meetingSuffix ?? "");
+    }
+  }
+  return (config.baseUrl ?? defaultMeetJitsiUrl) + prefix + subjectText + getRandomRoomName() + suffix + getConfigUrl(config, index);
 };

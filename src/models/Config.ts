@@ -14,14 +14,14 @@ interface Text {
   url?: string;
 }
 
-interface AdditionalText {
+export interface AdditionalTexts {
   fontSize?: string;
   fontFamily?: string;
   fontColor?: string;
   texts: Text[];
 }
 
-interface AdditionalLinks {
+export interface AdditionalLinks {
   fontSize?: string;
   fontFamily?: string;
   fontColor?: string;
@@ -32,14 +32,18 @@ interface AdditionalLinks {
 interface Meeting {
   type?: string;
   additionalConfig?: object;
+  meetingPrefix?: string;
+  meetingSuffix?: string;
   meetingHeader?: string;
   additionalLinks?: AdditionalLinks[];
-  additionalTexts?: AdditionalText[];
+  additionalTexts?: AdditionalTexts[];
 }
 
 export interface Config {
   baseUrl?: string;
   locationString?: string;
+  globalAdditionalLinks?: AdditionalLinks[];
+  globalAdditionalTexts?: AdditionalTexts[];
   meetings?: Meeting[];
   fontFamily?: string;
   fontSize?: string;

@@ -99,4 +99,26 @@ describe("getJitsiUrl", () => {
     expect(jitsiUrl).toContain(config.baseUrl);
     expect(jitsiUrl).toContain(getConfigUrl(config, 0));
   });
+
+  it("should add suffix and prefix to string", () => {
+    const config: Config = {
+      baseUrl: "https://my-custom-base-url.com/",
+      meetings: [
+        {
+          type: "StandardMeeting",
+          meetingSuffix: "_authx",
+          meetingPrefix: "comp_",
+          additionalConfig: {
+            startWithAudioMuted: true,
+            startWithVideoMuted: true,
+          }
+        }
+      ]
+    };
+    const jitsiUrl = getJitsiUrl(config, 0);
+    expect(jitsiUrl).toContain(config.baseUrl);
+    expect(jitsiUrl).toContain(getConfigUrl(config, 0));
+    expect(jitsiUrl).toContain("comp_");
+    expect(jitsiUrl).toContain("_authx");
+  });
 });
