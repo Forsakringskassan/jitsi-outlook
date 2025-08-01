@@ -17,7 +17,7 @@ let addinConfig: AddinConfig = a_config;
 
 const addJitsiLink = (event: Office.AddinCommands.Event, name: string) => {
   try {
-    loadConfig((config: Config) => addMeeting(name, config, event), addinConfig.configUrl);
+    loadConfig((config: Config, error: string) => addMeeting(name, config, error, event), addinConfig.configUrl);
   } catch (error) {
     console.log(error);
     return;
