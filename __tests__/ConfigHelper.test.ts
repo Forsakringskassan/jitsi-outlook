@@ -28,6 +28,18 @@ const mockDataServer = {
   },
 };
 
+const mockDataServerError = {
+  host: "outlook",
+  CoercionType,
+  context: {
+    mailbox: {
+      userProfile: {
+        emailAddress: "test@controoll.test",
+      },
+    },
+  },
+};
+
 const nullConfig: Config = {
   baseUrl: "null",
   meetings: [],
@@ -45,7 +57,7 @@ describe('Test ConfigHelper', () => {
       body: JSON.stringify(testConfig)
     });
     let l_config: Config = nullConfig;
-    getConfigXHR((config) => {
+    getConfigXHR((config, e) => {
       l_config = config;
     }, "");
     expect(l_config).toEqual(testConfig);
@@ -58,10 +70,28 @@ describe('Test ConfigHelper', () => {
       body: JSON.stringify(testConfig)
     });
     let l_config: Config = nullConfig;
-    getConfigXHR((config) => {
+    getConfigXHR((config, e) => {
       l_config = config;
     });
     expect(l_config).toEqual({});
+  });
+
+  it('should get empty config, error', async () => {
+    const userProfile = new OfficeMockObject(mockDataServerError);
+    global.Office = userProfile as any;
+    mock.get('controoll.test/config.json', {
+      body: "Error file not found",
+      status: 404,
+      reason: "Not found"
+    });
+    let l_config: Config = nullConfig;
+    let error: string = "";
+    getConfigXHR((config, e) => {
+      l_config = config;
+      error = e
+    }, "");
+    expect(l_config).toEqual({});
+    expect(error).toEqual("Error fetching config: controoll.test/config.json<br><br>Error code: 404<br>Error message: Error file not found<br>");
   });
 
   it('fetch meeting information', async () => {
