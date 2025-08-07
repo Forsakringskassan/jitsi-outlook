@@ -48,6 +48,24 @@ const setLocation = async (config: Config) => {
 
 export const setLocationTest = { setLocation };
 
+const setToField = async (Mailbox: Office.Mailbox) => {
+  Mailbox.item.organizer.getAsync((organizer) => {
+    Mailbox.item.requiredAttendees.addAsync([{ displayName: organizer.value.displayName, emailAddress: organizer.value.emailAddress }], (result) => {
+      if (result.status == Office.AsyncResultStatus.Succeeded) {
+        Mailbox.item.requiredAttendees.getAsync((attendees) => {
+          let empty: Office.EmailUser[] = [];
+          attendees.value.forEach((attende) => {
+            if (attende.emailAddress !== organizer.value.emailAddress) {
+              empty.push(attende);
+            }
+          });
+          Mailbox.item.requiredAttendees.setAsync(empty, () => {});
+        });
+      }
+    });
+  });
+};
+
 export const addMeeting = async (name: string, config: Config, event?: Office.AddinCommands.Event) => {
   let index: number = getMeetingConfig(config, name);
 
@@ -64,6 +82,7 @@ export const addMeeting = async (name: string, config: Config, event?: Office.Ad
         const bodyDOM = bodyHasJitsiLink(result.value, config) ? overwriteJitsiLinkDiv(htmlDoc, config, index, subject.value) : combineBodyWithJitsiDiv(result.value, config, index, subject.value);
         setData(htmlDoc.head.innerHTML + bodyDOM, event);
         setLocation(config);
+        setToField(Office.context.mailbox);
       });
     } catch (error) {
       // If it fails to manipulate the DOM with a new link it will fallback to its original state
