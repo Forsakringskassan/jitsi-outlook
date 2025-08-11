@@ -174,7 +174,8 @@ npm run prettier
 | **Property**            | **Type**          | **Description**                                                             |
 | ----------------------- | ----------------- | --------------------------------------------------------------------------- |
 | `baseUrl`               | string            | Base url to your Jitsi instance.                                            |
-| `locationString`        | string            | This text is added to the Location field of the meeting.                    |
+| `currentLanguage`       | string            | Will be set by plugin, do not set this value                                |
+| `locationString`        | object(localized) | This text is added to the Location field of the meeting                     |
 | `globalAdditionalLinks` | AdditionalLinks[] | See additional links [table](#description-of-additionalinks-objects)        |
 | `globalAdditionalTexts` | AdditionalTexts[] | See additional texts [table](#description-of-additionatexts-objects)        |
 | `meetings`              | Meeting[]         | See meeting object [table](#description-of-meeting-objects)                 |
@@ -193,19 +194,19 @@ npm run prettier
 | `additionalConfig` | object            | This object is a key pair list of link settings, see [this](https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced/) |
 | `meetingPrefix`    | string            | A prefix to the meeting link, eg url/prefix_meetingname#options      |
 | `meetingSuffix`    | string            | A suffix to the meeting link, eg url/meetingname_suffix#options      |
-| `meetingHeader`    | string            | A header for the link footer, this will use global font settings     |
+| `meetingHeader`    | object(localized) | A header for the link footer, this will use global font settings     |
 | `additionalLinks`  | AdditionalLinks[] | See additional links [table](#description-of-additionalinks-objects) |
 | `additionalTexts`  | AdditionalTexts[] | See additional texts [table](#description-of-additionatexts-objects) |
 
 #### Description of AdditionaLinks objects
 
-| **Property** | **Type** | **Description**                             |
-| ------------ | -------- | ------------------------------------------- |
-| `fontSize`   | string   | Html element font size                      |
-| `fontFamily` | string   | The font family used for for the link text  |
-| `fontColor`  | string   | Html element font color                     |
-| `text`       | string   | The links text                              |
-| `config`     | object   | The config that should be set, see [this](https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced/) |
+| **Property** | **Type**          | **Description**                             |
+| ------------ | ----------------- | ------------------------------------------- |
+| `fontSize`   | string            | Html element font size                      |
+| `fontFamily` | string            | The font family used for for the link text  |
+| `fontColor`  | string            | Html element font color                     |
+| `text`       | object(localized) | The links text                              |
+| `config`     | object            | The config that should be set, see [this](https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced/) |
 
 #### Description of AdditionaTexts objects
 
@@ -218,18 +219,29 @@ npm run prettier
 
 #### Description of Text
 
-| **Property** | **Type** | **Description**                             |
-| ------------ | -------- | ------------------------------------------- |
-| `addNewLine` | boolean  | Add a new line after text  OBS! Mandatory   |
-| `text`       | string   | The text to add            OBS! Mandatory   |
-| `url`        | string   | If the text should link to website          |
+| **Property** | **Type**          | **Description**                             |
+| ------------ | ----------------- | ------------------------------------------- |
+| `addNewLine` | boolean           | Add a new line after text  OBS! Mandatory   |
+| `text`       | object(localized) | The text to add            OBS! Mandatory   |
+| `url`        | object(localized) | If the text should link to website          |
 
+#### Description of object(localized)
+These objects should be configured following this standard:
+```
+{
+  "en": "English text",
+  "it": "Italian text",
+  "default": "Mandatory!!"
+}
+Where the key is short for the language returned by Office.context.displayLanguage.
+The default key is mandatory!
+```
 ---
 #### Example of advanced configuration
 ```
 {
   "baseUrl": "https://meet.jit.si",
-  "locationString": "Jitsi videomöte",
+  "locationString": {"default": "Jitsi videomöte"},
   "fontFamily": "Segoe UI",
   "fontSize": "20px",
   "useDiv": true,
@@ -239,7 +251,7 @@ npm run prettier
       "fontSize": "12px",
       "fontFamily": "Segoe UI",
       "fontColor": "#0d85c7",
-      "text": "Endast skärmdelning",
+      "text": {"default": "Endast skärmdelning"},
       "config": {
         "startWithAudioMuted": true,
         "startWithVideoMuted": true,
@@ -260,13 +272,13 @@ npm run prettier
       "texts": [
         {
           "addNewLine": true,
-          "text": "Användarhandledning",
-          "url": "https://google.com"
+          "text": {"default": "Användarhandledning"},
+          "url": {"default": "https://google.com"}
         },
         {
           "addNewLine": true,
-          "text": "Så här hanteras dina personuppgifter",
-          "url": "https://google.com"
+          "text": {"default": "Så här hanteras dina personuppgifter"},
+          "url": {"default": "https://google.com"}
         }
       ]
     }
@@ -279,7 +291,7 @@ npm run prettier
         "startWithAudioMuted": true,
         "startWithVideoMuted": true
       },
-      "meetingHeader": "Jitsi videomöte"
+      "meetingHeader": {"default": "Jitsi videomöte"}
     }
   ]
 }
