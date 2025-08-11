@@ -61,5 +61,9 @@ export const getJitsiUrl = (config: Config, index?: number, subject?: string): s
       suffix = (config.meetings[index].meetingSuffix ?? "");
     }
   }
-  return (config.baseUrl ?? defaultMeetJitsiUrl) + prefix + subjectText + getRandomRoomName() + suffix + getConfigUrl(config, index);
+  let baseUrl = (config.baseUrl ?? defaultMeetJitsiUrl)
+  if (!baseUrl.endsWith("/")) {
+    baseUrl = baseUrl + "/";
+  }
+  return baseUrl + prefix + subjectText + getRandomRoomName() + suffix + getConfigUrl(config, index);
 };
