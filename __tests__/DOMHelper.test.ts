@@ -54,7 +54,7 @@ describe("getJitsiLinkDOM", () => {
           },
           additionalLinks: [
             {
-              text: {"en": "LINK WITHOUT CAMERA", "default": "link without camera"},
+              text: {"en-GB": "LINK WITHOUT CAMERA", "default": "link without camera"},
               config: {
                 toolbarButtons: "[%22microphone%22,%22desktop%22,%22hangup%22]"
               }
@@ -66,7 +66,7 @@ describe("getJitsiLinkDOM", () => {
               texts: [
                 {
                   addNewLine: true,
-                  text: {"en": "Wiki", "default": "Wikipedia"},
+                  text: {"en-GB": "Wiki", "default": "Wikipedia"},
                   url: {"default": "https://wikipedia.com"}
                 }
               ]
@@ -75,10 +75,10 @@ describe("getJitsiLinkDOM", () => {
         }
       ]
     };
-    expect(getLocalizedText(config.meetings[0].additionalLinks[0].text, "en", "")).toEqual("LINK WITHOUT CAMERA");
+    expect(getLocalizedText(config.meetings[0].additionalLinks[0].text, "en-GB", "")).toEqual("LINK WITHOUT CAMERA");
     expect(getLocalizedText(config.meetings[0].additionalLinks[0].text, "def", "")).toEqual("link without camera");
     expect(getLocalizedText(null, "en", "")).toEqual("");
-    expect(getLocalizedText(config.meetings[0].additionalTexts[0].texts[0].text, "en", "")).toEqual("Wiki");
+    expect(getLocalizedText(config.meetings[0].additionalTexts[0].texts[0].text, "en-GB", "")).toEqual("Wiki");
     expect(getLocalizedText(config.meetings[0].additionalTexts[0].texts[0].text, "default", "")).toEqual("Wikipedia");
     expect(getLocalizedText(config.meetings[0].additionalTexts[0].texts[0].url, "def", "")).toEqual("https://wikipedia.com");
     expect(getLocalizedText(undefined, "en", "")).toEqual("");
