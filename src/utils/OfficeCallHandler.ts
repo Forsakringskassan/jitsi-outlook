@@ -68,7 +68,7 @@ const setToField = async (Mailbox: Office.Mailbox) => {
 
 export const addMeeting = async (name: string, config: Config, event?: Office.AddinCommands.Event) => {
   let index: number = getMeetingConfig(config, name);
-
+  const diagnostics = Office.context.mailbox.diagnostics;
   Office.context.mailbox.item.body.getAsync(Office.CoercionType.Html, (result) => {
     if (result.error) {
       event.completed();
@@ -82,7 +82,9 @@ export const addMeeting = async (name: string, config: Config, event?: Office.Ad
         const bodyDOM = bodyHasJitsiLink(result.value, config) ? overwriteJitsiLinkDiv(htmlDoc, config, index, subject.value) : combineBodyWithJitsiDiv(result.value, config, index, subject.value);
         setData(htmlDoc.head.innerHTML + bodyDOM, event);
         setLocation(config);
-        setToField(Office.context.mailbox);
+        if (diagnostics.OWAView == undefined) {
+          setToField(Office.context.mailbox);
+        }
       });
     } catch (error) {
       // If it fails to manipulate the DOM with a new link it will fallback to its original state
