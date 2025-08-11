@@ -189,8 +189,7 @@ describe("Connection test to server", () => {
     const config: Config = {} as Config;
     let location: string = "";
     let body: string = "";
-    let attendees: EmailUserResult = {value:[{displayName: "", emailAddress: ""}]} as EmailUserResult;
-    var l = attendees.value.shift();
+    let attendees: {value:{displayName: string, emailAddress: string}[]} = {value:[]};
     let opt: Office.CoercionType = Office.CoercionType.Html;
 
     await addMeeting("StandardMeeting", config);
@@ -198,9 +197,10 @@ describe("Connection test to server", () => {
     Office.context.mailbox.item.location.getAsync((r) => { location = r.value });
     Office.context.mailbox.item.body.getAsync(opt, (r) => { body = r.value });
     Office.context.mailbox.item.requiredAttendees.getAsync((r) => { r.value.forEach(u =>{attendees.value.push({"displayName": u.displayName, "emailAddress": u.emailAddress})})});
+    let testAttende: {displayName: string, emailAddress: string}[] = [{"displayName": "Jane Doe", "emailAddress": "jane.doe@controll.test"}]
     expect(location).toBe("Jitsi meeting");
     expect(body).toContain('div id="jitsi-link"');
-    expect(attendees.value[0].displayName).toEqual("Jane Doe");
+    expect(attendees.value).toStrictEqual(testAttende);
   });
 
   it("Add meeting test, with config", async () => {
