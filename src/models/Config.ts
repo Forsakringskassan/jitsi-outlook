@@ -10,8 +10,8 @@ export const defaultFontColor = "#000000";
 
 interface Text {
   addNewLine: boolean;
-  text: string;
-  url?: string;
+  text: object;
+  url?: object;
 }
 
 export interface AdditionalTexts {
@@ -25,7 +25,7 @@ export interface AdditionalLinks {
   fontSize?: string;
   fontFamily?: string;
   fontColor?: string;
-  text: string;
+  text: object;
   config: object;
 }
 
@@ -34,14 +34,15 @@ interface Meeting {
   additionalConfig?: object;
   meetingPrefix?: string;
   meetingSuffix?: string;
-  meetingHeader?: string;
+  meetingHeader?: object;
   additionalLinks?: AdditionalLinks[];
   additionalTexts?: AdditionalTexts[];
 }
 
 export interface Config {
+  currentLanguage?: string;
   baseUrl?: string;
-  locationString?: string;
+  locationString?: object;
   globalAdditionalLinks?: AdditionalLinks[];
   globalAdditionalTexts?: AdditionalTexts[];
   meetings?: Meeting[];

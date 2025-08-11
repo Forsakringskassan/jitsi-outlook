@@ -45,14 +45,15 @@ export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: nu
   return updatedHtmlString;
 };
 
-const concatAdditionalLinks = (additionalLinks: AdditionalLinks, baseUrl: string): string => {
+const concatAdditionalLinks = (lang: string, additionalLinks: AdditionalLinks, baseUrl: string): string => {
   let output: string = "";
   var keys: string[] = Object.keys(additionalLinks.config);
+  let aL: string = getLocalizedText(additionalLinks.text, lang, "");
   let url: string = keys.reduce((acc, currentValue) => {
     return acc + `config.${currentValue}=${additionalLinks.config[currentValue]}&`;
   }, "#");
   output += `<span style="font-size: ${additionalLinks.fontSize ?? defaultFontSize}; font-family: '${additionalLinks.fontFamily ?? defaultFontFamily}'; color: ${additionalLinks.fontColor ?? defaultFontColor};">`;
-  output += `<a aria-label="${additionalLinks.text}" title="${additionalLinks.text}" style="text-decoration: none;" href="${baseUrl + url.slice(0, -1)}"> ${additionalLinks.text} </a>`;
+  output += `<a aria-label="${aL}" title="${aL}" style="text-decoration: none;" href="${baseUrl + url.slice(0, -1)}"> ${aL} </a>`;
   output += `</span>`;
   output += `<br>`;
   return output
@@ -63,23 +64,27 @@ export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, inde
   let baseUrl: string = jitsiUrl.split("#")[0];
   if (index !== undefined) {
     config.meetings[index]?.additionalLinks?.forEach((entry) => {
-      output += concatAdditionalLinks(entry, baseUrl);
+      output += concatAdditionalLinks(config.currentLanguage, entry, baseUrl);
     });
   }
   config.globalAdditionalLinks?.forEach((entry) => {
-    output += concatAdditionalLinks(entry, baseUrl);
+    output += concatAdditionalLinks(config.currentLanguage, entry, baseUrl);
   });
   return output;
 };
 
-const concatAdditionalTexts = (additionalTexts: AdditionalTexts): string => {
+const concatAdditionalTexts = (lang: string, additionalTexts: AdditionalTexts): string => {
   let output: string = "";
+  let aT:string = "";
+  let aU:string = "";
   output += `<span style="font-size: ${additionalTexts.fontSize ?? defaultFontSize}; font-family: '${additionalTexts.fontFamily ?? defaultFontFamily}'; color: ${additionalTexts.fontColor ?? defaultFontColor};">`;
   additionalTexts.texts.forEach((additional) => {
+    aT = getLocalizedText(additional.text, lang, "");
+    aU = getLocalizedText(additional.url, lang, "");
     if (additional.url) {
-      output += `<a aria-label="${additional.text}" title="${additional.text}" style="text-decoration: none;" href="${additional.url}"> ${additional.text} </a>`;
+      output += `<a aria-label="${aT}" title="${aT}" style="text-decoration: none;" href="${aU}"> ${aT} </a>`;
     } else {
-      output += additional.text;
+      output += aT;
     }
     if (additional.addNewLine) {
       output += `<br>`;
@@ -93,19 +98,22 @@ export const getMeetingAdditionalTexts = (config: Config, index?: number): strin
   let output: string = "";
   if (index !== undefined) {
     config.meetings[index]?.additionalTexts?.forEach((entry) => {
-      output += concatAdditionalTexts(entry);
+      output += concatAdditionalTexts(config.currentLanguage, entry);
     });
   }
   config.globalAdditionalTexts?.forEach((entry) => {
-    output += concatAdditionalTexts(entry);
+    output += concatAdditionalTexts(config.currentLanguage, entry);
   });
   return output;
+};
+
+export const getLocalizedText = (obj: object | null, lang: string, def: string): string => {
+  return (obj) ? ((lang in obj) ? obj[lang] : obj["default"] ) : def;
 };
 
 export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number): string => {
   let output: string = "";
   const localizedStrings = getLocalizedStrings();
-
   const tdStyles = "padding-right: 10px; vertical-align: middle; background-color: transparent;";
   const fontFamily = config.fontFamily ?? defaultFontFamily;
   const fontSize = config.fontSize ?? defaultFontSize;
@@ -116,7 +124,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
     output += `<hr style="color: ${divColor}; border-color: ${divColor}">`;
   }
   if (index !== undefined) {
-    output += `<div style="font-size: ${fontSize}; font-weight: 700; font-family: '${fontFamily}'">${config.meetings[index].meetingHeader ?? ""}</div>`;
+    output += `<div style="font-size: ${fontSize}; font-weight: 700; font-family: '${fontFamily}'">${getLocalizedText(config.meetings[index].meetingHeader, config.currentLanguage, "")}</div>`;
   }
   output += `
       <div style="${tdStyles}">
@@ -129,7 +137,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
             href="${jitsiUrl}">`;
   if (config.useGraphics !== undefined && config.useGraphics == true) {
   output += `
-            <img style="vertical-align: middle;" width="18" height="18" src=${videoCameraURI}/>`
+            <img style="vertical-align: middle;" width="18" height="18" src=` + ((config.useGraphics) ? "" : videoCameraURI) + `/>`
   }
   output += `
             <span
