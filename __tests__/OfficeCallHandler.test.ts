@@ -34,6 +34,9 @@ const mockDataServer = {
   AsyncResultStatus: 0,
   context: {
     mailbox: {
+      diagnostics: {
+        OWAView: undefined
+      },
       item: {
         requiredAttendees: {
           attendees: {value:[
@@ -222,6 +225,33 @@ describe("Connection test to server", () => {
     Office.context.mailbox.item.body.getAsync(opt, (r) => { body = r.value });
     expect(location).toBe("Jitsi meeting");
     expect(body).toContain('div id="jitsi-link"');
-    expect(body).toContain('#config.startWithAudioMuted=true')
+    expect(body).toContain('#config.startWithAudioMuted=true');
+  });
+
+  it("Test if client is used or OWA web", async () => {
+    const owaMock = new OfficeMockObject(mockDataServer) as any;
+    global.Office = owaMock;
+    const config: Config = {
+      baseUrl: "https://my-custom-base-url.com/",
+      meetings: [
+        {
+          type: "StandardMeeting",
+          startWithAudioMuted: true,
+        }
+      ]
+    } as Config;
+    let attendees: {value:{displayName: string, emailAddress: string}[]} = {value:[]};
+    await addMeeting("StandardMeeting", config);
+    Office.context.mailbox.item.requiredAttendees.getAsync((r) => {r.value.forEach(e => {attendees.value.push({"displayName": e.displayName, "emailAddress": e.emailAddress})})})
+    let testAttende: {displayName: string, emailAddress: string}[] = [{"displayName": "Jane Doe", "emailAddress": "jane.doe@controll.test"}]
+    expect(attendees.value).toStrictEqual(testAttende);
+
+    attendees = {value:[]};
+    Office.context.mailbox.diagnostics.OWAView = "OneColumn";
+    Office.context.mailbox.item.requiredAttendees.addAsync([{displayName: "John Doe", emailAddress: "john.doe@controll.test"}], (_) => {});
+    await addMeeting("StandardMeeting", config);
+    let testAttendeNo: {displayName: string, emailAddress: string}[] = [{"displayName": "Jane Doe", "emailAddress": "jane.doe@controll.test"},{"displayName": "John Doe", "emailAddress": "john.doe@controll.test"}]
+    Office.context.mailbox.item.requiredAttendees.getAsync((r) => {r.value.forEach(e => {attendees.value.push({"displayName": e.displayName, "emailAddress": e.emailAddress})})})
+    expect(attendees.value).toStrictEqual(testAttendeNo);
   });
 });
