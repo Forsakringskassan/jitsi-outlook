@@ -4,7 +4,7 @@
 
 import getLocalizedStrings from "../src/localization";
 import { Config, defaultFontFamily } from "../src/models/Config";
-import { bodyHasJitsiLink, getJitsiLinkDiv, overwriteJitsiLinkDiv, getMeetingAdditionalTexts, getMeetingAdditionalLinks, getLocalizedText } from "../src/utils/DOMHelper";
+import { bodyHasJitsiLink, getJitsiLinkDiv, overwriteJitsiLinkDiv, getMeetingAdditionalTexts, getMeetingAdditionalLinks, getLocalizedText, combineBodyWithJitsiDiv } from "../src/utils/DOMHelper";
 import * as URLHelper from "../src/utils/URLHelper";
 
 describe("getJitsiLinkDOM", () => {
@@ -247,6 +247,14 @@ describe("getJitsiLinkDOM", () => {
     expect(jitsiLinkDOM).toContain(config.meetings[0].additionalTexts[0].texts[0].text["default"]);
     expect(jitsiLinkDOM).not.toContain("undefined");
     expect(jitsiLinkDOM).toContain("Header line");
+
+    const combineJitsiBody = combineBodyWithJitsiDiv("", config, 0);
+    expect(combineJitsiBody).toContain("Header line");
+    config.meetings[0].meetingHeader = {"default": "Header Line 2!"};
+    const parser = new DOMParser();
+    const htmlDoc = parser.parseFromString(combineJitsiBody, "text/html");
+    const overwriteLinkDiv = overwriteJitsiLinkDiv(htmlDoc, config, 0);
+    expect(overwriteLinkDiv).toContain("Header Line 2!");
   });
 
   it("should include the additionalLink if provided in config", () => {
