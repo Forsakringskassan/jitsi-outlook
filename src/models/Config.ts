@@ -52,6 +52,7 @@ export interface Config {
   useDiv?: boolean;
   divColor?: string;
   useGraphics?: boolean;
+  userGraphics?: string;
 }
 
 export interface AddinConfig {

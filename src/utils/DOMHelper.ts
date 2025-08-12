@@ -137,7 +137,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
             href="${jitsiUrl}">`;
   if (config.useGraphics !== undefined && config.useGraphics == true) {
   output += `
-            <img style="vertical-align: middle;" width="18" height="18" src=` + ((config.useGraphics) ? "" : videoCameraURI) + `/>`
+            <img style="vertical-align: middle;" width="18" height="18" src="` + ((config.userGraphics) ? config.userGraphics : videoCameraURI) + `">`
   }
   output += `
             <span

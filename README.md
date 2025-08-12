@@ -185,6 +185,7 @@ npm run prettier
 | `useDiv`                | boolean           | Use dividers for footer or not                                              |
 | `divColor`              | string            | Set a div color for the first divider (default to #ffffff)                |
 | `useGraphics`           | boolean           | Use the camera image provided or not                                        |
+| `userGraphics`          | string            | Src for the <img> html tag                                                  |
 
 #### Description of Meeting objects
 

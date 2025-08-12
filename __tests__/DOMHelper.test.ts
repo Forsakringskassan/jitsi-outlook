@@ -228,6 +228,7 @@ describe("getJitsiLinkDOM", () => {
       meetings: [
         {
           type: "StandardMeeting",
+          meetingHeader: {"default": "Header line"},
           additionalTexts: [
             {
               texts: [
@@ -245,6 +246,7 @@ describe("getJitsiLinkDOM", () => {
     const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config, 0);
     expect(jitsiLinkDOM).toContain(config.meetings[0].additionalTexts[0].texts[0].text["default"]);
     expect(jitsiLinkDOM).not.toContain("undefined");
+    expect(jitsiLinkDOM).toContain("Header line");
   });
 
   it("should include the additionalLink if provided in config", () => {
