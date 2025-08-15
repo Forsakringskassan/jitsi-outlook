@@ -57,11 +57,11 @@ export const getJitsiUrl = (config: Config, index?: number, subject?: string): s
   let suffix: string = "";
   if (index !== undefined) {
     if (config.meetings[index] !== undefined) {
-      prefix = (config.meetings[index].meetingPrefix ?? "");
-      suffix = (config.meetings[index].meetingSuffix ?? "");
+      prefix = config.meetings[index].meetingPrefix ?? "";
+      suffix = config.meetings[index].meetingSuffix ?? "";
     }
   }
-  let baseUrl = (config.baseUrl ?? defaultMeetJitsiUrl)
+  let baseUrl = config.baseUrl ?? defaultMeetJitsiUrl;
   if (!baseUrl.endsWith("/")) {
     baseUrl = baseUrl + "/";
   }

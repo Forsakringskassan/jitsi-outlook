@@ -24,7 +24,7 @@ const setData = async (str: string, event?: Office.AddinCommands.Event) => {
 export const setDataTest = { setData };
 
 const setLocation = async (config: Config) => {
-  let location: string = (config.locationString) ? ((config.currentLanguage in config.locationString) ? config.locationString[config.currentLanguage] : config.locationString["default"]) : "Jitsi meeting";
+  let location: string = config.locationString ? (config.currentLanguage in config.locationString ? config.locationString[config.currentLanguage] : config.locationString["default"]) : "Jitsi meeting";
   Office.context.mailbox.item?.location.getAsync((r) => {
     let r_value: string = r.value.trimEnd();
     if (r.value.length > 0) {

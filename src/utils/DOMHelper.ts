@@ -75,8 +75,8 @@ export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, inde
 
 const concatAdditionalTexts = (lang: string, additionalTexts: AdditionalTexts): string => {
   let output: string = "";
-  let aT:string = "";
-  let aU:string = "";
+  let aT: string = "";
+  let aU: string = "";
   output += `<span style="font-size: ${additionalTexts.fontSize ?? defaultFontSize}; font-family: '${additionalTexts.fontFamily ?? defaultFontFamily}'; color: ${additionalTexts.fontColor ?? defaultFontColor};">`;
   additionalTexts.texts.forEach((additional) => {
     aT = getLocalizedText(additional.text, lang, "");
@@ -108,7 +108,7 @@ export const getMeetingAdditionalTexts = (config: Config, index?: number): strin
 };
 
 export const getLocalizedText = (obj: object | null, lang: string, def: string): string => {
-  return (obj) ? ((lang in obj) ? obj[lang] : obj["default"] ) : def;
+  return obj ? (lang in obj ? obj[lang] : obj["default"]) : def;
 };
 
 export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number): string => {
@@ -120,7 +120,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
   const fontColor = config.fontColor ?? defaultFontColor;
   const divColor = config.divColor ?? "#ffffff";
   output += `<div id="${DIV_ID_JITSI}"><br>`;
-  if (config.useDiv !== undefined && config.useDiv == true){
+  if (config.useDiv !== undefined && config.useDiv == true) {
     output += `<hr style="color: ${divColor}; border-color: ${divColor}">`;
   }
   if (index !== undefined) {
@@ -136,8 +136,11 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
             style="text-decoration: none;"
             href="${jitsiUrl}">`;
   if (config.useGraphics !== undefined && config.useGraphics == true) {
-  output += `
-            <img style="vertical-align: middle;" width="18" height="18" src="` + ((config.userGraphics) ? config.userGraphics : videoCameraURI) + `">`
+    output +=
+      `
+            <img style="vertical-align: middle;" width="18" height="18" src="` +
+      (config.userGraphics ? config.userGraphics : videoCameraURI) +
+      `">`;
   }
   output += `
             <span

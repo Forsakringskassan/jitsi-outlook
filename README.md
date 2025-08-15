@@ -56,7 +56,7 @@ Please see the [CONTRIBUTING](CONTRIBUTING.adoc) guide.
 
 ## Development
 
-## **Installing the add-in on your Outlook**
+### **Installing the add-in on your Outlook**
 
 For development, The add-in needs to be added to the relevant Outlook environment. The methods to do this are described in this section.
 
@@ -159,6 +159,8 @@ npm run test
 npm run lint
 
 npm run prettier
+
+npm run test-config config="path" index"index" lang="language code"
 
 # Make sure to run these 3 before contributing code!
 ```

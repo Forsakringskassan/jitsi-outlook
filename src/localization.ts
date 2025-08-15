@@ -3,15 +3,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-/* global Office */
-
 interface LocalizedStrings {
   connectToMeeting: string;
   linkToMeeting: string;
 }
 
 const getLocalizedStrings = (lang?: string): LocalizedStrings => {
-  const myLanguage = (lang) ? lang : "en";
+  const myLanguage = lang ? lang : "en";
   if (/sv/.test(myLanguage)) {
     return {
       connectToMeeting: "Anslut till mötet",
