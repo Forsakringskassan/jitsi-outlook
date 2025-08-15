@@ -20,12 +20,56 @@ enum CoercionType {
 interface result {
   value?: string;
 }
+
+interface EmailUserResult {
+  value: [{
+    displayName: string;
+    emailAddress: string;
+  }];
+}
+
 const mockDataServer = {
   host: "outlook",
   CoercionType,
+  AsyncResultStatus: 0,
   context: {
     mailbox: {
+      diagnostics: {
+        OWAView: undefined
+      },
       item: {
+        requiredAttendees: {
+          attendees: {value:[
+            {
+              displayName: "Jane Doe",
+              emailAddress: "jane.doe@controll.test"
+            }
+          ]},
+          addAsync: async function (user: {displayName: string, emailAddress: string}[], callback: (r: Office.AsyncResultStatus) => void) {
+            user.forEach(u => {
+              this.attendees.value.push({"displayName": u.displayName, "emailAddress": u.emailAddress})
+            });
+            callback(0)
+          },
+          getAsync: async function (callback: (r: EmailUserResult[]) => void) {
+            let r: EmailUserResult[] = this.attendees
+            callback(r)
+          },
+          setAsync: async function (value, callback: (r: Office.AsyncResultStatus, res: EmailUserResult[]) => void) {
+            this.attendees.value = value;
+            callback(0, this.attendees)
+          }
+        },
+        organizer: {
+          value: {
+            displayName: "John Doe",
+            emailAddress: "john.doe@controll.test",
+          },
+          getAsync: async function (callback: (r: EmailUserResult) => void) {
+            let r: EmailUserResult = { value: this.value } as EmailUserResult;
+            callback(r)
+          }
+        },
         location: {
           location: "",
           setAsync: async function (location: string) {
@@ -145,14 +189,18 @@ describe("Connection test to server", () => {
     const config: Config = {} as Config;
     let location: string = "";
     let body: string = "";
+    let attendees: {value:{displayName: string, emailAddress: string}[]} = {value:[]};
     let opt: Office.CoercionType = Office.CoercionType.Html;
 
     await addMeeting("StandardMeeting", config);
 
     Office.context.mailbox.item.location.getAsync((r) => { location = r.value });
     Office.context.mailbox.item.body.getAsync(opt, (r) => { body = r.value });
+    Office.context.mailbox.item.requiredAttendees.getAsync((r) => { r.value.forEach(u =>{attendees.value.push({"displayName": u.displayName, "emailAddress": u.emailAddress})})});
+    let testAttende: {displayName: string, emailAddress: string}[] = [{"displayName": "Jane Doe", "emailAddress": "jane.doe@controll.test"}]
     expect(location).toBe("Jitsi meeting");
     expect(body).toContain('div id="jitsi-link"');
+    expect(attendees.value).toStrictEqual(testAttende);
   });
 
   it("Add meeting test, with config", async () => {
@@ -177,6 +225,33 @@ describe("Connection test to server", () => {
     Office.context.mailbox.item.body.getAsync(opt, (r) => { body = r.value });
     expect(location).toBe("Jitsi meeting");
     expect(body).toContain('div id="jitsi-link"');
-    expect(body).toContain('#config.startWithAudioMuted=true')
+    expect(body).toContain('#config.startWithAudioMuted=true');
+  });
+
+  it("Test if client is used or OWA web", async () => {
+    const owaMock = new OfficeMockObject(mockDataServer) as any;
+    global.Office = owaMock;
+    const config: Config = {
+      baseUrl: "https://my-custom-base-url.com/",
+      meetings: [
+        {
+          type: "StandardMeeting",
+          startWithAudioMuted: true,
+        }
+      ]
+    } as Config;
+    let attendees: {value:{displayName: string, emailAddress: string}[]} = {value:[]};
+    await addMeeting("StandardMeeting", config);
+    Office.context.mailbox.item.requiredAttendees.getAsync((r) => {r.value.forEach(e => {attendees.value.push({"displayName": e.displayName, "emailAddress": e.emailAddress})})})
+    let testAttende: {displayName: string, emailAddress: string}[] = [{"displayName": "Jane Doe", "emailAddress": "jane.doe@controll.test"}]
+    expect(attendees.value).toStrictEqual(testAttende);
+
+    attendees = {value:[]};
+    Office.context.mailbox.diagnostics.OWAView = "OneColumn";
+    Office.context.mailbox.item.requiredAttendees.addAsync([{displayName: "John Doe", emailAddress: "john.doe@controll.test"}], (_) => {});
+    await addMeeting("StandardMeeting", config);
+    let testAttendeNo: {displayName: string, emailAddress: string}[] = [{"displayName": "Jane Doe", "emailAddress": "jane.doe@controll.test"},{"displayName": "John Doe", "emailAddress": "john.doe@controll.test"}]
+    Office.context.mailbox.item.requiredAttendees.getAsync((r) => {r.value.forEach(e => {attendees.value.push({"displayName": e.displayName, "emailAddress": e.emailAddress})})})
+    expect(attendees.value).toStrictEqual(testAttendeNo);
   });
 });
