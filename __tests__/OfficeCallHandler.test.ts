@@ -24,6 +24,7 @@ const mockDataServer = {
   host: "outlook",
   CoercionType,
   context: {
+    displayLanguage: "sv-SE",
     mailbox: {
       item: {
         location: {

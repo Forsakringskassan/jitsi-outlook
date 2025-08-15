@@ -113,7 +113,7 @@ export const getLocalizedText = (obj: object | null, lang: string, def: string):
 
 export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number): string => {
   let output: string = "";
-  const localizedStrings = getLocalizedStrings();
+  const localizedStrings = getLocalizedStrings(config.currentLanguage);
   const tdStyles = "padding-right: 10px; vertical-align: middle; background-color: transparent;";
   const fontFamily = config.fontFamily ?? defaultFontFamily;
   const fontSize = config.fontSize ?? defaultFontSize;

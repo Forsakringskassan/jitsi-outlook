@@ -50,7 +50,7 @@ export const setLocationTest = { setLocation };
 
 export const addMeeting = async (name: string, config: Config, event?: Office.AddinCommands.Event) => {
   let index: number = getMeetingConfig(config, name);
-  config.currentLanguage = typeof Office !== "undefined" ? Office.context.displayLanguage : "en";
+  config.currentLanguage = typeof Office !== "undefined" ? Office.context.displayLanguage.split("-")[0] : "en";
   Office.context.mailbox.item.body.getAsync(Office.CoercionType.Html, (result) => {
     if (result.error) {
       event.completed();
