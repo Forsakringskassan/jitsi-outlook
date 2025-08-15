@@ -56,7 +56,7 @@ const concatAdditionalLinks = (lang: string, additionalLinks: AdditionalLinks, b
   output += `<a aria-label="${aL}" title="${aL}" style="text-decoration: none;" href="${baseUrl + url.slice(0, -1)}"> ${aL} </a>`;
   output += `</span>`;
   output += `<br>`;
-  return output
+  return output;
 };
 
 export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, index?: number): string => {
@@ -151,7 +151,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
       <div>`;
   output += getMeetingAdditionalLinks(config, jitsiUrl, index);
   output += getMeetingAdditionalTexts(config, index);
-  output += `<br>`
+  output += `<br>`;
   if (config.useDiv !== undefined && config.useDiv == true) {
     output += `<hr>`;
   }
