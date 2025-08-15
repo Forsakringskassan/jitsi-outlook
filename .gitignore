@@ -50,3 +50,6 @@ Thumbs.db
 
 # Config file
 config.json
+
+# Test output
+build-utils/*.html

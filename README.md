@@ -160,8 +160,10 @@ npm run lint
 
 npm run prettier
 
+# Testing of config and manifest file
 npm run test-config config="path" index"index" lang="language code"
 
+npm run validate "path to manifest file"
 # Make sure to run these 3 before contributing code!
 ```
 
