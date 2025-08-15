@@ -16,10 +16,10 @@ Report security bugs in third-party modules to the person or team maintaining th
 *Your responsibility is to report vulnerabilities to us using the guidelines outlined below.*
 
 - SAFOS security contact { contact: mailto:safos@forsakringskassan.se }
-- Disclosure format: When disclosing vulnerabilities please 
+- Disclosure format: When disclosing vulnerabilities please
   1. Your name and affiliation (if any).
   2. include scope of vulnerability. Let us know who could use this exploit.
-  3. document steps to identify the vulnerability. It is important that we can reproduce your findings. 
+  3. document steps to identify the vulnerability. It is important that we can reproduce your findings.
   4. how to exploit vulnerability, give us an attack scenario.
 
 ## Version

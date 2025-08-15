@@ -1,7 +1,7 @@
 {
   "baseUrl": "https://meet.jit.si",
-  "locationString": "string",
-  "additionalText": "",
+  "locationString": {"default": "string"},
+  "additionalText": {"default": ""},
   "meetings": [
     {
       "type": "StandardMeeting",

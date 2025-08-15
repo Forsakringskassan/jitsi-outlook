@@ -1,13 +1,36 @@
 {
   "baseUrl": "https://meet.jit.si",
   "locationString": "string",
-  "additionalText": "",
   "meetings": [
     {
       "type": "StandardMeeting",
-      "startWithAudioMuted": true,
-      "startWithVideoMuted": true
+      "additionalConfig": {
+        "startWithAudioMuted": true,
+        "startWithVideoMuted": true
+      },
+      "meetingHeader": {"default": "Test Meeting"},
+      "additionalTexts": [
+        {
+          "fontSize": "12px",
+          "fontFamily": "Segoe UI",
+          "fontColor": "#ffffff",
+          "texts": [
+            {
+              "addNewLine": true,
+              "text": {"default": "Test this meeting"}
+            },
+            {
+              "addNewLine": false,
+              "text": {"default": "Url to wikipedia"},
+              "url": {"default": "https://wikipedia.com"}
+            }
+          ]
+        }
+      ]
     }
   ],
-  "fontFamily": "Arial"
+  "fontFamily": "Arial",
+  "fontSize": "20px",
+  "fontColor": "#0d85c7",
+  "divColor": "#0d85c7"
 }
