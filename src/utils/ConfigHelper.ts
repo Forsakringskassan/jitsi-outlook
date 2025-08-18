@@ -29,9 +29,9 @@ export const getConfigXHR = function (callback: (config: Config) => void, config
   }
 };
 
-const getDomain = (): string | null => {
+export const getDomain = (): string | null => {
   const emailAddress: string = Office.context.mailbox.userProfile.emailAddress;
-  const domain: string = emailAddress.split("@")[1].toLowerCase();
+  const domain: string = emailAddress ? emailAddress.split("@")[1].toLowerCase() : undefined;
 
   if (domain) {
     return domain;
