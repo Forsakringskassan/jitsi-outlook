@@ -13,7 +13,7 @@ import { getJitsiUrl } from "./URLHelper";
 const DIV_ID_JITSI = "jitsi-link";
 
 export const combineBodyWithJitsiDiv = (body: string, config: Config, index?: number, subject?: string): string => {
-  return combineBodyWithChosenDiv(body, getJitsiLinkDiv(getJitsiUrl(config, index, subject), config));
+  return combineBodyWithChosenDiv(body, getJitsiLinkDiv(getJitsiUrl(config, index, subject), config, index));
 };
 
 export const combineBodyWithErrorDiv = (body: string, error: string): string => {
