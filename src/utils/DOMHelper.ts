@@ -11,9 +11,14 @@ import { getJitsiUrl } from "./URLHelper";
 const DIV_ID_JITSI = "jitsi-link";
 
 export const combineBodyWithJitsiDiv = (body: string, config: Config, index?: number, subject?: string): string => {
-  const jitsiUrl = getJitsiUrl(config, index, subject);
+  return combineBodyWithChosenDiv(body, getJitsiLinkDiv(getJitsiUrl(config, index, subject), config));
+};
 
-  const linkDOM = getJitsiLinkDiv(jitsiUrl, config);
+export const combineBodyWithErrorDiv = (body: string, error: string): string => {
+  return combineBodyWithChosenDiv(body, error);
+};
+
+export const combineBodyWithChosenDiv = (body: string, linkDOM: string): string => {
   const parser = new DOMParser();
 
   const bodyString = `

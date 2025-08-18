@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: MIT
 
 import { Config } from "../models/Config";
-import { bodyHasJitsiLink, combineBodyWithJitsiDiv, overwriteJitsiLinkDiv } from "../utils/DOMHelper";
+import { bodyHasJitsiLink, combineBodyWithJitsiDiv, overwriteJitsiLinkDiv, combineBodyWithErrorDiv } from "../utils/DOMHelper";
 import { getMeetingConfig } from "../utils/ConfigHelper";
 
 /* global Office, console */
@@ -66,7 +66,7 @@ const setToField = async (Mailbox: Office.Mailbox) => {
   });
 };
 
-export const addMeeting = async (name: string, config: Config, event?: Office.AddinCommands.Event) => {
+export const addMeeting = async (name: string, config: Config, error: string, event?: Office.AddinCommands.Event) => {
   let index: number = getMeetingConfig(config, name);
   const diagnostics = Office.context.mailbox.diagnostics;
   Office.context.mailbox.item.body.getAsync(Office.CoercionType.Html, (result) => {
@@ -78,8 +78,12 @@ export const addMeeting = async (name: string, config: Config, event?: Office.Ad
       Office.context.mailbox.item.subject.getAsync((subject) => {
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(result.value, "text/html");
-
-        const bodyDOM = bodyHasJitsiLink(result.value, config) ? overwriteJitsiLinkDiv(htmlDoc, config, index, subject.value) : combineBodyWithJitsiDiv(result.value, config, index, subject.value);
+        let bodyDOM: string = "";
+        if (error !== "") {
+          bodyDOM = combineBodyWithErrorDiv(result.value, error);
+        } else {
+          bodyDOM = bodyHasJitsiLink(result.value, config) ? overwriteJitsiLinkDiv(htmlDoc, config, index, subject.value) : combineBodyWithJitsiDiv(result.value, config, index, subject.value);
+        }
         setData(htmlDoc.head.innerHTML + bodyDOM, event);
         setLocation(config);
         if (diagnostics.OWAView == undefined) {
