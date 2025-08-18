@@ -96,14 +96,12 @@ This file contains the only mandatory settings for the creation of the manifest 
 | --- | --- | --- |
 | TEST |
 | `devUrlRemotePluginServer` | string | Url to a test environment where the plugin is hosted |
-| `devUrlRemoteConfigServer` | string | Url to a test environment where the configuration is hosted |
 | `devBaseUrl` | string | Base url to test environment |
 | `devAppId` | string | Marketstore ID for the plugin, deadbeef id used for test |
 | `devVersion` | string | Version number used for test development |
 | `devDisplayName` | string | Displayname used on add-in page for development plugin |
 | PROD |
 | `prodUrlPlugin` | string | Url to a production environment where the plugin is hosted |
-| `prodUrlConfig` | string | Url to a production environment where the configuration is hosted |
 | `prodBaseUrl` | string | Base url to production environment |
 | `prodAppId` | string | Marketstore ID for the plugin |
 | `prodDisplayName` | string | Displayname used on add-in page for production plugin |
