@@ -44,7 +44,7 @@
     "eslint-plugin-office-addins": "^4.0.3",
     "file-loader": "^6.2.0",
     "html-loader": "^5.1.0",
-    "html-webpack-plugin": "^5.6.3",
+    "html-webpack-plugin": "^5.6.4",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
     "office-addin-cli": "^2.0.3",
