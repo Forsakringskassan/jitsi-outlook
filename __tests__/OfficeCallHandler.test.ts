@@ -148,7 +148,7 @@ describe("Connection test to server", () => {
     let body: string = "";
     let opt: Office.CoercionType = Office.CoercionType.Html;
 
-    await addMeeting("StandardMeeting", config);
+    await addMeeting("StandardMeeting", config, "");
 
     Office.context.mailbox.item.location.getAsync((r) => { location = r.value });
     Office.context.mailbox.item.body.getAsync(opt, (r) => { body = r.value });
@@ -174,7 +174,7 @@ describe("Connection test to server", () => {
     let body: string = "";
     let opt: Office.CoercionType = Office.CoercionType.Html;
 
-    await addMeeting("StandardMeeting", config);
+    await addMeeting("StandardMeeting", config, "");
 
     Office.context.mailbox.item.location.getAsync((r) => { location = r.value });
     Office.context.mailbox.item.body.getAsync(opt, (r) => { body = r.value });
