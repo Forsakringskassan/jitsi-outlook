@@ -56,7 +56,7 @@ Please see the [CONTRIBUTING](CONTRIBUTING.adoc) guide.
 
 ## Development
 
-## **Installing the add-in on your Outlook**
+### **Installing the add-in on your Outlook**
 
 For development, The add-in needs to be added to the relevant Outlook environment. The methods to do this are described in this section.
 
@@ -96,14 +96,12 @@ This file contains the only mandatory settings for the creation of the manifest 
 | --- | --- | --- |
 | TEST |
 | `devUrlRemotePluginServer` | string | Url to a test environment where the plugin is hosted |
-| `devUrlRemoteConfigServer` | string | Url to a test environment where the configuration is hosted |
 | `devBaseUrl` | string | Base url to test environment |
 | `devAppId` | string | Marketstore ID for the plugin, deadbeef id used for test |
 | `devVersion` | string | Version number used for test development |
 | `devDisplayName` | string | Displayname used on add-in page for development plugin |
 | PROD |
 | `prodUrlPlugin` | string | Url to a production environment where the plugin is hosted |
-| `prodUrlConfig` | string | Url to a production environment where the configuration is hosted |
 | `prodBaseUrl` | string | Base url to production environment |
 | `prodAppId` | string | Marketstore ID for the plugin |
 | `prodDisplayName` | string | Displayname used on add-in page for production plugin |
@@ -116,36 +114,17 @@ So for building and testing the plugin you need to enter at least the informatio
 
 ### `config.json`
 
-The `config.json` file in the root folder will determine how the default meeting should look like. The following is an example of how the configuration file could look like:
+The `config.json` file in the config folder will determine how the default meeting should look like. The following is an example of how the configuration file could look like:
 
 ```
 {
-    "baseUrl": "https://my-jitsi-instance-url",
-    "additionalText": "Some additional text beneath the signature"
+    "baseUrl": "https://my-jitsi-instance-url"
 }
 ```
 
-All of the properties listed below can also be added to enable/disable any extra features.
-
-| **Property**          | **Type** | **Description**                                                                   |
-| --------------------- | -------- | --------------------------------------------------------------------------------- |
-| `baseUrl`             | string   | Base url to your Jitsi instance.                                                  |
-| `locationString`      | string   | This text is added to the Location field of the meeting.                          |
-| `additionalText`      | string   | This text will show up at the bottom of the email signature.                      |
-| `fontFamily`          | string   | The font family used for for the signature text (defaulting to Arial)             |
-| `meetings`            | list     | A list of meetings containing different settings per type                         |
-
-Description of meeting objects
-
-| **Property**          | **Type** | **Description**                                                                   |
-| --------------------- | -------- | --------------------------------------------------------------------------------- |
-| `startWithAudioMuted` | boolean  | This forces the mic to be muted for every person entering the meeting.            |
-| `startWithVideoMuted` | boolean  | This forces the camera to be disabled for every person entering the meeting.      |
-| `disableInitialGUM`   | boolean  | Skips the initial permission check and configuration screen (GUM = getUserMedia). |
+All of the properties listed in [Additional config](#additional-config) can also be added to enable/disable any extra features.
 
 > Note that configuration is entirely optional and that Jitsi's default configuration will be used as a default if no configuration file is found in the project. The add-in will default to https://meet.jit.si if no configuration file is found.
-
-Please see [Additional config](#additional-config) for more settings and alternatives!
 
 ### `manifest.xml`
 
@@ -179,6 +158,10 @@ npm run lint
 
 npm run prettier
 
+# Testing of config and manifest file
+npm run test-config config="path" index"index" lang="language code"
+
+npm run validate "path to manifest file"
 # Make sure to run these 3 before contributing code!
 ```
 
@@ -186,18 +169,197 @@ npm run prettier
 
 ## **Additional config**
 
-### Sub-domain configurations
+### **Comprehensive configuration guide**
+
+#### Description of Config objects
+
+| **Property**            | **Type**          | **Description**                                                             |
+| ----------------------- | ----------------- | --------------------------------------------------------------------------- |
+| `baseUrl`               | string            | Base url to your Jitsi instance.                                            |
+| `currentLanguage`       | string            | Will be set by plugin, do not set this value                                |
+| `locationString`        | object(localized) | This text is added to the Location field of the meeting                     |
+| `globalAdditionalLinks` | AdditionalLinks[] | See additional links [table](#description-of-additionalinks-objects)        |
+| `globalAdditionalTexts` | AdditionalTexts[] | See additional texts [table](#description-of-additionatexts-objects)        |
+| `meetings`              | Meeting[]         | See meeting object [table](#description-of-meeting-objects)                 |
+| `fontFamily`            | string            | The font family used for for the signature text (defaulting to Arial)       |
+| `fontSize`              | string            | Html element font size, this is a global font size (default to 20px)        |
+| `fontColor`             | string            | Html element font color, this is a global font color (default to #000000) |
+| `useDiv`                | boolean           | Use dividers for footer or not                                              |
+| `divColor`              | string            | Set a div color for the first divider (default to #ffffff)                |
+| `useGraphics`           | boolean           | Use the camera image provided or not                                        |
+| `userGraphics`          | string            | Src for the <img> html tag                                                  |
+
+#### Description of Meeting objects
+
+| **Property**       | **Type**          | **Description**                                                      |
+| ------------------ | ----------------- | -------------------------------------------------------------------- |
+| `type`             | string            | This text must match a type from config.json at build time!          |
+| `additionalConfig` | object            | This object is a key pair list of link settings, see [this](https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced/) |
+| `meetingPrefix`    | string            | A prefix to the meeting link, eg url/prefix_meetingname#options      |
+| `meetingSuffix`    | string            | A suffix to the meeting link, eg url/meetingname_suffix#options      |
+| `meetingHeader`    | object(localized) | A header for the link footer, this will use global font settings     |
+| `additionalLinks`  | AdditionalLinks[] | See additional links [table](#description-of-additionalinks-objects) |
+| `additionalTexts`  | AdditionalTexts[] | See additional texts [table](#description-of-additionatexts-objects) |
+
+#### Description of AdditionaLinks objects
+
+| **Property** | **Type**          | **Description**                             |
+| ------------ | ----------------- | ------------------------------------------- |
+| `fontSize`   | string            | Html element font size                      |
+| `fontFamily` | string            | The font family used for for the link text  |
+| `fontColor`  | string            | Html element font color                     |
+| `text`       | object(localized) | The links text                              |
+| `config`     | object            | The config that should be set, see [this](https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced/) |
+
+#### Description of AdditionaTexts objects
+
+| **Property** | **Type** | **Description**                             |
+| ------------ | -------- | ------------------------------------------- |
+| `fontSize`   | string   | Html element font size                      |
+| `fontFamily` | string   | The font family used for for the link text  |
+| `fontColor`  | string   | Html element font color                     |
+| `texts`      | Text[]   | See text [table](#description-of-text)      |
+
+#### Description of Text
+
+| **Property** | **Type**          | **Description**                             |
+| ------------ | ----------------- | ------------------------------------------- |
+| `addNewLine` | boolean           | Add a new line after text  OBS! Mandatory   |
+| `text`       | object(localized) | The text to add            OBS! Mandatory   |
+| `url`        | object(localized) | If the text should link to website          |
+
+#### Description of object(localized)
+These objects should be configured following this standard:
+```
+{
+  "en": "English text",
+  "it": "Italian text",
+  "default": "Mandatory!!"
+}
+Where the key is short for the language returned by Office.context.displayLanguage.
+The default key is mandatory!
+```
+---
+#### Example of advanced configuration
+```
+{
+  "baseUrl": "https://meet.jit.si",
+  "locationString": {"default": "Jitsi videomöte"},
+  "fontFamily": "Segoe UI",
+  "fontSize": "20px",
+  "useDiv": true,
+  "divColor": "#0d85c7",
+  "globalAdditionalLinks": [
+    {
+      "fontSize": "12px",
+      "fontFamily": "Segoe UI",
+      "fontColor": "#0d85c7",
+      "text": {"default": "Endast skärmdelning"},
+      "config": {
+        "startWithAudioMuted": true,
+        "startWithVideoMuted": true,
+        "disableInitialGUM": true,
+        "faceLandmarks.enableFaceCentering": false,
+        "disableTileEnlargement": true,
+        "notifications": "[]",
+        "toolbarButtons": "[%22desktop%22,%22sharedvideo%22,%22shareaudio%22,%22hangup%22]",
+        "startSilent": true
+      }
+    }
+  ],
+  "globalAdditionalTexts": [
+    {
+      "fontSize": "12px",
+      "fontFamily": "Segoe UI",
+      "fontColor": "#0d85c7",
+      "texts": [
+        {
+          "addNewLine": true,
+          "text": {"default": "Användarhandledning"},
+          "url": {"default": "https://google.com"}
+        },
+        {
+          "addNewLine": true,
+          "text": {"default": "Så här hanteras dina personuppgifter"},
+          "url": {"default": "https://google.com"}
+        }
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "type": "StandardMeeting",
+      "meetingPrefix": "comp_",
+      "additionalConfig": {
+        "startWithAudioMuted": true,
+        "startWithVideoMuted": true
+      },
+      "meetingHeader": {"default": "Jitsi videomöte"}
+    }
+  ]
+}
+```
+This config will produce the following footer:
+
+<div id="x_jitsi-link"><br>
+<hr style="color:#0d85c7; border-color:#0d85c7">
+<div style="font-size:20px; font-weight:700; font-family:'Segoe UI'">Jitsi videomöte</div>
+<div style="padding-right:10px; vertical-align:middle; background-color:transparent">
+<span style="font-size:20px; font-family:'Segoe UI'; color:#000000"><a title="Länk till mötet" href="https://meet.jit.si/comp_v9nkew5kn6wek8xn#config.startWithAudioMuted=true&amp;config.startWithVideoMuted=true" style="text-decoration:none">
+<span style="font-size:20px; font-family:'Segoe UI'">→ </span>Anslut till mötet </a>
+<br>
+</span>
+<div><br>
+<span style="font-size:12px; font-family:'Segoe UI'; color:#0d85c7"><a title="Endast skärmdelning" href="https://meet.jit.si/comp_v9nkew5kn6wek8xn#config.startWithAudioMuted=true&amp;config.startWithVideoMuted=true&amp;config.disableInitialGUM=true&amp;config.faceLandmarks.enableFaceCentering=false&amp;config.disableTileEnlargement=true&amp;config.notifications=[]&amp;config.toolbarButtons=[%22desktop%22,%22sharedvideo%22,%22shareaudio%22,%22hangup%22]&amp;config.startSilent=true" style="text-decoration:none">Endast
+ skärmdelning </a></span><br>
+<span style="font-size:12px; font-family:'Segoe UI'; color:#0d85c7"><a title="Användarhandledning" href="https://google.com" style="text-decoration:none">Användarhandledning
+</a><br>
+<a title="Så här hanteras dina personuppgifter" href="https://google.com" style="text-decoration:none">Så här hanteras dina personuppgifter
+</a><br>
+</span><br>
+<hr>
+<div></div>
+</div>
+</div>
+</div>
+
+```html
+<div id="x_jitsi-link"><br>
+<hr style="color:#0d85c7; border-color:#0d85c7">
+<div style="font-size:20px; font-weight:700; font-family:'Segoe UI'">Jitsi videomöte</div>
+<div style="padding-right:10px; vertical-align:middle; background-color:transparent">
+<span style="font-size:20px; font-family:'Segoe UI'; color:#000000"><a title="Länk till mötet" href="https://meet.jit.si/comp_v9nkew5kn6wek8xn#config.startWithAudioMuted=true&amp;config.startWithVideoMuted=true" style="text-decoration:none">
+<span style="font-size:20px; font-family:'Segoe UI'">→ </span>Anslut till mötet </a>
+<br>
+</span>
+<div><br>
+<span style="font-size:12px; font-family:'Segoe UI'; color:#0d85c7"><a title="Endast skärmdelning" href="https://meet.jit.si/comp_v9nkew5kn6wek8xn#config.startWithAudioMuted=true&amp;config.startWithVideoMuted=true&amp;config.disableInitialGUM=true&amp;config.faceLandmarks.enableFaceCentering=false&amp;config.disableTileEnlargement=true&amp;config.notifications=[]&amp;config.toolbarButtons=[%22desktop%22,%22sharedvideo%22,%22shareaudio%22,%22hangup%22]&amp;config.startSilent=true" style="text-decoration:none">Endast
+ skärmdelning </a></span><br>
+<span style="font-size:12px; font-family:'Segoe UI'; color:#0d85c7"><a title="Användarhandledning" href="https://google.com" style="text-decoration:none">Användarhandledning
+</a><br>
+<a title="Så här hanteras dina personuppgifter" href="https://google.com" style="text-decoration:none">Så här hanteras dina personuppgifter
+</a><br>
+</span><br>
+<hr>
+<div></div>
+</div>
+</div>
+</div>
+```
+---
+### **Sub-domain configurations**
 
 The add-in can be configured through the use of a configuration file (named `<sub-domain>.json`), that should be placed in the configs directory, these are then built and used per sub-domain. E.g. if you have an email domain on controll.test the file should be stored as, `/configs/controll.test.json`, this will produce a file in the dist for that sub-domain. It expects the same json object as the default.
 
 To utilize this feature you have to specify the configuration setup in the `buildSettings.json`.
 
-### `src/commands/config.json`
+### **`src/commands/config.json`**
 
 The `src/commands/config.json` file contains which meeting types should be added to html file and command.js. The list added here should correspond to a list in the `manifest.xml` as well. So if more than one link is present in this file then the manifest must be updated to a action list instead of a button, see `manifest-list.xml` as an example.
 
 | **Property**               | **Type** | **Description**                                                                   |
 | -------------------------- | -------- | --------------------------------------------------------------------------------- |
+| `configUrl`                | string   | The direct uri to fetch configuration from                                        |
 | `meetingLinks`             | list     | This contains the list with the below values                                      |
 | `meetingLinks.associate`   | string   | The associated link name from `manifest.xml` file                                 |
 | `meetingLinks.meetingName` | string   | The type meeting config related to this meeting link in `config.json`             |

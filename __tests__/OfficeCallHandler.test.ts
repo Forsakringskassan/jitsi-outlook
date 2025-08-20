@@ -33,6 +33,7 @@ const mockDataServer = {
   CoercionType,
   AsyncResultStatus: 0,
   context: {
+    displayLanguage: "sv-SE",
     mailbox: {
       diagnostics: {
         OWAView: undefined
@@ -115,14 +116,14 @@ describe("Connection test to server", () => {
   it("Set location", async () => {
     const setLocationMock = new OfficeMockObject(mockDataServer) as any;
     global.Office = setLocationMock;
-    const config: Config = { locationString: "test" } as Config;
+    const config: Config = { locationString: {"default": "test"} } as Config;
     let location: string = "";
 
     await setLocation(config);
     Office.context.mailbox.item?.location.getAsync((r) => { location = r.value });
 
-    expect(setLocationMock.context.mailbox.item.location.location).toBe(config.locationString);
-    expect(location).toBe(config.locationString);
+    expect(setLocationMock.context.mailbox.item.location.location).toBe(config.locationString["default"]);
+    expect(location).toBe(config.locationString["default"]);
   });
 
   it("Set location default", async () => {
@@ -211,7 +212,9 @@ describe("Connection test to server", () => {
       meetings: [
         {
           type: "StandardMeeting",
-          startWithAudioMuted: true,
+          additionalConfig: {
+            startWithAudioMuted: true,
+          }
         }
       ]
     } as Config;

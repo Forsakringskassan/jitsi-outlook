@@ -2,10 +2,10 @@
 
 // SPDX-License-Identifier: MIT
 
-/* global Office, console */
+/* global Office, console, XMLHttpRequest */
 
 import { Config } from "../models/Config";
-import DefaultConfig from "../../config.json";
+const DefaultConfig: Config = {};
 
 export const getConfigXHR = function (callback: (config: Config, error: string) => void, configUrl?: string) {
   let domain: string | null = getDomain();
@@ -32,9 +32,9 @@ export const getConfigXHR = function (callback: (config: Config, error: string) 
   }
 };
 
-const getDomain = (): string | null => {
+export const getDomain = (): string | null => {
   const emailAddress: string = Office.context.mailbox.userProfile.emailAddress;
-  const domain: string = emailAddress.split("@")[1];
+  const domain: string = emailAddress ? emailAddress.split("@")[1].toLowerCase() : undefined;
 
   if (domain) {
     return domain;
@@ -44,7 +44,6 @@ const getDomain = (): string | null => {
 };
 
 export const loadConfig = function (callback: (config: Config, error: string) => void, configUrl?: string) {
-  console.log(configUrl);
   getConfigXHR((config, e) => {
     callback(config, e);
   }, configUrl);
@@ -53,7 +52,7 @@ export const loadConfig = function (callback: (config: Config, error: string) =>
 export const getMeetingConfig = (config: Config, type: string): number => {
   let value = -1;
   if (!config.meetings) {
-    return null;
+    return undefined;
   }
   config.meetings.forEach((entry: any, index: number) => {
     if (entry.type === type) {

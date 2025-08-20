@@ -3,16 +3,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-/* global Office */
-
 interface LocalizedStrings {
   connectToMeeting: string;
   linkToMeeting: string;
 }
 
-const getLocalizedStrings = (): LocalizedStrings => {
-  const myLanguage = typeof Office !== "undefined" ? Office.context.displayLanguage : "en";
-
+const getLocalizedStrings = (lang?: string): LocalizedStrings => {
+  const myLanguage = lang ? lang : "en";
   if (/sv/.test(myLanguage)) {
     return {
       connectToMeeting: "Anslut till mötet",

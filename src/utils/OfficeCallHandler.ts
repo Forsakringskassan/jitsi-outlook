@@ -7,7 +7,7 @@ import { Config } from "../models/Config";
 import { bodyHasJitsiLink, combineBodyWithJitsiDiv, overwriteJitsiLinkDiv, combineBodyWithErrorDiv } from "../utils/DOMHelper";
 import { getMeetingConfig } from "../utils/ConfigHelper";
 
-/* global Office, console */
+/* global Office, console, DOMParser */
 
 const setData = async (str: string, event?: Office.AddinCommands.Event) => {
   Office.context.mailbox.item.body.setAsync(
@@ -24,7 +24,7 @@ const setData = async (str: string, event?: Office.AddinCommands.Event) => {
 export const setDataTest = { setData };
 
 const setLocation = async (config: Config) => {
-  let location: string = config.locationString ?? "Jitsi meeting";
+  let location: string = config.locationString ? (config.currentLanguage in config.locationString ? config.locationString[config.currentLanguage] : config.locationString["default"]) : "Jitsi meeting";
   Office.context.mailbox.item?.location.getAsync((r) => {
     let r_value: string = r.value.trimEnd();
     if (r.value.length > 0) {
@@ -69,11 +69,11 @@ const setToField = async (Mailbox: Office.Mailbox) => {
 export const addMeeting = async (name: string, config: Config, error: string, event?: Office.AddinCommands.Event) => {
   let index: number = getMeetingConfig(config, name);
   const diagnostics = Office.context.mailbox.diagnostics;
+  config.currentLanguage = typeof Office !== "undefined" ? Office.context.displayLanguage.split("-")[0] : "en";
   Office.context.mailbox.item.body.getAsync(Office.CoercionType.Html, (result) => {
     if (result.error) {
       event.completed();
     }
-
     try {
       Office.context.mailbox.item.subject.getAsync((subject) => {
         const parser = new DOMParser();
