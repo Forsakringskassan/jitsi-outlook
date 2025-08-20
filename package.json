@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
-    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
     "@jridgewell/source-map": "^0.3.11",
     "@types/jest": "^30.0.0",
