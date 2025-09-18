@@ -457,3 +457,33 @@ describe("overwriteJitsiLinkDiv", () => {
     expect(result).not.toContain(oldRoomName);
   });
 });
+
+describe("overwriteJitsiLinkDiv", () => {
+  it("should override the localizedlink for the meeting", () => {
+    let config: Config = {
+      baseUrl: "https://meet.jit.si",
+      currentLanguage: "sv"/*,
+      overrideLinkToMeeting: {"sv": "TEST LINK"}*/
+    };
+    let output = getJitsiLinkDiv(config.baseUrl, config);
+    expect(output).toContain("Länk till mötet");
+
+    config = {
+      baseUrl: "https://meet.jit.si",
+      currentLanguage: "sv",
+      overrideLinkToMeeting: {"sv": "TEST LINK"},
+      overrideConnectToMeeting: {"sv": "Anslut till mötet"}
+    };
+    output = getJitsiLinkDiv(config.baseUrl, config);
+    expect(output).toContain("TEST LINK");
+    expect(output).toContain("Anslut till mötet");
+
+    config = {
+      baseUrl: "https://meet.jit.si",
+      currentLanguage: "en",
+      overrideLinkToMeeting: {"sv": "TEST LINK"}
+    };
+    output = getJitsiLinkDiv(config.baseUrl, config);
+    expect(output).toContain("Link to meeting");
+  });
+});

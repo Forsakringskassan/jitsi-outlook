@@ -45,6 +45,8 @@ export interface Config {
   locationString?: object;
   globalAdditionalLinks?: AdditionalLinks[];
   globalAdditionalTexts?: AdditionalTexts[];
+  overrideLinkToMeeting?: object;
+  overrideConnectToMeeting?: object;
   meetings?: Meeting[];
   fontFamily?: string;
   fontSize?: string;
