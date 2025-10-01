@@ -173,21 +173,23 @@ npm run validate "path to manifest file"
 
 #### Description of Config objects
 
-| **Property**            | **Type**          | **Description**                                                             |
-| ----------------------- | ----------------- | --------------------------------------------------------------------------- |
-| `baseUrl`               | string            | Base url to your Jitsi instance.                                            |
-| `currentLanguage`       | string            | Will be set by plugin, do not set this value                                |
-| `locationString`        | object(localized) | This text is added to the Location field of the meeting                     |
-| `globalAdditionalLinks` | AdditionalLinks[] | See additional links [table](#description-of-additionalinks-objects)        |
-| `globalAdditionalTexts` | AdditionalTexts[] | See additional texts [table](#description-of-additionatexts-objects)        |
-| `meetings`              | Meeting[]         | See meeting object [table](#description-of-meeting-objects)                 |
-| `fontFamily`            | string            | The font family used for for the signature text (defaulting to Arial)       |
-| `fontSize`              | string            | Html element font size, this is a global font size (default to 20px)        |
-| `fontColor`             | string            | Html element font color, this is a global font color (default to #000000) |
-| `useDiv`                | boolean           | Use dividers for footer or not                                              |
-| `divColor`              | string            | Set a div color for the first divider (default to #ffffff)                |
-| `useGraphics`           | boolean           | Use the camera image provided or not                                        |
-| `userGraphics`          | string            | Src for the <img> html tag                                                  |
+| **Property**               | **Type**          | **Description**                                                             |
+| -------------------------- | ----------------- | --------------------------------------------------------------------------- |
+| `baseUrl`                  | string            | Base url to your Jitsi instance.                                            |
+| `currentLanguage`          | string            | Will be set by plugin, do not set this value                                |
+| `locationString`           | object(localized) | This text is added to the Location field of the meeting                     |
+| `globalAdditionalLinks`    | AdditionalLinks[] | See additional links [table](#description-of-additionalinks-objects)        |
+| `globalAdditionalTexts`    | AdditionalTexts[] | See additional texts [table](#description-of-additionatexts-objects)        |
+| `overrideLinkToMeeting`    | object(localozed) | This text overrides the built in localization.ts Link for meeting footer    |
+| `overrideConnectToMeeting` | object(localized) | This text overrides the built in localization.ts texts for meeting footer   |
+| `meetings`                 | Meeting[]         | See meeting object [table](#description-of-meeting-objects)                 |
+| `fontFamily`               | string            | The font family used for for the signature text (defaulting to Arial)       |
+| `fontSize`                 | string            | Html element font size, this is a global font size (default to 20px)        |
+| `fontColor`                | string            | Html element font color, this is a global font color (default to #000000)   |
+| `useDiv`                   | boolean           | Use dividers for footer or not                                              |
+| `divColor`                 | string            | Set a div color for the first divider (default to #ffffff)                  |
+| `useGraphics`              | boolean           | Use the camera image provided or not                                        |
+| `userGraphics`             | string            | Src for the <img> html tag                                                  |
 
 #### Description of Meeting objects
 
