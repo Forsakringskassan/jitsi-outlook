@@ -11,7 +11,6 @@ import { OfficeMockObject } from "office-addin-mock";
 import { getConfigXHR, getMeetingConfig, getDomain } from "../src/utils/ConfigHelper";
 import { Config } from "../src/models/Config";
 import testConfig from "./controll.test.json";
-import exp from "constants";
 
 enum CoercionType {
   Html,
