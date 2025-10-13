@@ -112,8 +112,12 @@ export const getMeetingAdditionalTexts = (config: Config, index?: number): strin
   return output;
 };
 
-export const getLocalizedText = (obj: object | null, lang: string, def: string): string => {
-  return obj ? (lang in obj ? obj[lang] : obj["default"]) : def;
+export const getLocalizedText = (obj: object | null, lang: string, defaultstring: string): string => {
+  return obj ? (lang in obj ? obj[lang] : getLocalizedTextDefault(obj, "default", defaultstring)) : defaultstring;
+};
+
+const getLocalizedTextDefault = (obj: object | null, def: string, defaultstring: string): string => {
+  return obj ? (def in obj ? obj[def] : defaultstring) : defaultstring;
 };
 
 export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number): string => {
@@ -131,13 +135,17 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
   if (index !== undefined) {
     output += `<div style="font-size: ${fontSize}; font-weight: 700; font-family: '${fontFamily}'">${getLocalizedText(config.meetings[index].meetingHeader, config.currentLanguage, "")}</div>`;
   }
-  output += `
-      <div style="${tdStyles}">
+  output +=
+    `<div style="${tdStyles}">
         <span
           style="font-size: ${fontSize}; font-family: '${fontFamily}';color: ${fontColor};">
           <a
-            aria-label="${localizedStrings.linkToMeeting}"
-            title="${localizedStrings.linkToMeeting}"
+            aria-label="` +
+    getLocalizedText(config.overrideLinkToMeeting, config.currentLanguage, localizedStrings.linkToMeeting) +
+    `"
+            title="` +
+    getLocalizedText(config.overrideLinkToMeeting, config.currentLanguage, localizedStrings.linkToMeeting) +
+    `"
             style="text-decoration: none;"
             href="${jitsiUrl}">`;
   if (config.useGraphics !== undefined && config.useGraphics == true) {
@@ -147,12 +155,15 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
       (config.userGraphics ? config.userGraphics : videoCameraURI) +
       `">`;
   }
-  output += `
+  output +=
+    `
             <span
               style="font-size: ${fontSize}; font-family: '${fontFamily}'">
                 &rarr;
             </span>
-            ${localizedStrings.connectToMeeting}
+            ` +
+    getLocalizedTextDefault(config.overrideConnectToMeeting, config.currentLanguage, localizedStrings.connectToMeeting) +
+    `
           </a>
         <br>
         </span>
