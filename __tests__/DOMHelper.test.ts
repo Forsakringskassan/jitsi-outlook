@@ -462,8 +462,7 @@ describe("overwriteJitsiLinkDiv", () => {
   it("should override the localizedlink for the meeting", () => {
     let config: Config = {
       baseUrl: "https://meet.jit.si",
-      currentLanguage: "sv"/*,
-      overrideLinkToMeeting: {"sv": "TEST LINK"}*/
+      currentLanguage: "sv"
     };
     let output = getJitsiLinkDiv(config.baseUrl, config);
     expect(output).toContain("Länk till mötet");
