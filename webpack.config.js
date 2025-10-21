@@ -11,6 +11,7 @@ const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const { DefinePlugin } = require("webpack");
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
@@ -31,11 +32,13 @@ module.exports = async (env, options) => {
     version = buildSettings.devVersion;
     baseUrl = buildSettings.devBaseUrl;
     pluginUrl = buildSettings.devUrlRemotePluginServer + "v" + version;
+    pluginConfigUrl = buildSettings.devUrlConfig + "v" + version;
     displayName = buildSettings.devDisplayName;
   } else {
     id = buildSettings.prodAppId;
     baseUrl = buildSettings.prodBaseUrl;
     pluginUrl = buildSettings.prodUrlPlugin + "v" + version;
+    pluginConfigUrl = buildSettings.prodUrlConfig + "v" + version;
     displayName = buildSettings.prodDisplayName;
   }
 
@@ -110,6 +113,9 @@ module.exports = async (env, options) => {
             to: "configs/v" + version + "/[name]/config[ext]",
           },
         ],
+      }),
+      new DefinePlugin({
+        'CONFIG_URL': JSON.stringify(pluginConfigUrl)
       }),
       new HtmlWebpackPlugin({
         filename: "commands.html",

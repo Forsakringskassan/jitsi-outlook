@@ -96,12 +96,14 @@ This file contains the only mandatory settings for the creation of the manifest 
 | --- | --- | --- |
 | TEST |
 | `devUrlRemotePluginServer` | string | Url to a test environment where the plugin is hosted |
+| `devUrlConfig`| string | Url to a test environment where the plugin config is hosted |
 | `devBaseUrl` | string | Base url to test environment |
 | `devAppId` | string | Marketstore ID for the plugin, deadbeef id used for test |
 | `devVersion` | string | Version number used for test development |
 | `devDisplayName` | string | Displayname used on add-in page for development plugin |
 | PROD |
 | `prodUrlPlugin` | string | Url to a production environment where the plugin is hosted |
+| `prodUrlConfig` | string | Url to a production environment where the plugin config is hosted |
 | `prodBaseUrl` | string | Base url to production environment |
 | `prodAppId` | string | Marketstore ID for the plugin |
 | `prodDisplayName` | string | Displayname used on add-in page for production plugin |
@@ -361,7 +363,6 @@ The `src/commands/config.json` file contains which meeting types should be added
 
 | **Property**               | **Type** | **Description**                                                                   |
 | -------------------------- | -------- | --------------------------------------------------------------------------------- |
-| `configUrl`                | string   | The direct uri to fetch configuration from                                        |
 | `meetingLinks`             | list     | This contains the list with the below values                                      |
 | `meetingLinks.associate`   | string   | The associated link name from `manifest.xml` file                                 |
 | `meetingLinks.meetingName` | string   | The type meeting config related to this meeting link in `config.json`             |

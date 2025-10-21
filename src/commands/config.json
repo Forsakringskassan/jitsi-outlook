@@ -1,5 +1,4 @@
 {
-  "configUrl": "https://dev.controll.test/plugin/configs/",
   "meetingLinks": [
     {
       "associate": "insertJitsiLink",

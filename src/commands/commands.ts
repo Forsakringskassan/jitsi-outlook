@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: Microsoft Corporation
 //
 // SPDX-License-Identifier: MIT
-
+declare const CONFIG_URL: string;
 import { loadConfig } from "../utils/ConfigHelper";
 import { Config, AddinConfig } from "../models/Config";
 import { addMeeting } from "../utils/OfficeCallHandler";
@@ -17,7 +17,7 @@ let addinConfig: AddinConfig = a_config;
 
 const addJitsiLink = (event: Office.AddinCommands.Event, name: string) => {
   try {
-    loadConfig((config: Config, error: string) => addMeeting(name, config, error, event), addinConfig.configUrl);
+    loadConfig((config: Config, error: string) => addMeeting(name, config, error, event), CONFIG_URL);
   } catch (error) {
     console.log(error);
     return;
