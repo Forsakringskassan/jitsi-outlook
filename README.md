@@ -151,7 +151,15 @@ npm install
 # make sure all your configuration are done then run
 npm run build
 # or for development
-npm run build-dev
+npm run build:dev
+
+# to build a specific version or use short version paths, use the following arguments
+# set version per cli
+npm run build -- --env ver=2.0.0
+# set shortVersion, the build manifest will point to plugin/v2 and
+# configs/v2 instead of plugin/v2.0.0 and configs/v2.0.0
+# the build path will not change and the version directory is still v2.0.0
+npm run build -- --env ver=2.0.0 --env shortVersion
 
 # Other useful commands for testing and linting
 npm run test
@@ -159,12 +167,12 @@ npm run test
 npm run lint
 
 npm run prettier
+# Make sure to run these 3 before contributing code!
 
 # Testing of config and manifest file
 npm run test-config config="path" index="index" lang="language code"
 
 npm run validate "path to manifest file"
-# Make sure to run these 3 before contributing code!
 ```
 
 ---

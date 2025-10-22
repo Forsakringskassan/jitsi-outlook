@@ -20,25 +20,31 @@ async function getHttpsOptions() {
 
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
+  short = false;
   if (env.ver) {
     version = env.ver;
   } else {
     version = buildSettings.version;
+  }
+  if (env.shortVersion) {
+    short = true;
   }
   source = false;
   if (dev) {
     source = "source-map";
     id = buildSettings.devAppId;
     version = buildSettings.devVersion;
+    shortVersion = String(version).split(".")[0]
     baseUrl = buildSettings.devBaseUrl;
-    pluginUrl = buildSettings.devUrlRemotePluginServer + "v" + version;
-    pluginConfigUrl = buildSettings.devUrlConfig + "v" + version;
+    pluginUrl = short ? buildSettings.devUrlRemotePluginServer + "v" + shortVersion : buildSettings.devUrlRemotePluginServer + "v" + version;
+    pluginConfigUrl = short ? buildSettings.devUrlConfig + "v" + shortVersion : buildSettings.devUrlConfig + "v" + version;
     displayName = buildSettings.devDisplayName;
   } else {
     id = buildSettings.prodAppId;
     baseUrl = buildSettings.prodBaseUrl;
-    pluginUrl = buildSettings.prodUrlPlugin + "v" + version;
-    pluginConfigUrl = buildSettings.prodUrlConfig + "v" + version;
+    shortVersion = String(version).split(".")[0]
+    pluginUrl = short ? buildSettings.prodUrlPlugin + "v" + shortVersion : buildSettings.prodUrlPlugin + "v" + version;
+    pluginConfigUrl = short ? buildSettings.prodUrlConfig + "v" + shortVersion : buildSettings.prodUrlConfig + "v" + version;
     displayName = buildSettings.prodDisplayName;
   }
 
