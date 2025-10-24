@@ -11,13 +11,14 @@ export const getConfigXHR = function (callback: (config: Config, error: string) 
   let domain: string | null = getDomain();
   const xhr = new XMLHttpRequest();
   if (configUrl !== undefined) {
+    let url = configUrl.endsWith("/") ? configUrl : configUrl + "/";
     if (domain) {
-      xhr.open("GET", configUrl + domain + "/config.json", false);
+      xhr.open("GET", url + domain + "/config.json", false);
       xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
           callback(JSON.parse(xhr.responseText) as Config, "");
         } else {
-          let error: string = "Error fetching config: " + configUrl + domain + "/config.json<br><br>";
+          let error: string = "Error fetching config: " + url + domain + "/config.json<br><br>";
           error += "Error code: " + xhr.status.toString() + "<br>";
           error += "Error message: " + xhr.responseText + "<br>";
           callback(DefaultConfig as Config, error);

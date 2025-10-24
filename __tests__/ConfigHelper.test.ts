@@ -65,7 +65,7 @@ describe('Test ConfigHelper', () => {
   it('should get mock config', async () => {
     const userProfile = new OfficeMockObject(mockDataServer);
     global.Office = userProfile as any;
-    mock.get('controll.test/config.json', {
+    mock.get('/controll.test/config.json', {
       body: JSON.stringify(testConfig)
     });
     let l_config: Config = nullConfig;
@@ -78,7 +78,7 @@ describe('Test ConfigHelper', () => {
   it('should get empty config', async () => {
     const userProfile = new OfficeMockObject(mockDataServer);
     global.Office = userProfile as any;
-    mock.get('controll.test/config.json', {
+    mock.get('/controll.test/config.json', {
       body: JSON.stringify(testConfig)
     });
     let l_config: Config = nullConfig;
@@ -91,7 +91,7 @@ describe('Test ConfigHelper', () => {
   it('should get empty config, error', async () => {
     const userProfile = new OfficeMockObject(mockDataServerError);
     global.Office = userProfile as any;
-    mock.get('controoll.test/config.json', {
+    mock.get('/controoll.test/config.json', {
       body: "Error file not found",
       status: 404,
       reason: "Not found"
@@ -103,7 +103,7 @@ describe('Test ConfigHelper', () => {
       error = e
     }, "");
     expect(l_config).toEqual({});
-    expect(error).toEqual("Error fetching config: controoll.test/config.json<br><br>Error code: 404<br>Error message: Error file not found<br>");
+    expect(error).toEqual("Error fetching config: /controoll.test/config.json<br><br>Error code: 404<br>Error message: Error file not found<br>");
   });
 
   it('fetch meeting information', async () => {
