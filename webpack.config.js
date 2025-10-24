@@ -32,22 +32,23 @@ module.exports = async (env, options) => {
   source = false;
   if (dev) {
     source = "source-map";
+    url = buildSettings.devUrlRemotePluginServer.endsWith("/") ? buildSettings.devUrlRemotePluginServer : buildSettings.devUrlRemotePluginServer + "/";
+    configUrl = buildSettings.devUrlConfig.endsWith("/") ? buildSettings.devUrlConfig : buildSettings.devUrlConfig + "/";
     id = buildSettings.devAppId;
     version = buildSettings.devVersion;
     shortVersion = String(version).split(".")[0]
-    baseUrl = buildSettings.devBaseUrl;
-    pluginUrl = short ? buildSettings.devUrlRemotePluginServer + "v" + shortVersion : buildSettings.devUrlRemotePluginServer + "v" + version;
-    pluginConfigUrl = short ? buildSettings.devUrlConfig + "v" + shortVersion : buildSettings.devUrlConfig + "v" + version;
+    baseUrl = buildSettings.devBaseUrl.endsWith("/") ? buildSettings.devBaseUrl : buildSettings.devBaseUrl + "/";
     displayName = buildSettings.devDisplayName;
   } else {
+    url = buildSettings.prodUrlPlugin.endsWith("/") ? buildSettings.prodUrlPlugin : buildSettings.prodUrlPlugin + "/";
+    configUrl = buildSettings.prodUrlConfig.endsWith("/") ? buildSettings.prodUrlConfig : buildSettings.prodUrlConfig + "/";
     id = buildSettings.prodAppId;
-    baseUrl = buildSettings.prodBaseUrl;
+    baseUrl = buildSettings.prodBaseUrl.endsWith("/") ? buildSettings.prodBaseUrl : buildSettings.prodBaseUrl + "/";
     shortVersion = String(version).split(".")[0]
-    pluginUrl = short ? buildSettings.prodUrlPlugin + "v" + shortVersion : buildSettings.prodUrlPlugin + "v" + version;
-    pluginConfigUrl = short ? buildSettings.prodUrlConfig + "v" + shortVersion : buildSettings.prodUrlConfig + "v" + version;
     displayName = buildSettings.prodDisplayName;
   }
-
+  pluginUrl = short ? url + "v" + shortVersion : url + "v" + version;
+  pluginConfigUrl = short ? configUrl + "v" + shortVersion : configUrl + "v" + version;
   const config = {
     devtool: source,
     entry: {
