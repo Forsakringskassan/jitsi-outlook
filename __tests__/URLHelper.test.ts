@@ -18,9 +18,9 @@ describe("getConfigUrl", () => {
       meetings: [
         {
           additionalConfig: {
-            toolbarButtons: "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
-            startWithAudioMuted: true,
-            startWithVideoMuted: false
+            "config.toolbarButtons": "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
+            "config.startWithAudioMuted": true,
+            "config.startWithVideoMuted": false
           }
         }
       ]
@@ -40,13 +40,13 @@ describe("getConfigUrl", () => {
       meetings: [
         {
           additionalConfig: {
-            startWithAudioMuted: true,
-            startWithVideoMuted: true
+            "config.startWithAudioMuted": true,
+            "config.startWithVideoMuted": true
           }
         }
       ],
     };
-    const configUrl = getConfigUrl(config, 0);
+    const configUrl = getConfigUrl(config.meetings[0].additionalConfig);
     expect(configUrl).toBe("#config.startWithAudioMuted=true&config.startWithVideoMuted=true");
   });
 
@@ -56,13 +56,13 @@ describe("getConfigUrl", () => {
         {
           type: "StandardMeeting",
           additionalConfig: {
-            startWithAudioMuted: true,
-            startWithVideoMuted: true
+            "config.startWithAudioMuted": true,
+            "config.startWithVideoMuted": true
           }
         }
       ],
     };
-    const configUrl = getConfigUrl(config, 0);
+    const configUrl = getConfigUrl(config.meetings[0].additionalConfig);
     expect(configUrl).toBe("#config.startWithAudioMuted=true&config.startWithVideoMuted=true");
   });
 });
@@ -89,15 +89,15 @@ describe("getJitsiUrl", () => {
         {
           type: "StandardMeeting",
           additionalConfig: {
-            startWithAudioMuted: true,
-            startWithVideoMuted: true,
+            "config.startWithAudioMuted": true,
+            "config.startWithVideoMuted": true,
           }
         }
       ]
     };
     const jitsiUrl = getJitsiUrl(config, 0);
     expect(jitsiUrl).toContain(config.baseUrl);
-    expect(jitsiUrl).toContain(getConfigUrl(config, 0));
+    expect(jitsiUrl).toContain(getConfigUrl(config.meetings[0].additionalConfig));
   });
 
   it("should add suffix and prefix to string", () => {
@@ -109,15 +109,15 @@ describe("getJitsiUrl", () => {
           meetingSuffix: "_authx",
           meetingPrefix: "comp_",
           additionalConfig: {
-            startWithAudioMuted: true,
-            startWithVideoMuted: true,
+            "config.startWithAudioMuted": true,
+            "config.startWithVideoMuted": true,
           }
         }
       ]
     };
     const jitsiUrl = getJitsiUrl(config, 0);
     expect(jitsiUrl).toContain(config.baseUrl);
-    expect(jitsiUrl).toContain(getConfigUrl(config, 0));
+    expect(jitsiUrl).toContain(getConfigUrl(config.meetings[0].additionalConfig));
     expect(jitsiUrl).toContain("comp_");
     expect(jitsiUrl).toContain("_authx");
   });

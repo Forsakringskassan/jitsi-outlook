@@ -5,8 +5,8 @@
     {
       "type": "StandardMeeting",
       "additionalConfig": {
-        "startWithAudioMuted": true,
-        "startWithVideoMuted": true
+        "config.startWithAudioMuted": true,
+        "config.startWithVideoMuted": true
       },
       "meetingHeader": {"default": "Test Meeting"},
       "additionalTexts": [

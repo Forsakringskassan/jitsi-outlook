@@ -213,7 +213,7 @@ describe("Connection test to server", () => {
         {
           type: "StandardMeeting",
           additionalConfig: {
-            startWithAudioMuted: true,
+            "config.startWithAudioMuted": true
           }
         }
       ]
@@ -239,12 +239,15 @@ describe("Connection test to server", () => {
       meetings: [
         {
           type: "StandardMeeting",
-          startWithAudioMuted: true,
+          additionalConfig: {
+            "config.startWithAudioMuted": true
+          }
         }
       ]
     } as Config;
     let attendees: {value:{displayName: string, emailAddress: string}[]} = {value:[]};
-    await addMeeting("StandardMeeting", config);
+    let e: string = "";
+    await addMeeting("StandardMeeting", config, e);
     Office.context.mailbox.item.requiredAttendees.getAsync((r) => {r.value.forEach(e => {attendees.value.push({"displayName": e.displayName, "emailAddress": e.emailAddress})})})
     let testAttende: {displayName: string, emailAddress: string}[] = [{"displayName": "Jane Doe", "emailAddress": "jane.doe@controll.test"}]
     expect(attendees.value).toStrictEqual(testAttende);
@@ -252,7 +255,7 @@ describe("Connection test to server", () => {
     attendees = {value:[]};
     Office.context.mailbox.diagnostics.OWAView = "OneColumn";
     Office.context.mailbox.item.requiredAttendees.addAsync([{displayName: "John Doe", emailAddress: "john.doe@controll.test"}], (_) => {});
-    await addMeeting("StandardMeeting", config);
+    await addMeeting("StandardMeeting", config, e);
     let testAttendeNo: {displayName: string, emailAddress: string}[] = [{"displayName": "Jane Doe", "emailAddress": "jane.doe@controll.test"},{"displayName": "John Doe", "emailAddress": "john.doe@controll.test"}]
     Office.context.mailbox.item.requiredAttendees.getAsync((r) => {r.value.forEach(e => {attendees.value.push({"displayName": e.displayName, "emailAddress": e.emailAddress})})})
     expect(attendees.value).toStrictEqual(testAttendeNo);

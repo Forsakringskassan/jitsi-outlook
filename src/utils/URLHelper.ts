@@ -14,16 +14,11 @@ export const getRandomRoomName = (): string => {
   return result;
 };
 
-export const getConfigUrl = (config: Config, index?: number): string => {
-  if (!config.meetings || !config.meetings[index] || !config.meetings[index].additionalConfig) {
-    return "";
-  }
-
-  var keys = Object.keys(config.meetings[index].additionalConfig);
+export const getConfigUrl = (config: object): string => {
+  var keys = Object.keys(config);
   const url = keys.reduce((acc, currentValue) => {
-    return acc + `config.${currentValue}=${config.meetings[index].additionalConfig[currentValue]}&`;
+    return acc + `${currentValue}=${config[currentValue]}&`;
   }, "#");
-
   return url.slice(0, -1);
 };
 
@@ -55,15 +50,19 @@ export const getJitsiUrl = (config: Config, index?: number, subject?: string): s
   }
   let prefix: string = "";
   let suffix: string = "";
+  let hash: string = "";
   if (index !== undefined) {
     if (config.meetings[index] !== undefined) {
       prefix = config.meetings[index].meetingPrefix ?? "";
       suffix = config.meetings[index].meetingSuffix ?? "";
+      if (config.meetings[index].additionalConfig !== undefined) {
+        hash = getConfigUrl(config.meetings[index].additionalConfig)
+      }
     }
   }
   let baseUrl = config.baseUrl ?? defaultMeetJitsiUrl;
   if (!baseUrl.endsWith("/")) {
     baseUrl = baseUrl + "/";
   }
-  return baseUrl + prefix + subjectText + getRandomRoomName() + suffix + getConfigUrl(config, index);
+  return baseUrl + prefix + subjectText + getRandomRoomName() + suffix + hash;
 };

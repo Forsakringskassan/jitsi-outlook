@@ -5,13 +5,17 @@
   "meetings": [
     {
       "type": "StandardMeeting",
-      "startWithAudioMuted": false,
-      "startWithVideoMuted": false
+      "additionalConfig": {
+        "config.startWithAudioMuted": false,
+        "config.startWithVideoMuted": false
+      }
     },
     {
       "type": "InformationMeeting",
-      "startWithAudioMuted": true,
-      "startWithVideoMuted": true
+      "additionalConfig": {
+        "config.startWithAudioMuted": true,
+        "config.startWithVideoMuted": true
+      }
     }
   ],
   "fontFamily": "Arial"

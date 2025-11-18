@@ -13,23 +13,23 @@ describe("getJitsiLinkDOM", () => {
       meetings: [
         {
           additionalConfig: {
-            toolbarButtons: "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
-            startWithAudioMuted: true,
-            startWithVideoMuted: false
+            "config.toolbarButtons": "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
+            "config.startWithAudioMuted": true,
+            "config.startWithVideoMuted": false
           },
           additionalLinks: [
             {
               text: {"default": "link without camera"},
               config: {
-                toolbarButtons: "[%22microphone%22,%22desktop%22,%22hangup%22]"
+                "config.toolbarButtons": "[%22microphone%22,%22desktop%22,%22hangup%22]"
               }
             },
             {
               text: {"default": "link with more settings"},
               config: {
-                toolbarButtons: "[%22microphone%22,%22desktop%22,%22hangup%22,%22settings%22]",
-                startWithAudioMuted: false,
-                startWithVideoMuted: true
+                "config.toolbarButtons": "[%22microphone%22,%22desktop%22,%22hangup%22,%22settings%22]",
+                "config.startWithAudioMuted": false,
+                "config.startWithVideoMuted": true
               }
             }
           ]
@@ -48,15 +48,15 @@ describe("getJitsiLinkDOM", () => {
       meetings: [
         {
           additionalConfig: {
-            toolbarButtons: "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
-            startWithAudioMuted: true,
-            startWithVideoMuted: false
+            "config.toolbarButtons": "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
+            "config.startWithAudioMuted": true,
+            "config.startWithVideoMuted": false
           },
           additionalLinks: [
             {
               text: {"en-GB": "LINK WITHOUT CAMERA", "default": "link without camera"},
               config: {
-                toolbarButtons: "[%22microphone%22,%22desktop%22,%22hangup%22]"
+                "config.toolbarButtons": "[%22microphone%22,%22desktop%22,%22hangup%22]"
               }
             }
           ],

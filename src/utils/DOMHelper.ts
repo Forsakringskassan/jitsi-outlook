@@ -8,7 +8,7 @@
 import getLocalizedStrings from "../localization";
 import { Config, AdditionalLinks, AdditionalTexts, defaultFontFamily, defaultMeetJitsiUrl, defaultFontSize, defaultFontColor } from "../models/Config";
 import { videoCameraURI } from "./IconHelper";
-import { getJitsiUrl } from "./URLHelper";
+import { getJitsiUrl, getConfigUrl } from "./URLHelper";
 
 const DIV_ID_JITSI = "jitsi-link";
 
@@ -52,13 +52,10 @@ export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: nu
 
 const concatAdditionalLinks = (lang: string, additionalLinks: AdditionalLinks, baseUrl: string): string => {
   let output: string = "";
-  var keys: string[] = Object.keys(additionalLinks.config);
   let aL: string = getLocalizedText(additionalLinks.text, lang, "");
-  let url: string = keys.reduce((acc, currentValue) => {
-    return acc + `config.${currentValue}=${additionalLinks.config[currentValue]}&`;
-  }, "#");
+  let url: string = getConfigUrl(additionalLinks.config);
   output += `<span style="font-size: ${additionalLinks.fontSize ?? defaultFontSize}; font-family: '${additionalLinks.fontFamily ?? defaultFontFamily}'; color: ${additionalLinks.fontColor ?? defaultFontColor};">`;
-  output += `<a aria-label="${aL}" title="${aL}" style="text-decoration: none;" href="${baseUrl + url.slice(0, -1)}"> ${aL} </a>`;
+  output += `<a aria-label="${aL}" title="${aL}" style="text-decoration: none;" href="${baseUrl + url}"> ${aL} </a>`;
   output += `</span>`;
   output += `<br>`;
   return output;
