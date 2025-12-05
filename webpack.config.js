@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: MIT
 
 /* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable no-control-regex */
 
 const buildSettings = require("./buildSettings.json");
@@ -36,7 +37,7 @@ module.exports = async (env, options) => {
     configUrl = buildSettings.devUrlConfig.endsWith("/") ? buildSettings.devUrlConfig : buildSettings.devUrlConfig + "/";
     id = buildSettings.devAppId;
     version = buildSettings.devVersion;
-    shortVersion = String(version).split(".")[0]
+    shortVersion = String(version).split(".")[0];
     baseUrl = buildSettings.devBaseUrl.endsWith("/") ? buildSettings.devBaseUrl : buildSettings.devBaseUrl + "/";
     displayName = buildSettings.devDisplayName;
   } else {
@@ -44,7 +45,7 @@ module.exports = async (env, options) => {
     configUrl = buildSettings.prodUrlConfig.endsWith("/") ? buildSettings.prodUrlConfig : buildSettings.prodUrlConfig + "/";
     id = buildSettings.prodAppId;
     baseUrl = buildSettings.prodBaseUrl.endsWith("/") ? buildSettings.prodBaseUrl : buildSettings.prodBaseUrl + "/";
-    shortVersion = String(version).split(".")[0]
+    shortVersion = String(version).split(".")[0];
     displayName = buildSettings.prodDisplayName;
   }
   pluginUrl = short ? url + "v" + shortVersion : url + "v" + version;
@@ -122,7 +123,7 @@ module.exports = async (env, options) => {
         ],
       }),
       new DefinePlugin({
-        'CONFIG_URL': JSON.stringify(pluginConfigUrl)
+        CONFIG_URL: JSON.stringify(pluginConfigUrl),
       }),
       new HtmlWebpackPlugin({
         filename: "commands.html",

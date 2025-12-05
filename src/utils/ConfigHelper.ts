@@ -2,16 +2,16 @@
 
 // SPDX-License-Identifier: MIT
 
-/* global Office, console, XMLHttpRequest */
+/* global console, XMLHttpRequest */
 
-import { Config } from "../models/Config";
+import { Config, Meeting } from "../models/Config";
 const DefaultConfig: Config = {};
 
 export const getConfigXHR = function (callback: (config: Config, error: string) => void, configUrl?: string) {
-  let domain: string | null = getDomain();
+  const domain: string | null = getDomain();
   const xhr = new XMLHttpRequest();
   if (configUrl !== undefined) {
-    let url = configUrl.endsWith("/") ? configUrl : configUrl + "/";
+    const url = configUrl.endsWith("/") ? configUrl : configUrl + "/";
     if (domain) {
       xhr.open("GET", url + domain + "/config.json", false);
       xhr.onreadystatechange = function () {
@@ -55,7 +55,7 @@ export const getMeetingConfig = (config: Config, type: string): number => {
   if (!config.meetings) {
     return undefined;
   }
-  config.meetings.forEach((entry: any, index: number) => {
+  config.meetings.forEach((entry: Meeting, index: number) => {
     if (entry.type === type) {
       value = index;
     }

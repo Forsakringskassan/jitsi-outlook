@@ -52,8 +52,8 @@ export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: nu
 
 const concatAdditionalLinks = (lang: string, additionalLinks: AdditionalLinks, baseUrl: string): string => {
   let output: string = "";
-  let aL: string = getLocalizedText(additionalLinks.text, lang, "");
-  let url: string = getConfigUrl(additionalLinks.config);
+  const aL: string = getLocalizedText(additionalLinks.text, lang, "");
+  const url: string = getConfigUrl(additionalLinks.config);
   output += `<span style="font-size: ${additionalLinks.fontSize ?? defaultFontSize}; font-family: '${additionalLinks.fontFamily ?? defaultFontFamily}'; color: ${additionalLinks.fontColor ?? defaultFontColor};">`;
   output += `<a aria-label="${aL}" title="${aL}" style="text-decoration: none;" href="${baseUrl + url}"> ${aL} </a>`;
   output += `</span>`;
@@ -63,7 +63,7 @@ const concatAdditionalLinks = (lang: string, additionalLinks: AdditionalLinks, b
 
 export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, index?: number): string => {
   let output: string = "<br>";
-  let baseUrl: string = jitsiUrl.split("#")[0];
+  const baseUrl: string = jitsiUrl.split("#")[0];
   if (index !== undefined) {
     config.meetings[index]?.additionalLinks?.forEach((entry) => {
       output += concatAdditionalLinks(config.currentLanguage, entry, baseUrl);

@@ -20,13 +20,13 @@ describe("getConfigUrl", () => {
           additionalConfig: {
             "config.toolbarButtons": "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
             "config.startWithAudioMuted": true,
-            "config.startWithVideoMuted": false
-          }
-        }
-      ]
+            "config.startWithVideoMuted": false,
+          },
+        },
+      ],
     };
     const jitsiUrl = getJitsiUrl(config, 0);
-    expect(jitsiUrl).toContain("#config.toolbarButtons=[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]&config.startWithAudioMuted=true&config.startWithVideoMuted=false")
+    expect(jitsiUrl).toContain("#config.toolbarButtons=[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]&config.startWithAudioMuted=true&config.startWithVideoMuted=false");
   });
 
   it("should return an empty string if config.meetingUrl is not provided", () => {
@@ -41,25 +41,25 @@ describe("getConfigUrl", () => {
         {
           additionalConfig: {
             "config.startWithAudioMuted": true,
-            "config.startWithVideoMuted": true
-          }
-        }
+            "config.startWithVideoMuted": true,
+          },
+        },
       ],
     };
     const configUrl = getConfigUrl(config.meetings[0].additionalConfig);
     expect(configUrl).toBe("#config.startWithAudioMuted=true&config.startWithVideoMuted=true");
   });
 
-  it("should return the correct config URL if config.meetingUrl is provided", () => {
+  it("should return the correct config URL if config.meetingUrl is provided 2", () => {
     const config: Config = {
       meetings: [
         {
           type: "StandardMeeting",
           additionalConfig: {
             "config.startWithAudioMuted": true,
-            "config.startWithVideoMuted": true
-          }
-        }
+            "config.startWithVideoMuted": true,
+          },
+        },
       ],
     };
     const configUrl = getConfigUrl(config.meetings[0].additionalConfig);
@@ -91,9 +91,9 @@ describe("getJitsiUrl", () => {
           additionalConfig: {
             "config.startWithAudioMuted": true,
             "config.startWithVideoMuted": true,
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
     const jitsiUrl = getJitsiUrl(config, 0);
     expect(jitsiUrl).toContain(config.baseUrl);
@@ -111,9 +111,9 @@ describe("getJitsiUrl", () => {
           additionalConfig: {
             "config.startWithAudioMuted": true,
             "config.startWithVideoMuted": true,
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
     const jitsiUrl = getJitsiUrl(config, 0);
     expect(jitsiUrl).toContain(config.baseUrl);

@@ -6,16 +6,16 @@
 import { Config, defaultMeetJitsiUrl } from "../models/Config";
 
 export const getRandomRoomName = (): string => {
-  var randomChars = "abcdefghijklmnopqrstuvwxyz0123456789";
-  var result = "";
-  for (var i = 0; i < 16; i++) {
+  const randomChars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 16; i++) {
     result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
   }
   return result;
 };
 
 export const getConfigUrl = (config: object): string => {
-  var keys = Object.keys(config);
+  const keys = Object.keys(config);
   const url = keys.reduce((acc, currentValue) => {
     return acc + `${currentValue}=${config[currentValue]}&`;
   }, "#");
@@ -56,7 +56,7 @@ export const getJitsiUrl = (config: Config, index?: number, subject?: string): s
       prefix = config.meetings[index].meetingPrefix ?? "";
       suffix = config.meetings[index].meetingSuffix ?? "";
       if (config.meetings[index].additionalConfig !== undefined) {
-        hash = getConfigUrl(config.meetings[index].additionalConfig)
+        hash = getConfigUrl(config.meetings[index].additionalConfig);
       }
     }
   }

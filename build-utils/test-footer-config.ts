@@ -1,6 +1,8 @@
+/* global process, __dirname, console */
+
 import { getJitsiLinkDiv } from "../src/utils/DOMHelper";
-import { Config } from "../src/models/Config"
-import { readFileSync, writeFileSync } from 'fs';
+import { Config } from "../src/models/Config";
+import { readFileSync, writeFileSync } from "fs";
 
 const args = process.argv.slice(2);
 const configArg = args.find((arg) => arg.startsWith("config="));
@@ -13,9 +15,9 @@ const language = languageArg ? languageArg.split("=")[1] : undefined;
 const testConfigOnFooter = (): string => {
   let output: string = "";
   const configString = readFileSync(configPath, "utf-8");
-  let config: Config = JSON.parse(configString);
+  const config: Config = JSON.parse(configString);
   config.currentLanguage = language;
-  let index: number = undefined
+  let index: number = undefined;
   if (indexA) {
     index = +indexA;
   }
@@ -24,9 +26,9 @@ const testConfigOnFooter = (): string => {
 };
 
 const writeToHTML = () => {
-  let footer: string = testConfigOnFooter();
+  const footer: string = testConfigOnFooter();
   console.log(footer);
   writeFileSync(__dirname + "/footer.html", footer, "utf-8");
-}
+};
 
 writeToHTML();

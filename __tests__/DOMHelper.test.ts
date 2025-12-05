@@ -15,30 +15,30 @@ describe("getJitsiLinkDOM", () => {
           additionalConfig: {
             "config.toolbarButtons": "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
             "config.startWithAudioMuted": true,
-            "config.startWithVideoMuted": false
+            "config.startWithVideoMuted": false,
           },
           additionalLinks: [
             {
-              text: {"default": "link without camera"},
+              text: { default: "link without camera" },
               config: {
-                "config.toolbarButtons": "[%22microphone%22,%22desktop%22,%22hangup%22]"
-              }
+                "config.toolbarButtons": "[%22microphone%22,%22desktop%22,%22hangup%22]",
+              },
             },
             {
-              text: {"default": "link with more settings"},
+              text: { default: "link with more settings" },
               config: {
                 "config.toolbarButtons": "[%22microphone%22,%22desktop%22,%22hangup%22,%22settings%22]",
                 "config.startWithAudioMuted": false,
-                "config.startWithVideoMuted": true
-              }
-            }
-          ]
-        }
-      ]
+                "config.startWithVideoMuted": true,
+              },
+            },
+          ],
+        },
+      ],
     };
     const linksText = getMeetingAdditionalLinks(config, URLHelper.getJitsiUrl(config, 0), 0);
-    expect(linksText).toContain("title=\"link without camera\"");
-    expect(linksText).toContain("title=\"link with more settings\"");
+    expect(linksText).toContain('title="link without camera"');
+    expect(linksText).toContain('title="link with more settings"');
     expect(linksText).toContain("#config.toolbarButtons=[%22microphone%22,%22desktop%22,%22hangup%22]");
     expect(linksText).toContain("#config.toolbarButtons=[%22microphone%22,%22desktop%22,%22hangup%22,%22settings%22]&config.startWithAudioMuted=false&config.startWithVideoMuted=true");
   });
@@ -50,15 +50,15 @@ describe("getJitsiLinkDOM", () => {
           additionalConfig: {
             "config.toolbarButtons": "[%22microphone%22,%22camera%22,%22desktop%22,%22hangup%22]",
             "config.startWithAudioMuted": true,
-            "config.startWithVideoMuted": false
+            "config.startWithVideoMuted": false,
           },
           additionalLinks: [
             {
-              text: {"en-GB": "LINK WITHOUT CAMERA", "default": "link without camera"},
+              text: { "en-GB": "LINK WITHOUT CAMERA", default: "link without camera" },
               config: {
-                "config.toolbarButtons": "[%22microphone%22,%22desktop%22,%22hangup%22]"
-              }
-            }
+                "config.toolbarButtons": "[%22microphone%22,%22desktop%22,%22hangup%22]",
+              },
+            },
           ],
           additionalTexts: [
             {
@@ -66,14 +66,14 @@ describe("getJitsiLinkDOM", () => {
               texts: [
                 {
                   addNewLine: true,
-                  text: {"en-GB": "Wiki", "default": "Wikipedia"},
-                  url: {"default": "https://wikipedia.com"}
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  text: { "en-GB": "Wiki", default: "Wikipedia" },
+                  url: { default: "https://wikipedia.com" },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
     expect(getLocalizedText(config.meetings[0].additionalLinks[0].text, "en-GB", "")).toEqual("LINK WITHOUT CAMERA");
     expect(getLocalizedText(config.meetings[0].additionalLinks[0].text, "def", "")).toEqual("link without camera");
@@ -94,25 +94,25 @@ describe("getJitsiLinkDOM", () => {
               texts: [
                 {
                   addNewLine: false,
-                  text: {"default": "created by Outlook Plugin"}
+                  text: { default: "created by Outlook Plugin" },
                 },
                 {
                   addNewLine: true,
-                  text: {"default": "Wikipedia"},
-                  url: {"default": "https://wikipedia.com"}
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  text: { default: "Wikipedia" },
+                  url: { default: "https://wikipedia.com" },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const textsText = getMeetingAdditionalTexts(config, 0);
     expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Arial'; color: #000000;\">");
     expect(textsText).toContain("created by Outlook Plugin");
-    expect(textsText).toContain("title=\"Wikipedia\"");
-    expect(textsText).toContain("href=\"https://wikipedia.com\"");
+    expect(textsText).toContain('title="Wikipedia"');
+    expect(textsText).toContain('href="https://wikipedia.com"');
   });
 
   it("should return additional texts, with different fonts and color", () => {
@@ -125,10 +125,10 @@ describe("getJitsiLinkDOM", () => {
           texts: [
             {
               addNewLine: true,
-              text: {"default": "sponsored by Outlook Plugin GLOBAL"}
-            }
-          ]
-        }
+              text: { default: "sponsored by Outlook Plugin GLOBAL" },
+            },
+          ],
+        },
       ],
       meetings: [
         {
@@ -140,13 +140,13 @@ describe("getJitsiLinkDOM", () => {
               texts: [
                 {
                   addNewLine: false,
-                  text: {"default": "created by Outlook Plugin"}
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  text: { default: "created by Outlook Plugin" },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const textsText = getMeetingAdditionalTexts(config, 0);
@@ -167,9 +167,9 @@ describe("getJitsiLinkDOM", () => {
               texts: [
                 {
                   addNewLine: false,
-                  text: {"default": "created by Outlook Plugin"}
-                }
-              ]
+                  text: { default: "created by Outlook Plugin" },
+                },
+              ],
             },
             {
               fontSize: "16px",
@@ -178,14 +178,14 @@ describe("getJitsiLinkDOM", () => {
               texts: [
                 {
                   addNewLine: false,
-                  text: {"default": "Wikipedia"},
-                  url: {"default": "http://wikipedia.com"}
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  text: { default: "Wikipedia" },
+                  url: { default: "http://wikipedia.com" },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
 
     const textsText = getMeetingAdditionalTexts(config, 0);
@@ -219,27 +219,27 @@ describe("getJitsiLinkDOM", () => {
         {
           texts: [
             {
-              text: {"default": "Testa"},
-              addNewLine: true
-            }
-          ]
-        }
+              text: { default: "Testa" },
+              addNewLine: true,
+            },
+          ],
+        },
       ],
       meetings: [
         {
           type: "StandardMeeting",
-          meetingHeader: {"default": "Header line"},
+          meetingHeader: { default: "Header line" },
           additionalTexts: [
             {
               texts: [
                 {
-                  text: {"default": "This is additional text"},
-                  addNewLine: false
-                }
-              ]
-            }
-          ]
-        }
+                  text: { default: "This is additional text" },
+                  addNewLine: false,
+                },
+              ],
+            },
+          ],
+        },
       ],
     };
     const jitsiUrl = URLHelper.getJitsiUrl(config, 0);
@@ -250,7 +250,7 @@ describe("getJitsiLinkDOM", () => {
 
     const combineJitsiBody = combineBodyWithJitsiDiv("", config, 0);
     expect(combineJitsiBody).toContain("Header line");
-    config.meetings[0].meetingHeader = {"default": "Header Line 2!"};
+    config.meetings[0].meetingHeader = { default: "Header Line 2!" };
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(combineJitsiBody, "text/html");
     const overwriteLinkDiv = overwriteJitsiLinkDiv(htmlDoc, config, 0);
@@ -264,9 +264,9 @@ describe("getJitsiLinkDOM", () => {
           fontSize: "12px",
           fontFamily: "Segoe UI",
           fontColor: "#0d85c7",
-          text: {"default": "Join meeting as a moderator"},
-          config: {}
-        }
+          text: { default: "Join meeting as a moderator" },
+          config: {},
+        },
       ],
       meetings: [
         {
@@ -275,13 +275,13 @@ describe("getJitsiLinkDOM", () => {
             {
               texts: [
                 {
-                  text: {"default": "This is additional text"},
-                  addNewLine: false
-                }
-              ]
-            }
-          ]
-        }
+                  text: { default: "This is additional text" },
+                  addNewLine: false,
+                },
+              ],
+            },
+          ],
+        },
       ],
     };
     const jitsiUrl = URLHelper.getJitsiUrl(config, 0);
@@ -301,30 +301,30 @@ describe("getJitsiLinkDOM", () => {
   });
 
   it("check that the div is present or not when set in config", () => {
-    let config: Config = {useDiv: true};
+    let config: Config = { useDiv: true };
     let jitsiUrl = URLHelper.getJitsiUrl(config);
     let jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
 
-    expect(jitsiLinkDOM).toContain("<hr style=\"color: #ffffff; border-color: #ffffff\">");
+    expect(jitsiLinkDOM).toContain('<hr style="color: #ffffff; border-color: #ffffff">');
     expect(jitsiLinkDOM).not.toContain("undefined");
 
     config = {};
     jitsiUrl = URLHelper.getJitsiUrl(config);
     jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
 
-    expect(jitsiLinkDOM).not.toContain("<hr style=\"color: #ffffff; border-color: #ffffff\">");
+    expect(jitsiLinkDOM).not.toContain('<hr style="color: #ffffff; border-color: #ffffff">');
     expect(jitsiLinkDOM).not.toContain("undefined");
 
-    config = {useDiv: false};
+    config = { useDiv: false };
     jitsiUrl = URLHelper.getJitsiUrl(config);
     jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
 
-    expect(jitsiLinkDOM).not.toContain("<hr style=\"color: #ffffff; border-color: #ffffff\">");
+    expect(jitsiLinkDOM).not.toContain('<hr style="color: #ffffff; border-color: #ffffff">');
     expect(jitsiLinkDOM).not.toContain("undefined");
   });
 
   it("check that the img is present or not when set in config", () => {
-    let config: Config = {useGraphics: true};
+    let config: Config = { useGraphics: true };
     let jitsiUrl = URLHelper.getJitsiUrl(config);
     let jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
 
@@ -338,7 +338,7 @@ describe("getJitsiLinkDOM", () => {
     expect(jitsiLinkDOM).not.toContain(`<img style="vertical-align: middle;" width="18" height="18"`);
     expect(jitsiLinkDOM).not.toContain("undefined");
 
-    config = {useGraphics: false};
+    config = { useGraphics: false };
     jitsiUrl = URLHelper.getJitsiUrl(config);
     jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config);
 
@@ -368,21 +368,21 @@ describe("getJitsiLinkDOM", () => {
   });
 
   it("should return a room containing subject line", () => {
-    const config: Config = {}
+    const config: Config = {};
     const testSubject: string = 'Test Meeting:;for +?"!new¤%€${€$[{]£$@£$£employee.,-.-...,,,,.-.-,.---.-,,.,._++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++';
     const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, undefined, testSubject);
     expect(JitsiMeetingUrlProperties).toContain("Test-Meeting-for-new-employee-");
   });
 
-  it("should return a room containing subject line", () => {
-    const config: Config = {}
+  it("should return a room containing subject line 2", () => {
+    const config: Config = {};
     const testSubject: string = 'Möte angående:;nästa +?"!sprint¤%€${€$[{]£$@£$£.,-.-...,,,,.-.-,.---.-,,.,._++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++';
     const JitsiMeetingUrlProperties: string = URLHelper.getJitsiUrl(config, undefined, testSubject);
     expect(JitsiMeetingUrlProperties).toContain("Mote-angaende-nasta-sprint-");
   });
 
   it("should return a room containing only meeting id", () => {
-    const testSubject: string = '';
+    const testSubject: string = "";
     const secureSubjectUrl: string = URLHelper.secureSubjectUrl(testSubject);
     expect(secureSubjectUrl).toContain("");
   });
@@ -390,7 +390,7 @@ describe("getJitsiLinkDOM", () => {
   it("should return a room containing only 30 characters", () => {
     const testSubject: string = "Möte angående nästa sprint sen i fredags";
     const secureSubjectUrl: string = URLHelper.secureSubjectUrl(testSubject);
-    expect(secureSubjectUrl).toHaveLength(31)
+    expect(secureSubjectUrl).toHaveLength(31);
   });
 
   it("Should return empty string", () => {
@@ -458,11 +458,11 @@ describe("overwriteJitsiLinkDiv", () => {
   });
 });
 
-describe("overwriteJitsiLinkDiv", () => {
+describe("overwriteJitsiLinkDiv 2", () => {
   it("should override the localizedlink for the meeting", () => {
     let config: Config = {
       baseUrl: "https://meet.jit.si",
-      currentLanguage: "sv"
+      currentLanguage: "sv",
     };
     let output = getJitsiLinkDiv(config.baseUrl, config);
     expect(output).toContain("Länk till mötet");
@@ -470,8 +470,8 @@ describe("overwriteJitsiLinkDiv", () => {
     config = {
       baseUrl: "https://meet.jit.si",
       currentLanguage: "sv",
-      overrideLinkToMeeting: {"sv": "TEST LINK"},
-      overrideConnectToMeeting: {"sv": "Anslut till mötet"}
+      overrideLinkToMeeting: { sv: "TEST LINK" },
+      overrideConnectToMeeting: { sv: "Anslut till mötet" },
     };
     output = getJitsiLinkDiv(config.baseUrl, config);
     expect(output).toContain("TEST LINK");
@@ -480,7 +480,7 @@ describe("overwriteJitsiLinkDiv", () => {
     config = {
       baseUrl: "https://meet.jit.si",
       currentLanguage: "en",
-      overrideLinkToMeeting: {"sv": "TEST LINK"}
+      overrideLinkToMeeting: { sv: "TEST LINK" },
     };
     output = getJitsiLinkDiv(config.baseUrl, config);
     expect(output).toContain("Link to meeting");

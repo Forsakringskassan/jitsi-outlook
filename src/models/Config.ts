@@ -8,7 +8,7 @@ export const defaultFontFamily = "Arial";
 export const defaultFontSize = "20px";
 export const defaultFontColor = "#000000";
 
-interface Text {
+interface Texts {
   addNewLine: boolean;
   text: object;
   url?: object;
@@ -18,7 +18,7 @@ export interface AdditionalTexts {
   fontSize?: string;
   fontFamily?: string;
   fontColor?: string;
-  texts: Text[];
+  texts: Texts[];
 }
 
 export interface AdditionalLinks {
@@ -29,7 +29,7 @@ export interface AdditionalLinks {
   config: object;
 }
 
-interface Meeting {
+export interface Meeting {
   type?: string;
   additionalConfig?: object;
   meetingPrefix?: string;
