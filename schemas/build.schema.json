@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "devUrlRemotePluginServer": {
+      "type": "string",
+      "format": "uri"
+    },
+    "devUrlConfig": {
+      "type": "string",
+      "format": "uri"
+    },
+    "devBaseUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "devAppId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "devVersion": {
+      "type": "string"
+    },
+    "devDisplayName": {
+      "type": "string"
+    },
+    "prodUrlPlugin": {
+      "type": "string",
+      "format": "uri"
+    },
+    "prodUrlConfig": {
+      "type": "string",
+      "format": "uri"
+    },
+    "prodBaseUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "prodAppId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "prodDisplayName": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "providerName": {
+      "type": "string"
+    },
+    "supportUrl": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "additionalProperties": false
+}

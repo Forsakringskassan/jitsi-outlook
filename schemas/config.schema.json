@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "baseUrl": {
+      "type": "string",
+      "description": "Base url to your Jitsi instance. Example: https://meet.jit.si"
+    },
+    "currentLanguage": {
+      "type": "string",
+      "description": "Will be set by plugin, do not set this value manually"
+    },
+    "locationString": {
+      "type": "object",
+      "description": "This text is added to the Location field of the meeting",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "required": ["default"]
+    },
+    "fontFamily": {
+      "$ref": "#/$defs/fontFamily"
+    },
+    "fontSize": {
+      "$ref": "#/$defs/fontSize"
+    },
+    "fontColor": {
+      "$ref": "#/$defs/fontColor"
+    },
+    "useDiv": {
+      "type": "boolean",
+      "description": "Whether to use a dividing line between the meeting link and additional texts/links"
+    },
+    "divColor": {
+      "type": "string",
+      "description": "Color of the dividing line if useDiv is true (default to #ffffff)"
+    },
+    "useGraphics": {
+      "type": "boolean",
+      "description": "Whether to use graphics in the meeting invitation (default to false)"
+    },
+    "userGraphics": {
+      "type": "string",
+      "description": "Base64 encoded string of user graphics to be used in the meeting invitation"
+    },
+    "globalAdditionalLinks": {
+      "type": "array",
+      "description": "Additional links to be shown below the meeting link",
+      "items": {
+        "$ref": "#/$defs/additionalLink"
+      }
+    },
+    "globalAdditionalTexts": {
+      "type": "array",
+      "description": "Additional texts to be shown below the meeting link",
+      "items": {
+        "$ref": "#/$defs/additionalTexts"
+      }
+    },
+    "overrideLinkToMeeting": {
+      "type": "object",
+      "description": "Override text for 'Link to meeting' label",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "overrideConnectToMeeting": {
+      "type": "object",
+      "description": "Override text for 'Connect to meeting' label",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "meetings": {
+      "type": "array",
+      "description": "Array of meeting configurations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of meeting (e.g., StandardMeeting, LobbyMeeting)"
+          },
+          "meetingPrefix": {
+            "type": "string",
+            "description": "Prefix to be added to the meeting ID"
+          },
+          "meetingSuffix": {
+            "type": "string",
+            "description": "Suffix to be added to the meeting ID"
+          },
+          "additionalConfig": {
+            "type": "object",
+            "description": "Additional Jitsi Meet config options for this meeting type"
+          },
+          "meetingHeader": {
+            "type": "object",
+            "description": "Header text for the meeting invitation",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "required": ["default"]
+          },
+          "additionalLinks": {
+            "type": "array",
+            "description": "Additional links specific to this meeting type",
+            "items": {
+              "$ref": "#/$defs/additionalLink"
+            }
+          },
+          "additionalTexts": {
+            "type": "array",
+            "description": "Additional texts specific to this meeting type",
+            "items": {
+              "$ref": "#/$defs/additionalTexts"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "fontFamily": {
+      "type": "string",
+      "description": "The font family used for the signature text (defaulting to Arial)"
+    },
+    "fontSize": {
+      "type": "string",
+      "description": "Html element font size, this is a global font size (default to 20px)"
+    },
+    "fontColor": {
+      "type": "string",
+      "description": "Html element font color, this is a global font color (default to #000000)"
+    },
+    "Texts": {
+      "type": "array",
+      "description": "Array of text objects to be displayed",
+      "items": {
+        "type": "object",
+        "properties": {
+          "addNewLine": {
+            "type": "boolean",
+            "description": "Add a new line after text"
+          },
+          "text": {
+            "type": "object",
+            "description": "The text to display",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "required": ["default"]
+          },
+          "url": {
+            "type": "object",
+            "description": "The URL for the text link",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "required": ["default"]
+          }
+        },
+        "required": ["addNewLine", "text"],
+        "additionalProperties": false
+      }
+    },
+    "additionalLink": {
+      "type": "object",
+      "properties": {
+        "fontSize": {"$ref": "#/$defs/fontSize"},
+        "fontFamily": {"$ref": "#/$defs/fontFamily"},
+        "fontColor": {"$ref": "#/$defs/fontColor"},
+        "text": {
+          "type": "object",
+          "description": "The text to display for the link",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "required": ["default"]
+        },
+        "config": {
+          "type": "object",
+          "description": "Additional Jitsi Meet config options for this link"
+        }
+      },
+      "required": ["text", "config"],
+      "additionalProperties": false
+    },
+    "additionalTexts": {
+      "type": "object",
+      "properties": {
+        "fontSize": {"$ref": "#/$defs/fontSize"},
+        "fontFamily": {"$ref": "#/$defs/fontFamily"},
+        "fontColor": {"$ref": "#/$defs/fontColor"},
+        "texts": {"$ref": "#/$defs/Texts"}
+      },
+      "required": ["texts"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

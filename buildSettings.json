@@ -1,4 +1,5 @@
 {
+  "$schema": "./schemas/build.schema.json",
   "devUrlRemotePluginServer": "https://dev.controll.test/plugin/",
   "devUrlConfig": "https://dev.controll.test/plugin/configs/",
   "devBaseUrl": "https://dev.controll.test/",

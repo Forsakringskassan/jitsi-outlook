@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "meetingLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "associate": {
+            "type": "string",
+            "description": "The associated link name from manifest.xml file"
+          },
+          "meetingName": {
+            "type": "string",
+            "description": "The type meeting config related to this meeting link in config.json file"
+          }
+        },
+        "required": ["associate", "meetingName"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

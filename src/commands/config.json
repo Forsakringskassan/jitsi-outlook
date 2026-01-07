@@ -1,4 +1,5 @@
 {
+  "$schema": "../../schemas/commands_config.schema.json",
   "meetingLinks": [
     {
       "associate": "insertJitsiLink",

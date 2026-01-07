@@ -1,7 +1,17 @@
 {
+  "$schema": "../schemas/config.schema.json",
   "baseUrl": "https://meet.jit.si",
   "locationString": {"default": "string"},
-  "additionalText": {"default": ""},
+  "globalAdditionalTexts": [
+    {
+      "texts": [
+        {
+          "addNewLine": false,
+          "text": {"default": ""}
+        }
+      ]
+    }
+  ],
   "meetings": [
     {
       "type": "StandardMeeting",

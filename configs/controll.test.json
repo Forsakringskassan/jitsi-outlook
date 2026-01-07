@@ -1,6 +1,7 @@
 {
+  "$schema": "../schemas/config.schema.json",
   "baseUrl": "https://meet.jit.si",
-  "locationString": "string",
+  "locationString": {"default": "string"},
   "meetings": [
     {
       "type": "StandardMeeting",
