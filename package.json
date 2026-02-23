@@ -40,7 +40,7 @@
     "@types/jest": "^30.0.0",
     "@types/office-js": "^1.0.574",
     "@types/office-runtime": "^1.0.23",
-    "acorn": "^8.15.0",
+    "acorn": "^8.16.0",
     "babel-loader": "^10.0.0",
     "copy-webpack-plugin": "^13.0.1",
     "eslint-plugin-jest": "^29.15.0",
