@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.20.6, 20.18.2, 22.13.1]
+        node-version: [20.20.1, 22.22.1, 24.14.0]
 
     steps:
       - uses: step-security/harden-runner@58077d3c7e43986b6b15fba718e8ea69e387dfcc # v2.15.1
