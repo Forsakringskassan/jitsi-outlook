@@ -8,10 +8,14 @@ export const defaultFontFamily = "Arial";
 export const defaultFontSize = "20px";
 export const defaultFontColor = "#000000";
 
+export interface PairList {
+  [key: string]: string | boolean;
+}
+
 interface Texts {
   addNewLine: boolean;
-  text: object;
-  url?: object;
+  text: PairList;
+  url?: PairList;
 }
 
 export interface AdditionalTexts {
@@ -25,16 +29,16 @@ export interface AdditionalLinks {
   fontSize?: string;
   fontFamily?: string;
   fontColor?: string;
-  text: object;
-  config: object;
+  text: PairList;
+  config: PairList;
 }
 
 export interface Meeting {
   type?: string;
-  additionalConfig?: object;
+  additionalConfig?: PairList;
   meetingPrefix?: string;
   meetingSuffix?: string;
-  meetingHeader?: object;
+  meetingHeader?: PairList;
   additionalLinks?: AdditionalLinks[];
   additionalTexts?: AdditionalTexts[];
 }
@@ -42,11 +46,11 @@ export interface Meeting {
 export interface Config {
   currentLanguage?: string;
   baseUrl?: string;
-  locationString?: object;
+  locationString?: PairList;
   globalAdditionalLinks?: AdditionalLinks[];
   globalAdditionalTexts?: AdditionalTexts[];
-  overrideLinkToMeeting?: object;
-  overrideConnectToMeeting?: object;
+  overrideLinkToMeeting?: PairList;
+  overrideConnectToMeeting?: PairList;
   meetings?: Meeting[];
   fontFamily?: string;
   fontSize?: string;

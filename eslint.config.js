@@ -9,6 +9,7 @@ import jest from "eslint-plugin-jest";
 import json from "eslint-plugin-json";
 
 export default [
+  globalIgnores(["dist/**", "node_modules/**"]),
   ...tsEsLint.configs.recommended,
   ...officeAddins.configs.recommended,
   {

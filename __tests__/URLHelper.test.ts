@@ -30,8 +30,7 @@ describe("getConfigUrl", () => {
   });
 
   it("should return an empty string if config.meetingUrl is not provided", () => {
-    const config: Config = {};
-    const configUrl = getConfigUrl(config);
+    const configUrl = getConfigUrl(undefined);
     expect(configUrl).toBe("");
   });
 
@@ -46,7 +45,7 @@ describe("getConfigUrl", () => {
         },
       ],
     };
-    const configUrl = getConfigUrl(config.meetings[0].additionalConfig);
+    const configUrl = getConfigUrl(config.meetings?.[0].additionalConfig);
     expect(configUrl).toBe("#config.startWithAudioMuted=true&config.startWithVideoMuted=true");
   });
 
@@ -62,7 +61,7 @@ describe("getConfigUrl", () => {
         },
       ],
     };
-    const configUrl = getConfigUrl(config.meetings[0].additionalConfig);
+    const configUrl = getConfigUrl(config.meetings?.[0].additionalConfig);
     expect(configUrl).toBe("#config.startWithAudioMuted=true&config.startWithVideoMuted=true");
   });
 });
@@ -97,7 +96,8 @@ describe("getJitsiUrl", () => {
     };
     const jitsiUrl = getJitsiUrl(config, 0);
     expect(jitsiUrl).toContain(config.baseUrl);
-    expect(jitsiUrl).toContain(getConfigUrl(config.meetings[0].additionalConfig));
+    expect(jitsiUrl).toContain(getConfigUrl(config.meetings?.[0].additionalConfig));
+    expect(jitsiUrl).toContain("#config.startWithAudioMuted=true&config.startWithVideoMuted=true");
   });
 
   it("should add suffix and prefix to string", () => {
@@ -117,7 +117,8 @@ describe("getJitsiUrl", () => {
     };
     const jitsiUrl = getJitsiUrl(config, 0);
     expect(jitsiUrl).toContain(config.baseUrl);
-    expect(jitsiUrl).toContain(getConfigUrl(config.meetings[0].additionalConfig));
+    expect(jitsiUrl).toContain(getConfigUrl(config.meetings?.[0].additionalConfig));
+    expect(jitsiUrl).toContain("#config.startWithAudioMuted=true&config.startWithVideoMuted=true");
     expect(jitsiUrl).toContain("comp_");
     expect(jitsiUrl).toContain("_authx");
   });

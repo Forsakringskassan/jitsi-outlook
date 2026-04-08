@@ -6,15 +6,20 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "noImplicitReturns": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
+    "types": [
+      "node",
+      "office-js",
+      "jest"
+    ],
     "lib": [
       "es7",
       "dom"

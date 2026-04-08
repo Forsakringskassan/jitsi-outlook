@@ -6,7 +6,7 @@
 /* global DOMParser, Document */
 
 import getLocalizedStrings from "../localization";
-import { Config, AdditionalLinks, AdditionalTexts, defaultFontFamily, defaultMeetJitsiUrl, defaultFontSize, defaultFontColor } from "../models/Config";
+import { Config, AdditionalLinks, AdditionalTexts, defaultFontFamily, defaultMeetJitsiUrl, defaultFontSize, defaultFontColor, PairList } from "../models/Config";
 import { videoCameraURI } from "./IconHelper";
 import { getJitsiUrl, getConfigUrl } from "./URLHelper";
 
@@ -41,10 +41,11 @@ export const bodyHasJitsiLink = (body: string, config: Config): boolean => {
 
 export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: number, subject?: string): string => {
   const jitsiUrl = getJitsiUrl(config, index, subject);
-
   const jitsiLink = body.querySelector(`[id*="${DIV_ID_JITSI}"]`);
   const newJitsiLink = getJitsiLinkDiv(jitsiUrl, config, index);
-  jitsiLink.outerHTML = newJitsiLink;
+  if (jitsiLink != null) {
+    jitsiLink["outerHTML"] = newJitsiLink;
+  }
 
   const updatedHtmlString = body.body.innerHTML;
   return updatedHtmlString;
@@ -52,7 +53,7 @@ export const overwriteJitsiLinkDiv = (body: Document, config: Config, index?: nu
 
 const concatAdditionalLinks = (lang: string, additionalLinks: AdditionalLinks, baseUrl: string): string => {
   let output: string = "";
-  const aL: string = getLocalizedText(additionalLinks.text, lang, "");
+  const aL: string = getLocalizedText("", additionalLinks.text, lang);
   const url: string = getConfigUrl(additionalLinks.config);
   output += `<span style="font-size: ${additionalLinks.fontSize ?? defaultFontSize}; font-family: '${additionalLinks.fontFamily ?? defaultFontFamily}'; color: ${additionalLinks.fontColor ?? defaultFontColor};">`;
   output += `<a aria-label="${aL}" title="${aL}" style="text-decoration: none;" href="${baseUrl + url}"> ${aL} </a>`;
@@ -65,24 +66,24 @@ export const getMeetingAdditionalLinks = (config: Config, jitsiUrl: string, inde
   let output: string = "<br>";
   const baseUrl: string = jitsiUrl.split("#")[0];
   if (index !== undefined) {
-    config.meetings[index]?.additionalLinks?.forEach((entry) => {
-      output += concatAdditionalLinks(config.currentLanguage, entry, baseUrl);
+    config.meetings?.[index].additionalLinks?.forEach((entry) => {
+      output += concatAdditionalLinks(config.currentLanguage ?? "en", entry, baseUrl);
     });
   }
   config.globalAdditionalLinks?.forEach((entry) => {
-    output += concatAdditionalLinks(config.currentLanguage, entry, baseUrl);
+    output += concatAdditionalLinks(config.currentLanguage ?? "en", entry, baseUrl);
   });
   return output;
 };
 
-const concatAdditionalTexts = (lang: string, additionalTexts: AdditionalTexts): string => {
+const concatAdditionalTexts = (additionalTexts: AdditionalTexts, lang?: string): string => {
   let output: string = "";
   let aT: string = "";
   let aU: string = "";
   output += `<span style="font-size: ${additionalTexts.fontSize ?? defaultFontSize}; font-family: '${additionalTexts.fontFamily ?? defaultFontFamily}'; color: ${additionalTexts.fontColor ?? defaultFontColor};">`;
   additionalTexts.texts.forEach((additional) => {
-    aT = getLocalizedText(additional.text, lang, "");
-    aU = getLocalizedText(additional.url, lang, "");
+    aT = getLocalizedText("", additional.text, lang);
+    aU = getLocalizedText("", additional.url, lang);
     if (additional.url) {
       output += `<a aria-label="${aT}" title="${aT}" style="text-decoration: none;" href="${aU}"> ${aT} </a>`;
     } else {
@@ -99,22 +100,32 @@ const concatAdditionalTexts = (lang: string, additionalTexts: AdditionalTexts): 
 export const getMeetingAdditionalTexts = (config: Config, index?: number): string => {
   let output: string = "";
   if (index !== undefined) {
-    config.meetings[index]?.additionalTexts?.forEach((entry) => {
-      output += concatAdditionalTexts(config.currentLanguage, entry);
+    config.meetings?.[index].additionalTexts?.forEach((entry) => {
+      output += concatAdditionalTexts(entry, config.currentLanguage);
     });
   }
   config.globalAdditionalTexts?.forEach((entry) => {
-    output += concatAdditionalTexts(config.currentLanguage, entry);
+    output += concatAdditionalTexts(entry, config.currentLanguage);
   });
   return output;
 };
 
-export const getLocalizedText = (obj: object | null, lang: string, defaultstring: string): string => {
-  return obj ? (lang in obj ? obj[lang] : getLocalizedTextDefault(obj, "default", defaultstring)) : defaultstring;
+export const getLocalizedText = (defaultstring: string, obj?: PairList, lang?: string): string => {
+  if (lang && obj?.[lang]) {
+    return obj[lang] as string;
+  } else if (obj?.["default"]) {
+    return getLocalizedTextDefault(defaultstring, obj, "default");
+  } else {
+    return defaultstring;
+  }
 };
 
-const getLocalizedTextDefault = (obj: object | null, def: string, defaultstring: string): string => {
-  return obj ? (def in obj ? obj[def] : defaultstring) : defaultstring;
+const getLocalizedTextDefault = (defaultstring: string, obj?: PairList, def?: string): string => {
+  if (def && obj?.[def]) {
+    return obj[def] as string;
+  } else {
+    return defaultstring;
+  }
 };
 
 export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number): string => {
@@ -130,7 +141,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
     output += `<hr style="color: ${divColor}; border-color: ${divColor}">`;
   }
   if (index !== undefined) {
-    output += `<div style="font-size: ${fontSize}; font-weight: 700; font-family: '${fontFamily}'">${getLocalizedText(config.meetings[index].meetingHeader, config.currentLanguage, "")}</div>`;
+    output += `<div style="font-size: ${fontSize}; font-weight: 700; font-family: '${fontFamily}'">${getLocalizedText("", config.meetings?.[index].meetingHeader, config.currentLanguage)}</div>`;
   }
   output +=
     `<div style="${tdStyles}">
@@ -138,10 +149,10 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
           style="font-size: ${fontSize}; font-family: '${fontFamily}';color: ${fontColor};">
           <a
             aria-label="` +
-    getLocalizedText(config.overrideLinkToMeeting, config.currentLanguage, localizedStrings.linkToMeeting) +
+    getLocalizedText(localizedStrings.linkToMeeting, config.overrideLinkToMeeting, config.currentLanguage) +
     `"
             title="` +
-    getLocalizedText(config.overrideLinkToMeeting, config.currentLanguage, localizedStrings.linkToMeeting) +
+    getLocalizedText(localizedStrings.linkToMeeting, config.overrideLinkToMeeting, config.currentLanguage) +
     `"
             style="text-decoration: none;"
             href="${jitsiUrl}">`;
@@ -159,7 +170,7 @@ export const getJitsiLinkDiv = (jitsiUrl: string, config: Config, index?: number
                 &rarr;
             </span>
             ` +
-    getLocalizedTextDefault(config.overrideConnectToMeeting, config.currentLanguage, localizedStrings.connectToMeeting) +
+    getLocalizedTextDefault(localizedStrings.connectToMeeting, config.overrideConnectToMeeting, config.currentLanguage) +
     `
           </a>
         <br>

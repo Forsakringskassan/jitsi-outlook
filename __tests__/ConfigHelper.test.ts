@@ -114,15 +114,15 @@ describe("Test ConfigHelper", () => {
   });
 
   it("fetch meeting information", async () => {
-    const index: number = getMeetingConfig(testConfig, "StandardMeeting");
+    const index: number = getMeetingConfig(testConfig, "StandardMeeting") || 0;
     expect(index).toBe(0);
-    expect(testConfig.meetings[index]?.type).toBe("StandardMeeting");
+    expect(testConfig.meetings[index].type).toBe("StandardMeeting");
   });
 
   it("fetch meeting information 2", async () => {
-    const index: number = getMeetingConfig(testConfig, "InformationMeeting");
+    const index: number = getMeetingConfig(testConfig, "InformationMeeting") || 0;
     expect(index).toBe(1);
-    expect(testConfig.meetings[index]?.type).toBe("InformationMeeting");
+    expect(testConfig.meetings[index].type).toBe("InformationMeeting");
   });
 
   it("test getDomain()", async () => {

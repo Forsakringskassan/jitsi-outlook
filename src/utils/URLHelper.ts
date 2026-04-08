@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Config, defaultMeetJitsiUrl } from "../models/Config";
+import { Config, defaultMeetJitsiUrl, PairList } from "../models/Config";
 
 export const getRandomRoomName = (): string => {
   const randomChars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -14,7 +14,10 @@ export const getRandomRoomName = (): string => {
   return result;
 };
 
-export const getConfigUrl = (config: object): string => {
+export const getConfigUrl = (config?: PairList): string => {
+  if (!config) {
+    return "";
+  }
   const keys = Object.keys(config);
   const url = keys.reduce((acc, currentValue) => {
     return acc + `${currentValue}=${config[currentValue]}&`;
@@ -52,7 +55,7 @@ export const getJitsiUrl = (config: Config, index?: number, subject?: string): s
   let suffix: string = "";
   let hash: string = "";
   if (index !== undefined) {
-    if (config.meetings[index] !== undefined) {
+    if (config.meetings?.[index] !== undefined) {
       prefix = config.meetings[index].meetingPrefix ?? "";
       suffix = config.meetings[index].meetingSuffix ?? "";
       if (config.meetings[index].additionalConfig !== undefined) {

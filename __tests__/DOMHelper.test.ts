@@ -75,13 +75,14 @@ describe("getJitsiLinkDOM", () => {
         },
       ],
     };
-    expect(getLocalizedText(config.meetings[0].additionalLinks[0].text, "en-GB", "")).toEqual("LINK WITHOUT CAMERA");
-    expect(getLocalizedText(config.meetings[0].additionalLinks[0].text, "def", "")).toEqual("link without camera");
-    expect(getLocalizedText(null, "en", "")).toEqual("");
-    expect(getLocalizedText(config.meetings[0].additionalTexts[0].texts[0].text, "en-GB", "")).toEqual("Wiki");
-    expect(getLocalizedText(config.meetings[0].additionalTexts[0].texts[0].text, "default", "")).toEqual("Wikipedia");
-    expect(getLocalizedText(config.meetings[0].additionalTexts[0].texts[0].url, "def", "")).toEqual("https://wikipedia.com");
-    expect(getLocalizedText(undefined, "en", "")).toEqual("");
+    expect(getLocalizedText("", config.meetings?.[0].additionalLinks?.[0].text, "en-GB")).toEqual("LINK WITHOUT CAMERA");
+    expect(getLocalizedText("", config.meetings?.[0].additionalLinks?.[0].text, "en-GB")).toEqual("LINK WITHOUT CAMERA");
+    expect(getLocalizedText("", config.meetings?.[0].additionalLinks?.[0].text, "def")).toEqual("link without camera");
+    expect(getLocalizedText("", undefined, "en")).toEqual("");
+    expect(getLocalizedText("", config.meetings?.[0].additionalTexts?.[0].texts?.[0].text, "en-GB")).toEqual("Wiki");
+    expect(getLocalizedText("", config.meetings?.[0].additionalTexts?.[0].texts?.[0].text, "default")).toEqual("Wikipedia");
+    expect(getLocalizedText("", config.meetings?.[0].additionalTexts?.[0].texts?.[0].url, "def")).toEqual("https://wikipedia.com");
+    expect(getLocalizedText("", {}, "en")).toEqual("");
   });
 
   it("should return additional texts", () => {
@@ -148,11 +149,10 @@ describe("getJitsiLinkDOM", () => {
         },
       ],
     };
-
     const textsText = getMeetingAdditionalTexts(config, 0);
     expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Segoe UI'; color: #0b12f4;\">");
-    expect(textsText).toContain(config.meetings[0].additionalTexts[0].texts[0].text["default"]);
-    expect(textsText).toContain(config.globalAdditionalTexts[0].texts[0].text["default"]);
+    expect(textsText).toContain(config.meetings?.[0].additionalTexts?.[0].texts?.[0].text?.["default"]);
+    expect(textsText).toContain(config.globalAdditionalTexts?.[0].texts?.[0].text?.["default"]);
   });
 
   it("should return additional texts, with different fonts and color, multiple", () => {
@@ -191,8 +191,8 @@ describe("getJitsiLinkDOM", () => {
     const textsText = getMeetingAdditionalTexts(config, 0);
     expect(textsText).toContain("<span style=\"font-size: 12px; font-family: 'Segoe UI'; color: #0b12f4;\">");
     expect(textsText).toContain("<span style=\"font-size: 16px; font-family: 'Arial'; color: #13b6f7;\">");
-    expect(textsText).toContain(config.meetings[0].additionalTexts[0].texts[0].text["default"]);
-    expect(textsText).toContain(config.meetings[0].additionalTexts[1].texts[0].text["default"]);
+    expect(textsText).toContain(config.meetings?.[0].additionalTexts?.[0].texts?.[0].text?.["default"]);
+    expect(textsText).toContain(config.meetings?.[0].additionalTexts?.[1].texts?.[0].text?.["default"]);
   });
 
   it("should return a string that contains the correct Jitsi URL", () => {
@@ -244,13 +244,13 @@ describe("getJitsiLinkDOM", () => {
     };
     const jitsiUrl = URLHelper.getJitsiUrl(config, 0);
     const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config, 0);
-    expect(jitsiLinkDOM).toContain(config.meetings[0].additionalTexts[0].texts[0].text["default"]);
+    expect(jitsiLinkDOM).toContain(config.meetings?.[0].additionalTexts?.[0].texts?.[0].text?.["default"]);
     expect(jitsiLinkDOM).not.toContain("undefined");
     expect(jitsiLinkDOM).toContain("Header line");
 
     const combineJitsiBody = combineBodyWithJitsiDiv("", config, 0);
     expect(combineJitsiBody).toContain("Header line");
-    config.meetings[0].meetingHeader = { default: "Header Line 2!" };
+    config.meetings = [{ meetingHeader: { default: "Header Line 2!" } }];
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(combineJitsiBody, "text/html");
     const overwriteLinkDiv = overwriteJitsiLinkDiv(htmlDoc, config, 0);
@@ -286,8 +286,8 @@ describe("getJitsiLinkDOM", () => {
     };
     const jitsiUrl = URLHelper.getJitsiUrl(config, 0);
     const jitsiLinkDOM = getJitsiLinkDiv(jitsiUrl, config, 0);
-    expect(jitsiLinkDOM).toContain(config.meetings[0].additionalTexts[0].texts[0].text["default"]);
-    expect(jitsiLinkDOM).toContain(config.globalAdditionalLinks[0].text["default"]);
+    expect(jitsiLinkDOM).toContain(config.meetings?.[0].additionalTexts?.[0].texts?.[0].text?.["default"]);
+    expect(jitsiLinkDOM).toContain(config.globalAdditionalLinks?.[0].text?.["default"]);
     expect(jitsiLinkDOM).not.toContain("undefined");
   });
 
@@ -464,7 +464,7 @@ describe("overwriteJitsiLinkDiv 2", () => {
       baseUrl: "https://meet.jit.si",
       currentLanguage: "sv",
     };
-    let output = getJitsiLinkDiv(config.baseUrl, config);
+    let output = getJitsiLinkDiv("https://meet.jit.si", config);
     expect(output).toContain("Länk till mötet");
 
     config = {
@@ -473,7 +473,7 @@ describe("overwriteJitsiLinkDiv 2", () => {
       overrideLinkToMeeting: { sv: "TEST LINK" },
       overrideConnectToMeeting: { sv: "Anslut till mötet" },
     };
-    output = getJitsiLinkDiv(config.baseUrl, config);
+    output = getJitsiLinkDiv("https://meet.jit.si", config);
     expect(output).toContain("TEST LINK");
     expect(output).toContain("Anslut till mötet");
 
@@ -482,7 +482,7 @@ describe("overwriteJitsiLinkDiv 2", () => {
       currentLanguage: "en",
       overrideLinkToMeeting: { sv: "TEST LINK" },
     };
-    output = getJitsiLinkDiv(config.baseUrl, config);
+    output = getJitsiLinkDiv("https://meet.jit.si", config);
     expect(output).toContain("Link to meeting");
   });
 });
