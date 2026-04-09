@@ -10,13 +10,13 @@ import { getMeetingConfig } from "../utils/ConfigHelper";
 /* global console, DOMParser */
 
 const setData = async (str: string, event?: Office.AddinCommands.Event) => {
-  Office.context.mailbox.item.body.setAsync(
+  Office.context.mailbox.item?.body.setAsync(
     str,
     {
       coercionType: Office.CoercionType.Html,
     },
     () => {
-      event.completed();
+      event?.completed();
     },
   );
 };
@@ -24,7 +24,14 @@ const setData = async (str: string, event?: Office.AddinCommands.Event) => {
 export const setDataTest = { setData };
 
 const setLocation = async (config: Config) => {
-  let location: string = config.locationString ? (config.currentLanguage in config.locationString ? config.locationString[config.currentLanguage] : config.locationString["default"]) : "Jitsi meeting";
+  let location: string = "Jitsi meeting";
+  if (config.locationString) {
+    if (config.currentLanguage && config.currentLanguage in config.locationString) {
+      location = config.locationString[config.currentLanguage] as string;
+    } else if ("default" in config.locationString) {
+      location = config.locationString["default"] as string;
+    }
+  }
   Office.context.mailbox.item?.location.getAsync((r) => {
     const r_value: string = r.value.trimEnd();
     if (r.value.length > 0) {
@@ -49,17 +56,17 @@ const setLocation = async (config: Config) => {
 export const setLocationTest = { setLocation };
 
 const setToField = async (Mailbox: Office.Mailbox) => {
-  Mailbox.item.organizer.getAsync((organizer) => {
-    Mailbox.item.requiredAttendees.addAsync([{ displayName: organizer.value.displayName, emailAddress: organizer.value.emailAddress }], (result) => {
+  Mailbox.item?.organizer.getAsync((organizer) => {
+    Mailbox.item?.requiredAttendees.addAsync([{ displayName: organizer.value.displayName, emailAddress: organizer.value.emailAddress }], (result) => {
       if (result.status == Office.AsyncResultStatus.Succeeded) {
-        Mailbox.item.requiredAttendees.getAsync((attendees) => {
+        Mailbox.item?.requiredAttendees.getAsync((attendees) => {
           const empty: Office.EmailUser[] = [];
           attendees.value.forEach((attende) => {
             if (attende.emailAddress !== organizer.value.emailAddress) {
               empty.push(attende);
             }
           });
-          Mailbox.item.requiredAttendees.setAsync(empty, () => {});
+          Mailbox.item?.requiredAttendees.setAsync(empty, () => {});
         });
       }
     });
@@ -67,15 +74,15 @@ const setToField = async (Mailbox: Office.Mailbox) => {
 };
 
 export const addMeeting = async (name: string, config: Config, error: string, event?: Office.AddinCommands.Event) => {
-  const index: number = getMeetingConfig(config, name);
+  const index: number | undefined = getMeetingConfig(config, name);
   const diagnostics = Office.context.mailbox.diagnostics;
   config.currentLanguage = typeof Office !== "undefined" ? Office.context.displayLanguage.split("-")[0] : "en";
-  Office.context.mailbox.item.body.getAsync(Office.CoercionType.Html, (result) => {
+  Office.context.mailbox.item?.body.getAsync(Office.CoercionType.Html, (result) => {
     if (result.error) {
-      event.completed();
+      event?.completed();
     }
     try {
-      Office.context.mailbox.item.subject.getAsync((subject) => {
+      Office.context.mailbox.item?.subject.getAsync((subject) => {
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(result.value, "text/html");
         let bodyDOM: string = "";

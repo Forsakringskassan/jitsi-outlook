@@ -22,12 +22,10 @@ interface result {
 }
 
 interface EmailUserResult {
-  value: [
-    {
-      displayName: string;
-      emailAddress: string;
-    },
-  ];
+  value: {
+    displayName: string;
+    emailAddress: string;
+  }[];
 }
 
 const mockDataServer = {
@@ -56,13 +54,13 @@ const mockDataServer = {
             });
             callback(0);
           },
-          getAsync: async function (callback: (r: EmailUserResult[]) => void) {
-            const r: EmailUserResult[] = this.attendees;
+          getAsync: async function (callback: (r: EmailUserResult) => void) {
+            const r: EmailUserResult = this.attendees;
             callback(r);
           },
-          setAsync: async function (value, callback: (r: Office.AsyncResultStatus, res: EmailUserResult[]) => void) {
-            this.attendees.value = value;
-            callback(0, this.attendees);
+          setAsync: async function (value: unknown, callback: (r: Office.AsyncResultStatus, res: EmailUserResult[]) => void) {
+            this.attendees.value = value as { displayName: string; emailAddress: string }[];
+            callback(0, [{ value: this.attendees.value }] as EmailUserResult[]);
           },
         },
         organizer: {
@@ -71,7 +69,7 @@ const mockDataServer = {
             emailAddress: "john.doe@controll.test",
           },
           getAsync: async function (callback: (r: EmailUserResult) => void) {
-            const r: EmailUserResult = { value: this.value } as EmailUserResult;
+            const r: EmailUserResult = { value: [this.value] };
             callback(r);
           },
         },
@@ -128,8 +126,8 @@ describe("Connection test to server", () => {
       location = r.value;
     });
 
-    expect(setLocationMock.context.mailbox.item.location.location).toBe(config.locationString["default"]);
-    expect(location).toBe(config.locationString["default"]);
+    expect(setLocationMock.context.mailbox.item.location.location).toBe(config.locationString?.["default"]);
+    expect(location).toBe(config.locationString?.["default"]);
   });
 
   it("Set location default", async () => {
@@ -211,13 +209,13 @@ describe("Connection test to server", () => {
 
     await addMeeting("StandardMeeting", config, "");
 
-    Office.context.mailbox.item.location.getAsync((r) => {
+    Office.context.mailbox.item?.location.getAsync((r) => {
       location = r.value;
     });
-    Office.context.mailbox.item.body.getAsync(opt, (r) => {
+    Office.context.mailbox.item?.body.getAsync(opt, (r) => {
       body = r.value;
     });
-    Office.context.mailbox.item.requiredAttendees.getAsync((r) => {
+    Office.context.mailbox.item?.requiredAttendees.getAsync((r) => {
       r.value.forEach((u) => {
         attendees.value.push({ displayName: u.displayName, emailAddress: u.emailAddress });
       });
@@ -248,10 +246,10 @@ describe("Connection test to server", () => {
 
     await addMeeting("StandardMeeting", config, "");
 
-    Office.context.mailbox.item.location.getAsync((r) => {
+    Office.context.mailbox.item?.location.getAsync((r) => {
       location = r.value;
     });
-    Office.context.mailbox.item.body.getAsync(opt, (r) => {
+    Office.context.mailbox.item?.body.getAsync(opt, (r) => {
       body = r.value;
     });
     expect(location).toBe("Jitsi meeting");
@@ -276,7 +274,7 @@ describe("Connection test to server", () => {
     let attendees: { value: { displayName: string; emailAddress: string }[] } = { value: [] };
     const e: string = "";
     await addMeeting("StandardMeeting", config, e);
-    Office.context.mailbox.item.requiredAttendees.getAsync((r) => {
+    Office.context.mailbox.item?.requiredAttendees.getAsync((r) => {
       r.value.forEach((e) => {
         attendees.value.push({ displayName: e.displayName, emailAddress: e.emailAddress });
       });
@@ -285,9 +283,9 @@ describe("Connection test to server", () => {
     expect(attendees.value).toStrictEqual(testAttende);
 
     attendees = { value: [] };
-    let status: number;
+    let status: number = 0;
     Office.context.mailbox.diagnostics.OWAView = "OneColumn";
-    Office.context.mailbox.item.requiredAttendees.addAsync([{ displayName: "John Doe", emailAddress: "john.doe@controll.test" }], (result) => {
+    Office.context.mailbox.item?.requiredAttendees.addAsync([{ displayName: "John Doe", emailAddress: "john.doe@controll.test" }], (result) => {
       status = result.status;
     });
     await addMeeting("StandardMeeting", config, e);
@@ -295,7 +293,7 @@ describe("Connection test to server", () => {
       { displayName: "Jane Doe", emailAddress: "jane.doe@controll.test" },
       { displayName: "John Doe", emailAddress: "john.doe@controll.test" },
     ];
-    Office.context.mailbox.item.requiredAttendees.getAsync((r) => {
+    Office.context.mailbox.item?.requiredAttendees.getAsync((r) => {
       r.value.forEach((e) => {
         attendees.value.push({ displayName: e.displayName, emailAddress: e.emailAddress });
       });
