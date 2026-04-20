@@ -8,5 +8,6 @@ module.exports = {
   moduleNameMapper: {
     uuid: require.resolve("uuid"),
   },
+  transformIgnorePatterns: [],
   testEnvironment: "jest-environment-jsdom",
 };
