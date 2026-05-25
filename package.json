@@ -55,7 +55,7 @@
     "office-addin-debugging": "^6.0.7",
     "office-addin-dev-certs": "^2.0.3",
     "office-addin-lint": "^3.0.7",
-    "office-addin-manifest": "^2.0.3",
+    "office-addin-manifest": "^2.1.5",
     "office-addin-mock": "^3.0.7",
     "office-addin-prettier-config": "^2.0.4",
     "os-browserify": "^0.3.0",
