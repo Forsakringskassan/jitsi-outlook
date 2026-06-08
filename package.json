@@ -61,7 +61,7 @@
     "os-browserify": "^0.3.0",
     "process": "^0.11.10",
     "source-map-loader": "^5.0.0",
-    "ts-loader": "^9.5.7",
+    "ts-loader": "^9.6.0",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
     "webpack": "^5.107.1",
