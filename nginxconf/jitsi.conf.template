@@ -1,0 +1,48 @@
+server {
+  listen ${NGINX_PORT};
+  server_name ${NGINX_HOST};
+  root /usr/share/nginx/html;
+  access_log /dev/stdout;
+  error_log /dev/stdout info;
+
+  #Strict HTTP Request Method Enforcement
+  if ($request_method !~ ^(GET|HEAD|OPTIONS)$ ) {
+    return 405;
+  }
+
+  location / {
+    deny all;
+  }
+
+  location ~ ^/manifests/.*\.xml$ {
+    try_files $uri =404;
+
+    #CSP HEADERS
+    add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://appsforoffice.microsoft.com/; script-src https://appsforoffice.microsoft.com https://ajax.aspnetcdn.com/ajax/3.5/MicrosoftAjax.js 'self';" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer" always;
+  }
+
+  location ~ ^/plugin/.*/.*\.(js|html|png)$ {
+    try_files $uri =404;
+
+    #CSP HEADERS
+    add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://appsforoffice.microsoft.com/; script-src https://appsforoffice.microsoft.com https://ajax.aspnetcdn.com/ajax/3.5/MicrosoftAjax.js 'self';" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer" always;
+  }
+
+  location ~ ^/configs/.*\.(json)$ {
+    try_files $uri =404;
+
+    # CSP HEADERS
+    add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src https://appsforoffice.microsoft.com/; script-src https://appsforoffice.microsoft.com https://ajax.aspnetcdn.com/ajax/3.5/MicrosoftAjax.js 'self';" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer" always;
+
+    # Disable cache for config.json
+    add_header Cache-Control "no-cache, no-store, must-revalidate" always;
+    add_header Pragma "no-cache" always;
+    expires -1;
+  }
+}
