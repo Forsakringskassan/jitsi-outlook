@@ -11,7 +11,7 @@
   "prodUrlConfig": "https://controll.test/plugin/configs/",
   "prodAppId": "01917a50-e77d-7a8e-a1e3-2434ddd7e096",
   "prodDisplayName": "Jitsi plugin",
-  "version": "2.0.1",
+  "version": "1.0.0",
   "providerName": "Controll test jitsi",
   "supportUrl": "http://controll.test/support"
 }

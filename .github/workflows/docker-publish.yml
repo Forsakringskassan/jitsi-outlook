@@ -6,7 +6,7 @@ on:
       tag:
         description: "Docker image tag, latest or same as npm build"
         required: true
-        default: "latest"
+        default: "v1.0.0"
         type: string
 
       build_tag:
@@ -15,14 +15,20 @@ on:
         default: "v1.0.0"
         type: string
 
-      npm_version:
+      node_version:
         description: "NPM version to build dist from"
         require: false
+        type: choice
         default: "24.14.0"
-        type: choise
         options:
         - "24.14.0"
         - "22.22.1"
+
+      short_version:
+        describe: "Build with short version paths in manifest and config"
+        require: false
+        type: boolean
+        default: true
 
 env:
   REGISTRY: ghcr.io
@@ -43,10 +49,10 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ inputs.node_version }}
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ inputs.node_version }}
 
       - name: Clean
         run: |
@@ -62,7 +68,7 @@ jobs:
 
       - name: Build
         run: |
-          npm run build
+          npm run build -- --env shortVersion=${{ inputs.short_version }}
 
       - name: Log in to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f #v4.6.0
@@ -71,11 +77,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - id: lower-repo
+        name: Repository to lowercase
+        run: |
+          echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+
       - name: Build and push
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a #v7.3.0
         with:
           context: .
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.tag }}
+          push: false
+          tags: |
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ inputs.tag }}
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}:latest
           build-args: |
             TAG=${{ inputs.build_tag }}
