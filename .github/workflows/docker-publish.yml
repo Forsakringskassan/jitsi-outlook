@@ -15,6 +15,12 @@ on:
         default: false
         type: boolean
 
+      publish_image:
+        description: "Publish image to ghcr.io"
+        require: true
+        default: false
+        type: boolean
+
       build_tag:
         description: "Dist version, set this to the version being built in npm, e.g v1.0.0"
         required: false
@@ -92,7 +98,7 @@ jobs:
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a #v7.3.0
         with:
           context: .
-          push: false
+          push: ${{ inputs.publish_image }}
           tags: |
             ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ inputs.tag }}
             ${{ inputs.publish_latest && format('ghcr.io/{0}:latest', steps.lower-repo.outputs.repository) || '' }}
