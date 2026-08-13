@@ -9,6 +9,12 @@ on:
         default: "v1.0.0"
         type: string
 
+      publish_latest:
+        description: "Also tag the image as latest"
+        required: false
+        default: false
+        type: boolean
+
       build_tag:
         description: "Dist version, set this to the version being built in npm, e.g v1.0.0"
         required: false
@@ -89,6 +95,6 @@ jobs:
           push: false
           tags: |
             ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ inputs.tag }}
-            ghcr.io/${{ steps.lower-repo.outputs.repository }}:latest
+            ${{ inputs.publish_latest && format('ghcr.io/{0}:latest', steps.lower-repo.outputs.repository) || '' }}
           build-args: |
             TAG=${{ inputs.build_tag }}
