@@ -1,5 +1,8 @@
 name: Build and publish Docker image
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
     inputs:
