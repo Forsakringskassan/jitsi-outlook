@@ -17,7 +17,7 @@ const testConfigOnFooter = (): string => {
   const configString = readFileSync(configPath, "utf-8");
   const config: Config = JSON.parse(configString);
   config.currentLanguage = language;
-  let index: number = undefined;
+  let index: number|undefined = undefined;
   if (indexA) {
     index = +indexA;
   }
