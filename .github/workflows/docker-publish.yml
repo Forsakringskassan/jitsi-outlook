@@ -31,7 +31,7 @@ on:
         - "22.22.1"
 
       short_version:
-        describe: "Build with short version paths in manifest and config"
+        description: "Build with short version paths"
         require: false
         type: boolean
         default: true
