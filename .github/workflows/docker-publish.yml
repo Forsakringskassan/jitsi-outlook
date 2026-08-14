@@ -91,14 +91,14 @@ jobs:
         run: |
           echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
 
-      - name: Read GHCR README
-        id: ghcr_readme
+      - name: Swap README for GHCR package documentation
         run: |
-          # Read the file and escape newlines for the GitHub Actions output
-          CONTENT=$(cat README-GHCR.md)
-          echo "description<<EOF" >> $GITHUB_OUTPUT
-          echo "$CONTENT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          if [ -f README-GHCR.md ]; then
+            cp README-GHCR.md README.md
+            echo "Successfully swapped README.md with README-GHCR.md content."
+          else
+            echo "Error: README-GHCR.md not found!" && exit 1
+          fi
 
       - name: Extract Docker metadata
         id: meta
@@ -106,13 +106,16 @@ jobs:
         with:
           images: ghcr.io/${{ steps.lower-repo.outputs.repository }}
           labels: |
-            org.opencontainers.image.description=${{ steps.ghcr_readme.outputs.description }}
+            org.opencontainers.image.description="Jitsi Outlook Plugin"
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
       - name: Build and push
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a #v7.3.0
         with:
           context: .
           push: ${{ inputs.publish_image }}
+          labels: |
+            ${{ steps.meta.outputs.labels }}
           tags: |
             ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ inputs.tag }}
             ${{ inputs.publish_latest && format('ghcr.io/{0}:latest', steps.lower-repo.outputs.repository) || '' }}
