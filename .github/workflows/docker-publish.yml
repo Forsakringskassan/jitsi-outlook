@@ -91,23 +91,13 @@ jobs:
         run: |
           echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
 
-      - name: Swap README for GHCR package documentation
-        run: |
-          if [ -f README-GHCR.md ]; then
-            cp README-GHCR.md README.md
-            echo "Successfully swapped README.md with README-GHCR.md content."
-          else
-            echo "Error: README-GHCR.md not found!" && exit 1
-          fi
-
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 #v6.2.0
         with:
           images: ghcr.io/${{ steps.lower-repo.outputs.repository }}
           labels: |
-            org.opencontainers.image.description="Jitsi Outlook Plugin"
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description= Jitsi Outlook Plugin
 
       - name: Build and push
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a #v7.3.0
