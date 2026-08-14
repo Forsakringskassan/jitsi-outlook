@@ -21,12 +21,6 @@ on:
         default: false
         type: boolean
 
-      build_tag:
-        description: "Dist version, set this to the version being built in npm, e.g v1.0.0"
-        required: false
-        default: "v1.0.0"
-        type: string
-
       node_version:
         description: "NPM version to build dist from"
         require: false
@@ -80,7 +74,7 @@ jobs:
 
       - name: Build
         run: |
-          npm run build -- --env shortVersion=${{ inputs.short_version }}
+          npm run build -- --env shortVersion=${{ inputs.short_version }} --env ver=${{ inputs.tag }}
 
       - name: Log in to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f #v4.6.0
@@ -103,4 +97,4 @@ jobs:
             ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ inputs.tag }}
             ${{ inputs.publish_latest && format('ghcr.io/{0}:latest', steps.lower-repo.outputs.repository) || '' }}
           build-args: |
-            TAG=${{ inputs.build_tag }}
+            TAG=${{ inputs.tag }}
