@@ -10,7 +10,8 @@ RUN chmod +x /docker-entrypoint.d/99-short-path-links.sh
 
 RUN mkdir -p /usr/share/nginx/html/manifests/$TAG \
     && mkdir -p /usr/share/nginx/html/plugin/$TAG \
-    && mkdir -p /usr/share/nginx/html/configs/$TAG
+    && mkdir -p /usr/share/nginx/html/configs/$TAG \
+    && mkdir -p /data
 
 RUN mv /usr/share/nginx/html/temp/manifests/* /usr/share/nginx/html/manifests/$TAG/ \
     && mv /usr/share/nginx/html/temp/configs/$TAG/* /usr/share/nginx/html/configs/$TAG/ \
@@ -24,7 +25,8 @@ RUN rm /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf \
     && chown -R nginx:nginx /var/cache/nginx \
     && touch /var/run/nginx.pid \
     && chown -R nginx:nginx /var/run/nginx.pid \
-    && chown -R nginx:nginx /etc/nginx/templates
+    && chown -R nginx:nginx /etc/nginx/templates \
+    && chown -R nginx:nginx /data
 
 COPY nginxconf/nginx.conf /etc/nginx/nginx.conf
 

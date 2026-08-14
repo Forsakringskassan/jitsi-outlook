@@ -216,7 +216,7 @@ npm run prettier
 # Make sure to run these 3 before contributing code!
 
 # Testing of config and manifest file
-npm run test-config config="path" index="index" lang="language code"
+npm run test-config -- --config=configs/controll.test.json --index=0 --lang=en
 
 npm run validate "path to manifest file"
 ```
