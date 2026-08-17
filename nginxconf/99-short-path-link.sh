@@ -23,7 +23,6 @@ if echo "$VERSION" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$|v[0-9]+\.[0-9]+\.[0-9]+
     ln -s /usr/share/nginx/html/plugin/${VERSION} /usr/share/nginx/html/plugin/${VERSION%%.*}\
     && ln -s /usr/share/nginx/html/configs/${VERSION} /usr/share/nginx/html/configs/${VERSION%%.*} \
     && ln -s /usr/share/nginx/html/manifests/${VERSION} /usr/share/nginx/html/manifests/${VERSION%%.*}
-
     entrypoint_log "$ME: info: Created short links for version: $VERSION"
 else
     entrypoint_log "$ME: warn: Version didn't follow pattern vX.X.X, no short links created"
