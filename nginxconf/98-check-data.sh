@@ -11,7 +11,7 @@ entrypoint_log() {
 
 ME=$(basename "$0")
 VERSION=`if [ ! -d /usr/share/nginx/html/plugin/ ];then echo ""; else ls /usr/share/nginx/html/plugin/; fi`
-declare -a folders=("manifests" "configs" "assets")
+folders="manifests configs assets"
 
 #check if short version existed
 if [ -z "${VERSION}" ]; then
@@ -19,7 +19,7 @@ if [ -z "${VERSION}" ]; then
     exit 0
 fi
 
-for folder in ${folders[@]}; do
+for folder in ${folders}; do
     if [ ! -d "/data/${folder}" ]; then
         entrypoint_log "$ME: info: Folder not found, $folder."
         continue
@@ -27,13 +27,13 @@ for folder in ${folders[@]}; do
     entrypoint_log "$ME: info: Try to merge /data/$folder into /usr/share/nginx/html/$folder/$VERSION."
     case $folder in
         manifests)
-            cp -r /data/maifests/* /usr/share/nginx/html/manifests/${VERSION}
+            cp -r /data/manifests/* /usr/share/nginx/html/manifests/${VERSION}
             ;;
         assets)
             cp -r /data/assets/* /usr/share/nginx/html/plugin/${VERSION}/assets
             ;;
         configs)
-            cp -r /data/configs /usr/share/nginx/html/configs
+            cp -r /data/configs/* /usr/share/nginx/html/configs
             ;;
         *)
             entrypoint_log "$ME: warn: Unknown folder, /data/$folder, continues."
