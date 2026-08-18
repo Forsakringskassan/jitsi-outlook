@@ -5,11 +5,11 @@ import { Config } from "../src/models/Config";
 import { readFileSync, writeFileSync } from "fs";
 
 const args = process.argv.slice(2);
-const configArg = args.find((arg) => arg.startsWith("config="));
+const configArg = args.find((arg) => arg.startsWith("--config="));
 const configPath = configArg ? configArg.split("=")[1] : __dirname + "/../__tests__/controll.test.json";
-const indexArg = args.find((arg) => arg.startsWith("index="));
+const indexArg = args.find((arg) => arg.startsWith("--index="));
 const indexA = indexArg ? indexArg.split("=")[1] : undefined;
-const languageArg = args.find((arg) => arg.startsWith("lang="));
+const languageArg = args.find((arg) => arg.startsWith("--lang="));
 const language = languageArg ? languageArg.split("=")[1] : undefined;
 
 const testConfigOnFooter = (): string => {
@@ -17,7 +17,7 @@ const testConfigOnFooter = (): string => {
   const configString = readFileSync(configPath, "utf-8");
   const config: Config = JSON.parse(configString);
   config.currentLanguage = language;
-  let index: number = undefined;
+  let index: number|undefined = undefined;
   if (indexA) {
     index = +indexA;
   }

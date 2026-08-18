@@ -10,14 +10,14 @@ The purpose of this plug-in is to simplify the process of adding video conferenc
 
 The plugin randomly generates a Jitsi link to an appointment (while in the appointment creation window). It was built based on the Yeoman generator, as described in the this [guide](https://learn.microsoft.com/en-us/office/dev/add-ins/quickstarts/outlook-quickstart?tabs=yeomangenerator).
 
-![Photo: Jitsi Outlook plugin example / HaV / CC0](screenshot.png)
-
-<figcaption>Jitsi Outlook plugin example / HaV / CC0</figcaption>
-
----
-
 ## Table of Contents
 
+- [Image](#️-image)
+  - [Quick Start](#-quick-start)
+  - [Environment Variables](#️-environment-variables)
+  - [Ports](#-ports)
+  - [Volume mounts](#-volume-mounts)
+- [Helm](#-helm)
 - [Installation and Requirements](#installation-and-requirements)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
@@ -25,6 +25,52 @@ The plugin randomly generates a Jitsi link to an appointment (while in the appoi
 - [Additional config](#additional-config)
 - [License](#license)
 - [Maintainers](#maintainers)
+
+## 🖼️ Image
+
+This none root image provides a lightweight jitsi-outlook plugin implementation.\
+The image builds on nginx and have been hardened using gixy standards.
+
+**To add more manifests and configs use a volume mount or build from source!**
+
+### 🚀 Quick Start
+
+Run the container using the command below. Make sure to replace the placeholder values with your actual configuration.
+
+```bash
+docker run -d \
+  -p 8080:8080 \
+  -e NGINX_HOST="localhost" \
+  -e NGINX_PORT="8080" \
+  --name jitsi-outlook \
+  ghcr.io/forsakringskassan/jitis-outlook:latest
+```
+
+### ⚙️ Environment Variables
+
+Configure the container behavior using these variables:
+
+| Variable | Description | Example |
+| :--- | :--- | :--- |
+| `NGINX_HOST` | **Required.** Hostname where the service is running. | `localhost` |
+| `NGINX_PORT` | **Required.** Port running the service. | `8080` |
+
+### 📦 Ports
+
+* `8080`: The application serves traffic on this port by default.
+
+### 💾 Volume mounts
+
+To include extra manifests or config files mount these to /data and a script will copy them to the correct folders.
+
+| Mount | Mount point |
+| :--- | :--- |
+| manifests/ | /data/manifests |
+| configs/ | /data/configs |
+| assets/ | /data/assets |
+
+## ⚓ Helm
+Comming soon!
 
 ## Installation and Requirements
 
@@ -170,7 +216,7 @@ npm run prettier
 # Make sure to run these 3 before contributing code!
 
 # Testing of config and manifest file
-npm run test-config config="path" index="index" lang="language code"
+npm run test-config -- --config=configs/controll.test.json --index=0 --lang=en
 
 npm run validate "path to manifest file"
 ```
@@ -251,6 +297,11 @@ These objects should be configured following this standard:
 Where the key is short for the language returned by Office.context.displayLanguage.
 The default key is mandatory!
 ```
+#### Normal setup
+If nothing is changed from the base image the plugin will return a footer simular to this image.
+![Photo: Jitsi Outlook plugin example / HaV / CC0](screenshot.png)
+
+<figcaption>Jitsi Outlook plugin example / HaV / CC0</figcaption>
 ---
 #### Example of advanced configuration
 ```
