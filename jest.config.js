@@ -6,7 +6,7 @@
 /* eslint-disable no-undef */
 module.exports = {
   moduleNameMapper: {
-    uuid: require.resolve("uuid"),
+    "^uuid$": "uuid",
   },
   transformIgnorePatterns: [],
   testEnvironment: "jest-environment-jsdom",
