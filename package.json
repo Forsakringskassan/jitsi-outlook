@@ -52,7 +52,7 @@
     "jest": "^30.5.1",
     "jest-environment-jsdom": "^30.5.1",
     "office-addin-cli": "^2.0.10",
-    "office-addin-debugging": "^6.1.2",
+    "office-addin-debugging": "^7.0.0",
     "office-addin-dev-certs": "^2.0.10",
     "office-addin-lint": "^3.0.10",
     "office-addin-manifest": "^2.1.5",
