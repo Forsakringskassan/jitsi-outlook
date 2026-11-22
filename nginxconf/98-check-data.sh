@@ -11,7 +11,7 @@ entrypoint_log() {
 
 ME=$(basename "$0")
 VERSION=`if [ ! -d /usr/share/nginx/html/plugin/ ];then echo ""; else ls /usr/share/nginx/html/plugin/; fi`
-folders="manifests configs assets"
+folders=`find /data/* -type d -maxdepth 0 | awk -F'/' '{print $3}'`
 
 #check if short version existed
 if [ -z "${VERSION}" ]; then
@@ -24,16 +24,22 @@ for folder in ${folders}; do
         entrypoint_log "$ME: info: Folder not found, $folder."
         continue
     fi
-    entrypoint_log "$ME: info: Try to merge /data/$folder into /usr/share/nginx/html/$folder/$VERSION."
     case $folder in
         manifests)
+            entrypoint_log "$ME: info: Merge /data/$folder into /usr/share/nginx/html/$folder/$VERSION."
             cp -r /data/manifests/* /usr/share/nginx/html/manifests/${VERSION}
             ;;
         assets)
+            entrypoint_log "$ME: info: Merge /data/$folder into /usr/share/nginx/html/plugin/$VERSION/$folder."
             cp -r /data/assets/* /usr/share/nginx/html/plugin/${VERSION}/assets
             ;;
         configs)
+            entrypoint_log "$ME: info: Merge /data/$folder into /usr/share/nginx/html/$folder."
             cp -r /data/configs/* /usr/share/nginx/html/configs
+            ;;
+        commandConfig)
+            entrypoint_log "$ME: info: Merge /data/$folder/config.json into /usr/share/nginx/html/plugin/$VERSION/config.json."
+            cp /data/commandConfig/config.json /usr/share/nginx/html/plugin/${VERSION}/config.json
             ;;
         *)
             entrypoint_log "$ME: warn: Unknown folder, /data/$folder, continues."

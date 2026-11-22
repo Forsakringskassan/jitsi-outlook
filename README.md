@@ -28,14 +28,14 @@ The plugin randomly generates a Jitsi link to an appointment (while in the appoi
 
 ## 🖼️ Image
 
-This none root image provides a lightweight jitsi-outlook plugin implementation.\
-The image builds on nginx and have been hardened using gixy standards.
+This none root image provides a lightweight jitsi-outlook plugin implementation based on Nginx.\
+`The image builds on nginx and have been hardened using gixy standards.`
 
 **To add more manifests and configs use a volume mount or build from source!**
 
 ### 🚀 Quick Start
 
-Run the container using the command below. Make sure to replace the placeholder values with your actual configuration.
+Run the container using the command below. Make sure to replace the placeholder values with your actual configuration. Make sure that you have a config.json written following the schema, commands_config.schema.json, to mount in for config file url.
 
 ```bash
 docker run -d \
@@ -43,7 +43,8 @@ docker run -d \
   -e NGINX_HOST="localhost" \
   -e NGINX_PORT="8080" \
   --name jitsi-outlook \
-  ghcr.io/forsakringskassan/jitis-outlook:latest
+  -v ./config.json:/data/commandConfig/config.json
+  ghcr.io/forsakringskassan/jitsi-outlook:latest
 ```
 
 ### ⚙️ Environment Variables
@@ -54,10 +55,14 @@ Configure the container behavior using these variables:
 | :--- | :--- | :--- |
 | `NGINX_HOST` | **Required.** Hostname where the service is running. | `localhost` |
 | `NGINX_PORT` | **Required.** Port running the service. | `8080` |
+| `NGINX_PORTS` | **Optional.** Secure port (TLS) | `8443` |
+
+When running with `NGINX_PORTS`, make sure to provide a certificate in /cert folder, se volumes below!
 
 ### 📦 Ports
 
-* `8080`: The application serves traffic on this port by default.
+* `8080`: The application serves traffic on this port.
+* `8443`: The applictaion server secure traffic on this port if certificates are provided.
 
 ### 💾 Volume mounts
 
@@ -68,6 +73,33 @@ To include extra manifests or config files mount these to /data and a script wil
 | manifests/ | /data/manifests |
 | configs/ | /data/configs |
 | assets/ | /data/assets |
+| cert/ | /cert |
+
+#### Manifests
+This folder should contain a list of all your different manifests, if you have different setups. This is only if you need to serve these files.
+```bash
+manifests/one-button/manifest.xml
+manifests/list/manifest.xml
+```
+#### Configs
+This folder contains the different configs for your plugin. The paths are built using email domain from the client.
+```bash
+configs/v1/outlook.com/config.json
+configs/v1/myprivatedomain.com/config.json
+```
+#### Assets
+Pictures and assets loaded by the plugin, these must be sourced in the manifest as well.
+```bash
+assets/icon-16.png
+assets/icon-32.png
+assets/icon-64.png
+```
+#### Cert
+Certificates folder, filenames must end on .pem and -key.pem for the script to pick it up. Add only one key and certificate file each. Both should be readable by the container user, USER nginx.
+```bash
+cert/my-domain.pem
+cert/my-domain-key.pem
+```
 
 ## ⚓ Helm
 Comming soon!
@@ -118,13 +150,13 @@ The `manifest.xml` can be added as an add-in manually, through Outlooks add-in p
 6. Select the relevant alternative for where your manifest file is stored
 7. Add the `manifest.xml` file and let it validate and load
 
-When it has finished loading the add-in should be visible in the toolbar whenever you have the event organizer window open. I.e. when you are trying to organize and invite people to meeting.
+When it has finished loading the add-in should be visible in the toolbar whenever you have the event organizer window open. I.e. when you are trying to organize and invite people to meeting. If icons does not load and the button to create a link is unresponsive or hangs, check that you trust the certificate you provided. It will only work over an SSL connection.
 
 ### **Running the development server locally**
 
 You can run and test the add-in code by running the following npm command:
 
-```
+```bash
 npm run dev-server
 ```
 
@@ -134,6 +166,32 @@ This will start the local development server on port 3000. If the aforementioned
 
 This section describes how the add-in should and can be configured.
 
+### **`src/commands/config.json`**
+
+The `src/commands/config.json` file contains which meeting types should be added to html file and command.js. The list added here should correspond to a list in the `manifest.xml` as well. So if more than one link is present in this file then the manifest must be updated to a action list instead of a button, see `manifest-list.xml` as an example.
+
+| **Property**               | **Type** | **Description**                                                                   |
+| -------------------------- | -------- | --------------------------------------------------------------------------------- |
+| `configUrl`                | string   | The url that serves the domain configurations                                     |
+| `meetingLinks`             | list     | This contains the list with the below values                                      |
+| `meetingLinks.associate`   | string   | The associated link name from `manifest.xml` file                                 |
+| `meetingLinks.meetingName` | string   | The type meeting config related to this meeting link in `config.json`             |
+
+**For the image installation this is mandatory to provide!**
+A short example is given for building the distribution folder, here follows a short version for the image setup.
+```json
+{
+  "$schema": "../../schemas/commands_config.schema.json",
+  "configUrl": "https://yourdomain.test/configs/v1",
+  "meetingLinks": [
+    {
+      "associate": "insertJitsiLink",
+      "meetingName": "StandardMeeting"
+    }
+  ]
+}
+```
+
 ### `buildSettings.json`
 
 This file contains the only mandatory settings for the creation of the manifest file. All dev settings will be used when running `npm run build-dev` and produce a dist folder for that `devVersion`. The webpack will produce as many manifests there is in the `/manifests` folder.
@@ -142,14 +200,12 @@ This file contains the only mandatory settings for the creation of the manifest 
 | --- | --- | --- |
 | TEST |
 | `devUrlRemotePluginServer` | string | Url to a test environment where the plugin is hosted |
-| `devUrlConfig`| string | Url to a test environment where the plugin config is hosted |
 | `devBaseUrl` | string | Base url to test environment |
 | `devAppId` | string | Marketstore ID for the plugin, deadbeef id used for test |
 | `devVersion` | string | Version number used for test development |
 | `devDisplayName` | string | Displayname used on add-in page for development plugin |
 | PROD |
 | `prodUrlPlugin` | string | Url to a production environment where the plugin is hosted |
-| `prodUrlConfig` | string | Url to a production environment where the plugin config is hosted |
 | `prodBaseUrl` | string | Base url to production environment |
 | `prodAppId` | string | Marketstore ID for the plugin |
 | `prodDisplayName` | string | Displayname used on add-in page for production plugin |
@@ -164,7 +220,7 @@ So for building and testing the plugin you need to enter at least the informatio
 
 The `config.json` file in the config folder will determine how the default meeting should look like. The following is an example of how the configuration file could look like:
 
-```
+```json
 {
     "baseUrl": "https://my-jitsi-instance-url"
 }
@@ -288,23 +344,27 @@ npm run validate "path to manifest file"
 
 #### Description of object(localized)
 These objects should be configured following this standard:
-```
+```json
 {
   "en": "English text",
   "it": "Italian text",
   "default": "Mandatory!!"
 }
+```
 Where the key is short for the language returned by Office.context.displayLanguage.
 The default key is mandatory!
-```
+
 #### Normal setup
 If nothing is changed from the base image the plugin will return a footer simular to this image.
 ![Photo: Jitsi Outlook plugin example / HaV / CC0](screenshot.png)
 
 <figcaption>Jitsi Outlook plugin example / HaV / CC0</figcaption>
+
 ---
+
 #### Example of advanced configuration
-```
+
+```json
 {
   "baseUrl": "https://meet.jit.si",
   "locationString": {"default": "Jitsi videomöte"},
@@ -415,16 +475,6 @@ This config will produce the following footer:
 The add-in can be configured through the use of a configuration file (named `<sub-domain>.json`), that should be placed in the configs directory, these are then built and used per sub-domain. E.g. if you have an email domain on controll.test the file should be stored as, `/configs/controll.test.json`, this will produce a file in the dist for that sub-domain. It expects the same json object as the default.
 
 To utilize this feature you have to specify the configuration setup in the `buildSettings.json`.
-
-### **`src/commands/config.json`**
-
-The `src/commands/config.json` file contains which meeting types should be added to html file and command.js. The list added here should correspond to a list in the `manifest.xml` as well. So if more than one link is present in this file then the manifest must be updated to a action list instead of a button, see `manifest-list.xml` as an example.
-
-| **Property**               | **Type** | **Description**                                                                   |
-| -------------------------- | -------- | --------------------------------------------------------------------------------- |
-| `meetingLinks`             | list     | This contains the list with the below values                                      |
-| `meetingLinks.associate`   | string   | The associated link name from `manifest.xml` file                                 |
-| `meetingLinks.meetingName` | string   | The type meeting config related to this meeting link in `config.json`             |
 
 ---
 

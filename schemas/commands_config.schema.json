@@ -4,6 +4,9 @@
     "$schema": {
       "type": "string"
     },
+    "configUrl": {
+      "type": "string"
+    },
     "meetingLinks": {
       "type": "array",
       "items": {

@@ -8,10 +8,6 @@
       "type": "string",
       "format": "uri"
     },
-    "devUrlConfig": {
-      "type": "string",
-      "format": "uri"
-    },
     "devBaseUrl": {
       "type": "string",
       "format": "uri"
@@ -27,10 +23,6 @@
       "type": "string"
     },
     "prodUrlPlugin": {
-      "type": "string",
-      "format": "uri"
-    },
-    "prodUrlConfig": {
       "type": "string",
       "format": "uri"
     },

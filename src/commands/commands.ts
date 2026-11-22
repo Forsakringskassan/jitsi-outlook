@@ -1,11 +1,10 @@
 // SPDX-FileCopyrightText: Microsoft Corporation
 //
 // SPDX-License-Identifier: MIT
-declare const CONFIG_URL: string;
+const configUrl = new URL('./config.json', window.location.href).href;
 import { loadConfig } from "../utils/ConfigHelper";
 import { Config, AddinConfig } from "../models/Config";
 import { addMeeting } from "../utils/OfficeCallHandler";
-import a_config from "./config.json";
 
 /* global console */
 
@@ -13,17 +12,38 @@ import a_config from "./config.json";
   await Office.onReady();
 })();
 
-const addinConfig: AddinConfig = a_config;
+const loadAddinConfig = function (filename: string, callback: (e: string, config: AddinConfig) => void) {
+  const cacheBuster = `?t=${Date.now()}`
+  fetch(filename + cacheBuster)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((json) => {
+      callback("", json)
+    })
+    .catch((error) => {
+      callback(error, { meetingLinks: [] })
+    });
+}
 
-const addJitsiLink = (event: Office.AddinCommands.Event, name: string) => {
-  try {
-    loadConfig((config: Config, error: string) => addMeeting(name, config, error, event), CONFIG_URL);
-  } catch (error) {
-    console.log(error);
-    return;
+const addJitsiLink = (event: Office.AddinCommands.Event, name: string, addinConfig?: string) => {
+  if (addinConfig) {
+    try {
+      loadConfig((config: Config, error: string) => addMeeting(name, config, error, event), addinConfig);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
   }
 };
 
-addinConfig.meetingLinks.forEach((element) => {
-  Office.actions.associate(element.associate, (f: Office.AddinCommands.Event) => addJitsiLink(f, element.meetingName));
+loadAddinConfig(configUrl, (e, addinConfig: AddinConfig) => {
+  if (e == "") {
+    addinConfig.meetingLinks.forEach((element) => {
+      Office.actions.associate(element.associate, (f: Office.AddinCommands.Event) => addJitsiLink(f, element.meetingName, addinConfig.configUrl));
+    })
+  }
 });
