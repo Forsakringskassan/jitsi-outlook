@@ -1,10 +1,10 @@
 server {
-  listen ${NGINX_PORT};
   server_name ${NGINX_HOST};
   root /usr/share/nginx/html;
   access_log /dev/stdout;
   error_log /dev/stdout info;
-  include /etc/nginx/conf.d/ssl*.inc;
+  include /etc/nginx/conf.d/http.inc;
+  include /etc/nginx/conf.d/ssl.inc;
 
   #Strict HTTP Request Method Enforcement
   if ($request_method !~ ^(GET|HEAD|OPTIONS)$ ) {

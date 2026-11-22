@@ -35,15 +35,27 @@ This none root image provides a lightweight jitsi-outlook plugin implementation 
 
 ### 🚀 Quick Start
 
-Run the container using the command below. Make sure to replace the placeholder values with your actual configuration. Make sure that you have a config.json written following the schema, commands_config.schema.json, to mount in for config file url.
+Run the container using the command below. Make sure to replace the placeholder values with your actual configuration. Make sure that you have a config.json written following the schema, commands_config.schema.json, to mount in for config file url. This setup expects a loadbalancer our proxy to handle the SSL termination before the service, if you need SSL directly to the container check out the documentation below.
 
 ```bash
+# Proxy version
 docker run -d \
   -p 8080:8080 \
   -e NGINX_HOST="localhost" \
   -e NGINX_PORT="8080" \
   --name jitsi-outlook \
   -v ./config.json:/data/commandConfig/config.json
+  ghcr.io/forsakringskassan/jitsi-outlook:latest
+```
+```bash
+# SSL implementation
+docker run -d \
+  -p 443:8443 \
+  -e NGINX_HOST="localhost" \
+  -e NGINX_PORTS="8443" \
+  --name jitsi-outlook \
+  -v ./config.json:/data/commandConfig/config.json
+  -v ./cert:/cert
   ghcr.io/forsakringskassan/jitsi-outlook:latest
 ```
 
@@ -54,7 +66,7 @@ Configure the container behavior using these variables:
 | Variable | Description | Example |
 | :--- | :--- | :--- |
 | `NGINX_HOST` | **Required.** Hostname where the service is running. | `localhost` |
-| `NGINX_PORT` | **Required.** Port running the service. | `8080` |
+| `NGINX_PORT` | **Optional.** Port running the service. | `8080` |
 | `NGINX_PORTS` | **Optional.** Secure port (TLS) | `8443` |
 
 When running with `NGINX_PORTS`, make sure to provide a certificate in /cert folder, se volumes below!

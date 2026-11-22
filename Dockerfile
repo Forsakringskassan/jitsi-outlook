@@ -4,6 +4,7 @@ ARG TAG=v1.0.0
 
 COPY nginxconf/jitsi.conf.template /etc/nginx/templates/jitsi.conf.template
 COPY nginxconf/ssl.inc.template /tmp
+COPY nginxconf/http.inc.template /tmp
 COPY dist/$TAG /usr/share/nginx/html/temp
 COPY nginxconf/15-add-ssl.sh /docker-entrypoint.d/15-add-ssl.sh
 COPY nginxconf/98-check-data.sh /docker-entrypoint.d/98-check-data.sh

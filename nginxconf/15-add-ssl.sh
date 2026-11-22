@@ -8,9 +8,22 @@ entrypoint_log() {
         echo "$@"
     fi
 }
+touch /etc/nginx/conf.d/http.inc
+touch /etc/nginx/conf.d/ssl.inc
 ME=$(basename "$0")
-entrypoint_log "$ME: info: Check ssl settings: port=${NGINX_PORTS}"
+if [ "z_$NGINX_PORT" = "z_" ] && [ "z_$NGINX_PORTS" = "z_" ];then
+  entrypoint_log "$ME: info: No port provided using default"
+  sed 's/${NGINX_PORT}/8080/' /tmp/http.inc.template > /etc/nginx/templates/http.inc.template
+  cat /etc/nginx/templates/http.inc.template
+fi
 
+entrypoint_log "$ME: info: Check http settings: port=${NGINX_PORT}"
+
+if [ "z_$NGINX_PORT" != "z_" ]; then
+  entrypoint_log "$ME: info: Moving http.inc.template"
+  cp /tmp/http.inc.template /etc/nginx/templates/http.inc.template
+fi
+entrypoint_log "$ME: info: Check ssl settings: port=${NGINX_PORTS}"
 if [ "z_$NGINX_PORTS" != "z_" ]; then
   entrypoint_log "$ME: info: Moving ssl.inc.template"
   cp /tmp/ssl.inc.template /etc/nginx/templates/ssl.inc.template
