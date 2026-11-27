@@ -1,5 +1,6 @@
 {
   "$schema": "../../schemas/commands_config.schema.json",
+  "configUrl": "https://controll.test/plugin/configs/",
   "meetingLinks": [
     {
       "associate": "insertJitsiLink",

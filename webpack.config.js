@@ -34,7 +34,6 @@ module.exports = async (env, options) => {
   if (dev) {
     source = "source-map";
     url = buildSettings.devUrlRemotePluginServer.endsWith("/") ? buildSettings.devUrlRemotePluginServer : buildSettings.devUrlRemotePluginServer + "/";
-    configUrl = buildSettings.devUrlConfig.endsWith("/") ? buildSettings.devUrlConfig : buildSettings.devUrlConfig + "/";
     id = buildSettings.devAppId;
     version = buildSettings.devVersion;
     shortVersion = String(version).split(".")[0];
@@ -42,14 +41,12 @@ module.exports = async (env, options) => {
     displayName = buildSettings.devDisplayName;
   } else {
     url = buildSettings.prodUrlPlugin.endsWith("/") ? buildSettings.prodUrlPlugin : buildSettings.prodUrlPlugin + "/";
-    configUrl = buildSettings.prodUrlConfig.endsWith("/") ? buildSettings.prodUrlConfig : buildSettings.prodUrlConfig + "/";
     id = buildSettings.prodAppId;
     baseUrl = buildSettings.prodBaseUrl.endsWith("/") ? buildSettings.prodBaseUrl : buildSettings.prodBaseUrl + "/";
     shortVersion = String(version).split(".")[0];
     displayName = buildSettings.prodDisplayName;
   }
   pluginUrl = short ? url + "v" + shortVersion : url + "v" + version;
-  pluginConfigUrl = short ? configUrl + "v" + shortVersion : configUrl + "v" + version;
   const config = {
     devtool: source,
     entry: {
@@ -93,6 +90,10 @@ module.exports = async (env, options) => {
       new CopyWebpackPlugin({
         patterns: [
           {
+            from: "src/commands/config.json",
+            to: "config.json"
+          },
+          {
             from: "assets/*",
             to: "assets/[name][ext][query]",
           },
@@ -121,9 +122,6 @@ module.exports = async (env, options) => {
             to: "configs/v" + version + "/[name]/config[ext]",
           },
         ],
-      }),
-      new DefinePlugin({
-        CONFIG_URL: JSON.stringify(pluginConfigUrl),
       }),
       new HtmlWebpackPlugin({
         filename: "commands.html",

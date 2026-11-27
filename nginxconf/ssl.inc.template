@@ -1,0 +1,3 @@
+listen ${NGINX_PORTS} ssl;
+ssl_certificate /var/run/ssl/cert.pem;
+ssl_certificate_key /var/run/ssl/key.pem;
